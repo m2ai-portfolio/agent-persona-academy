@@ -1,0 +1,285 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/m2ai-portfolio/agent-persona-academy/schema/persona-v1.json",
+  "title": "Agent Persona Definition",
+  "description": "Schema for defining Claude persona agents in YAML format",
+  "type": "object",
+  "required": ["identity", "voice", "frameworks", "validation"],
+  "properties": {
+    "identity": {
+      "type": "object",
+      "description": "Core identity of the persona",
+      "required": ["name", "role", "background"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Display name of the persona",
+          "minLength": 1,
+          "examples": ["Clayton Christensen", "Michael Porter"]
+        },
+        "role": {
+          "type": "string",
+          "description": "Title or position",
+          "examples": ["Strategic Advisor & Innovation Theorist", "Competitive Strategy Expert"]
+        },
+        "background": {
+          "type": "string",
+          "description": "Credentials, expertise, and relevant history"
+        },
+        "era": {
+          "type": "string",
+          "description": "Time period of primary expertise (optional)",
+          "examples": ["1990s-2020s", "Contemporary"]
+        },
+        "notable_works": {
+          "type": "array",
+          "description": "Key publications, frameworks, or contributions",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "voice": {
+      "type": "object",
+      "description": "Communication characteristics",
+      "required": ["tone", "phrases", "style"],
+      "properties": {
+        "tone": {
+          "type": "array",
+          "description": "Descriptive tone characteristics",
+          "items": { "type": "string" },
+          "minItems": 3,
+          "examples": [["Warm and professorial", "Genuinely curious", "Never condescending"]]
+        },
+        "phrases": {
+          "type": "array",
+          "description": "Characteristic expressions this persona uses",
+          "items": { "type": "string" },
+          "minItems": 5,
+          "examples": [["Let me tell you a story...", "The theory would predict..."]]
+        },
+        "style": {
+          "type": "array",
+          "description": "Communication patterns and approaches",
+          "items": { "type": "string" },
+          "minItems": 3
+        },
+        "constraints": {
+          "type": "array",
+          "description": "What this persona would NOT say or do",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "frameworks": {
+      "type": "object",
+      "description": "Mental models and analytical frameworks used by this persona",
+      "minProperties": 1,
+      "additionalProperties": {
+        "$ref": "#/$defs/framework"
+      }
+    },
+    "case_studies": {
+      "type": "object",
+      "description": "Canonical examples and stories this persona references",
+      "additionalProperties": {
+        "$ref": "#/$defs/caseStudy"
+      }
+    },
+    "analysis_patterns": {
+      "type": "object",
+      "description": "How this persona approaches problems",
+      "properties": {
+        "approach": {
+          "type": "array",
+          "description": "Step-by-step analysis methodology",
+          "items": { "type": "string" }
+        },
+        "output_structure": {
+          "type": "array",
+          "description": "Expected sections in analysis output",
+          "items": {
+            "type": "object",
+            "required": ["section"],
+            "properties": {
+              "section": { "type": "string" },
+              "purpose": { "type": "string" }
+            }
+          }
+        },
+        "synthesis_guidance": {
+          "type": "string",
+          "description": "How to combine multiple frameworks"
+        }
+      }
+    },
+    "validation": {
+      "type": "object",
+      "description": "Fidelity markers for validating outputs",
+      "required": ["must_include"],
+      "properties": {
+        "must_include": {
+          "type": "array",
+          "description": "Patterns essential to this persona (need 80%+)",
+          "items": { "$ref": "#/$defs/validationMarker" },
+          "minItems": 3
+        },
+        "should_include": {
+          "type": "array",
+          "description": "Patterns that strengthen authenticity",
+          "items": { "$ref": "#/$defs/validationMarker" }
+        },
+        "must_avoid": {
+          "type": "array",
+          "description": "Antipatterns that break character",
+          "items": { "$ref": "#/$defs/validationMarker" }
+        }
+      }
+    },
+    "sample_responses": {
+      "type": "object",
+      "description": "Example prompt/response pairs for testing",
+      "additionalProperties": {
+        "$ref": "#/$defs/sampleResponse"
+      }
+    },
+    "metadata": {
+      "type": "object",
+      "description": "Administrative metadata",
+      "properties": {
+        "version": { "type": "string" },
+        "author": { "type": "string" },
+        "created": { "type": "string", "description": "Creation date (YYYY-MM-DD)" },
+        "updated": { "type": "string", "description": "Last updated date (YYYY-MM-DD)" },
+        "tags": {
+          "type": "array",
+          "items": { "type": "string" }
+        },
+        "category": {
+          "type": "string",
+          "enum": ["business-strategist", "technical-architect", "domain-expert", "creative", "custom"]
+        }
+      }
+    }
+  },
+  "$defs": {
+    "framework": {
+      "type": "object",
+      "description": "A mental model or analytical framework",
+      "required": ["description", "concepts"],
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "Overview of the framework"
+        },
+        "concepts": {
+          "type": "object",
+          "description": "Key concepts within this framework",
+          "additionalProperties": {
+            "type": "object",
+            "required": ["definition"],
+            "properties": {
+              "definition": { "type": "string" },
+              "examples": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "insight": { "type": "string" },
+              "subconcepts": {
+                "type": "object",
+                "additionalProperties": { "type": "string" }
+              }
+            }
+          }
+        },
+        "questions": {
+          "type": "array",
+          "description": "Diagnostic questions for applying this framework",
+          "items": { "type": "string" }
+        },
+        "when_to_use": {
+          "type": "string",
+          "description": "Situations where this framework applies"
+        },
+        "common_mistakes": {
+          "type": "array",
+          "description": "Frequent misapplications to avoid",
+          "items": { "type": "string" }
+        }
+      }
+    },
+    "caseStudy": {
+      "type": "object",
+      "description": "A canonical example or story",
+      "required": ["pattern", "story"],
+      "properties": {
+        "pattern": {
+          "type": "string",
+          "description": "The pattern this case illustrates"
+        },
+        "story": {
+          "type": "string",
+          "description": "Narrative of the case"
+        },
+        "signals": {
+          "type": "array",
+          "description": "Indicators that this pattern applies",
+          "items": { "type": "string" }
+        },
+        "lessons": {
+          "type": "array",
+          "description": "Key takeaways",
+          "items": { "type": "string" }
+        },
+        "source": {
+          "type": "string",
+          "description": "Original publication or context"
+        }
+      }
+    },
+    "validationMarker": {
+      "type": "object",
+      "description": "A pattern for validating persona fidelity",
+      "required": ["pattern"],
+      "properties": {
+        "pattern": {
+          "type": "string",
+          "description": "Regex pattern or keyword to detect"
+        },
+        "description": {
+          "type": "string",
+          "description": "Why this pattern matters"
+        },
+        "weight": {
+          "type": "number",
+          "description": "Importance weight (1-10)",
+          "minimum": 1,
+          "maximum": 10,
+          "default": 5
+        }
+      }
+    },
+    "sampleResponse": {
+      "type": "object",
+      "description": "Example prompt/response for testing",
+      "required": ["prompt", "good_response"],
+      "properties": {
+        "prompt": {
+          "type": "string",
+          "description": "User input to test"
+        },
+        "good_response": {
+          "type": "string",
+          "description": "Example of high-fidelity response"
+        },
+        "bad_response": {
+          "type": "string",
+          "description": "Example of low-fidelity response"
+        },
+        "explanation": {
+          "type": "string",
+          "description": "Why good is good and bad is bad"
+        }
+      }
+    }
+  }
+}

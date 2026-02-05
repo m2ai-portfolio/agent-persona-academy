@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "persona-academy": {
+      "command": "node",
+      "args": [
+        "/absolute/path/to/agent-persona-academy/dist/unified-server/index.js",
+        "--personas", "/absolute/path/to/agent-persona-academy/personas",
+        "--default", "christensen"
+      ]
+    }
+  }
+}

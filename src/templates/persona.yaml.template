@@ -1,0 +1,237 @@
+# =============================================================================
+# PERSONA DEFINITION TEMPLATE
+# =============================================================================
+# This template defines the structure for creating Claude persona agents.
+# Fill in each section following the guidance in comments.
+#
+# Usage:
+#   1. Copy this template to personas/<your-persona>/persona.yaml
+#   2. Fill in all required sections (marked with # REQUIRED)
+#   3. Run: npm run cli validate personas/<your-persona>
+#   4. Run: npm run cli test personas/<your-persona>
+#   5. Build: npm run cli build personas/<your-persona>
+#
+# =============================================================================
+
+# -----------------------------------------------------------------------------
+# IDENTITY (REQUIRED)
+# Who is this persona? Establish their credentials and expertise.
+# -----------------------------------------------------------------------------
+identity:
+  # Display name - how the persona introduces themselves
+  name: "{{PERSONA_NAME}}"
+
+  # Title or role - their professional identity
+  role: "{{ROLE_DESCRIPTION}}"
+
+  # Background - credentials, experience, and expertise
+  # Write 2-4 sentences establishing authority and perspective
+  background: |
+    {{BACKGROUND_PARAGRAPH}}
+
+  # Era (optional) - time period of primary expertise
+  # Helps ground the persona's knowledge and references
+  era: "{{ERA_IF_APPLICABLE}}"
+
+  # Notable works (optional) - key publications, frameworks, contributions
+  notable_works:
+    - "{{BOOK_OR_FRAMEWORK_1}}"
+    - "{{BOOK_OR_FRAMEWORK_2}}"
+
+# -----------------------------------------------------------------------------
+# VOICE (REQUIRED)
+# How does this persona communicate? Define their characteristic style.
+# -----------------------------------------------------------------------------
+voice:
+  # Tone - 3-5 descriptive characteristics of how they speak
+  # Think: warm, direct, professorial, curious, humble, assertive, etc.
+  tone:
+    - "{{TONE_1}}"
+    - "{{TONE_2}}"
+    - "{{TONE_3}}"
+
+  # Phrases - 5-10 characteristic expressions this persona uses
+  # These are signature phrases that make the persona recognizable
+  phrases:
+    - "{{PHRASE_1}}"
+    - "{{PHRASE_2}}"
+    - "{{PHRASE_3}}"
+    - "{{PHRASE_4}}"
+    - "{{PHRASE_5}}"
+
+  # Style - communication patterns and approaches
+  # How do they structure their thinking? What's their method?
+  style:
+    - "{{STYLE_1}}"
+    - "{{STYLE_2}}"
+    - "{{STYLE_3}}"
+
+  # Constraints (optional) - what this persona would NOT say or do
+  # Defines boundaries to maintain authenticity
+  constraints:
+    - "{{CONSTRAINT_1}}"
+    - "{{CONSTRAINT_2}}"
+
+# -----------------------------------------------------------------------------
+# FRAMEWORKS (REQUIRED - at least one)
+# Mental models and analytical tools this persona uses.
+# Each framework should have: description, concepts, and questions.
+# -----------------------------------------------------------------------------
+frameworks:
+  {{FRAMEWORK_1_KEY}}:
+    # What is this framework about?
+    description: |
+      {{FRAMEWORK_1_DESCRIPTION}}
+
+    # Key concepts within this framework
+    concepts:
+      {{CONCEPT_1_KEY}}:
+        definition: "{{CONCEPT_1_DEFINITION}}"
+        examples:
+          - "{{CONCEPT_1_EXAMPLE_1}}"
+          - "{{CONCEPT_1_EXAMPLE_2}}"
+        insight: "{{CONCEPT_1_INSIGHT}}"
+
+      {{CONCEPT_2_KEY}}:
+        definition: "{{CONCEPT_2_DEFINITION}}"
+        examples:
+          - "{{CONCEPT_2_EXAMPLE_1}}"
+
+    # Diagnostic questions for applying this framework
+    questions:
+      - "{{FRAMEWORK_1_QUESTION_1}}"
+      - "{{FRAMEWORK_1_QUESTION_2}}"
+      - "{{FRAMEWORK_1_QUESTION_3}}"
+
+    # When to apply this framework
+    when_to_use: "{{WHEN_TO_USE_FRAMEWORK_1}}"
+
+    # Common misapplications to warn about
+    common_mistakes:
+      - "{{COMMON_MISTAKE_1}}"
+
+  # Add additional frameworks as needed
+  # {{FRAMEWORK_2_KEY}}:
+  #   description: |
+  #     {{FRAMEWORK_2_DESCRIPTION}}
+  #   concepts:
+  #     ...
+
+# -----------------------------------------------------------------------------
+# CASE STUDIES (RECOMMENDED)
+# Canonical examples and stories this persona references.
+# These ground abstract frameworks in concrete reality.
+# -----------------------------------------------------------------------------
+case_studies:
+  {{CASE_1_KEY}}:
+    # What pattern does this case illustrate?
+    pattern: "{{CASE_1_PATTERN}}"
+
+    # The story itself - narrative form
+    story: |
+      {{CASE_1_STORY}}
+
+    # Signals - when should this case be referenced?
+    signals:
+      - "{{SIGNAL_1}}"
+      - "{{SIGNAL_2}}"
+
+    # Key takeaways
+    lessons:
+      - "{{LESSON_1}}"
+      - "{{LESSON_2}}"
+
+# -----------------------------------------------------------------------------
+# ANALYSIS PATTERNS (RECOMMENDED)
+# How does this persona approach problems?
+# -----------------------------------------------------------------------------
+analysis_patterns:
+  # Step-by-step methodology
+  approach:
+    - "{{STEP_1}}"
+    - "{{STEP_2}}"
+    - "{{STEP_3}}"
+    - "{{STEP_4}}"
+
+  # Structure of output
+  output_structure:
+    - section: "{{SECTION_1_NAME}}"
+      purpose: "{{SECTION_1_PURPOSE}}"
+    - section: "{{SECTION_2_NAME}}"
+      purpose: "{{SECTION_2_PURPOSE}}"
+    - section: "{{SECTION_3_NAME}}"
+      purpose: "{{SECTION_3_PURPOSE}}"
+
+  # How to synthesize multiple frameworks
+  synthesis_guidance: |
+    {{SYNTHESIS_GUIDANCE}}
+
+# -----------------------------------------------------------------------------
+# VALIDATION (REQUIRED)
+# Fidelity markers for testing persona authenticity.
+# These patterns are checked against generated outputs.
+# -----------------------------------------------------------------------------
+validation:
+  # Patterns that MUST appear in outputs (need 80%+ match rate)
+  must_include:
+    - pattern: "{{MUST_INCLUDE_REGEX_1}}"
+      description: "{{WHY_THIS_MATTERS_1}}"
+      weight: 10
+    - pattern: "{{MUST_INCLUDE_REGEX_2}}"
+      description: "{{WHY_THIS_MATTERS_2}}"
+      weight: 8
+    - pattern: "{{MUST_INCLUDE_REGEX_3}}"
+      description: "{{WHY_THIS_MATTERS_3}}"
+      weight: 8
+
+  # Patterns that SHOULD appear (bonus points)
+  should_include:
+    - pattern: "{{SHOULD_INCLUDE_REGEX_1}}"
+      description: "{{WHY_THIS_HELPS_1}}"
+      weight: 5
+    - pattern: "{{SHOULD_INCLUDE_REGEX_2}}"
+      description: "{{WHY_THIS_HELPS_2}}"
+      weight: 5
+
+  # Patterns that MUST NOT appear (deductions)
+  must_avoid:
+    - pattern: "{{MUST_AVOID_REGEX_1}}"
+      description: "{{WHY_THIS_IS_BAD_1}}"
+      weight: 10
+    - pattern: "{{MUST_AVOID_REGEX_2}}"
+      description: "{{WHY_THIS_IS_BAD_2}}"
+      weight: 8
+
+# -----------------------------------------------------------------------------
+# SAMPLE RESPONSES (RECOMMENDED)
+# Example prompt/response pairs for testing and training.
+# At least 2-3 examples help establish quality expectations.
+# -----------------------------------------------------------------------------
+sample_responses:
+  example_1:
+    prompt: "{{USER_PROMPT_1}}"
+    good_response: |
+      {{GOOD_RESPONSE_1}}
+    bad_response: |
+      {{BAD_RESPONSE_1}}
+    explanation: |
+      {{EXPLANATION_1}}
+
+  example_2:
+    prompt: "{{USER_PROMPT_2}}"
+    good_response: |
+      {{GOOD_RESPONSE_2}}
+
+# -----------------------------------------------------------------------------
+# METADATA (OPTIONAL)
+# Administrative information about this persona.
+# -----------------------------------------------------------------------------
+metadata:
+  version: "1.0.0"
+  author: "{{YOUR_NAME}}"
+  created: "{{YYYY-MM-DD}}"
+  updated: "{{YYYY-MM-DD}}"
+  tags:
+    - "{{TAG_1}}"
+    - "{{TAG_2}}"
+  category: "{{business-strategist|technical-architect|domain-expert|creative|custom}}"

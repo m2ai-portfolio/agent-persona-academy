@@ -1,0 +1,245 @@
+name: Persona Validation
+
+on:
+  push:
+    branches: [main, develop]
+    paths:
+      - 'personas/**'
+      - 'src/**'
+      - 'schema/**'
+      - 'package.json'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'personas/**'
+      - 'src/**'
+      - 'schema/**'
+  workflow_dispatch:
+    inputs:
+      persona:
+        description: 'Specific persona to test (leave empty for all)'
+        required: false
+        type: string
+
+jobs:
+  lint:
+    name: Lint & Type Check
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Type check
+        run: npm run build
+
+  test:
+    name: Unit Tests
+    runs-on: ubuntu-latest
+    needs: lint
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+  validate-personas:
+    name: Validate Personas
+    runs-on: ubuntu-latest
+    needs: lint
+    strategy:
+      matrix:
+        node-version: [20]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.node-version }}
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Validate all personas
+        run: |
+          for dir in personas/*/; do
+            if [ -f "$dir/persona.yaml" ]; then
+              echo "Validating: $dir"
+              npm run cli -- validate "$dir" || exit 1
+            fi
+          done
+
+  fidelity-tests:
+    name: Fidelity Tests
+    runs-on: ubuntu-latest
+    needs: validate-personas
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Run fidelity tests
+        id: fidelity
+        run: |
+          EXIT_CODE=0
+          for dir in personas/*/; do
+            if [ -f "$dir/persona.yaml" ]; then
+              echo "Testing fidelity: $dir"
+              npm run cli -- test "$dir" --threshold 70 || EXIT_CODE=1
+            fi
+          done
+          exit $EXIT_CODE
+
+      - name: Generate test report
+        if: always()
+        run: |
+          echo "## Fidelity Test Results" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          for dir in personas/*/; do
+            if [ -f "$dir/persona.yaml" ]; then
+              PERSONA_NAME=$(basename "$dir")
+              echo "### $PERSONA_NAME" >> $GITHUB_STEP_SUMMARY
+              npm run cli -- test "$dir" --threshold 70 2>&1 | tail -20 >> $GITHUB_STEP_SUMMARY || true
+              echo "" >> $GITHUB_STEP_SUMMARY
+            fi
+          done
+
+  quality-report:
+    name: Quality Report
+    runs-on: ubuntu-latest
+    needs: fidelity-tests
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build
+        run: npm run build
+
+      - name: Generate quality reports
+        run: |
+          echo "# Quality Report" > quality-report.md
+          echo "" >> quality-report.md
+          echo "Generated: $(date -u)" >> quality-report.md
+          echo "" >> quality-report.md
+
+          for dir in personas/*/; do
+            if [ -f "$dir/persona.yaml" ]; then
+              PERSONA_NAME=$(basename "$dir")
+              echo "## $PERSONA_NAME" >> quality-report.md
+              echo "" >> quality-report.md
+              npm run cli -- info "$dir" 2>&1 | head -30 >> quality-report.md || true
+              echo "" >> quality-report.md
+              npm run cli -- test "$dir" 2>&1 | tail -30 >> quality-report.md || true
+              echo "" >> quality-report.md
+              echo "---" >> quality-report.md
+              echo "" >> quality-report.md
+            fi
+          done
+
+      - name: Upload quality report
+        uses: actions/upload-artifact@v4
+        with:
+          name: quality-report
+          path: quality-report.md
+          retention-days: 30
+
+      - name: Post PR comment
+        if: github.event_name == 'pull_request'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            const report = fs.readFileSync('quality-report.md', 'utf8');
+
+            // Truncate if too long
+            const maxLength = 60000;
+            const truncatedReport = report.length > maxLength
+              ? report.substring(0, maxLength) + '\n\n... (truncated)'
+              : report;
+
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: truncatedReport
+            });
+
+  schema-validation:
+    name: Schema Validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Validate JSON Schema
+        run: |
+          # Check that schema is valid JSON
+          node -e "JSON.parse(require('fs').readFileSync('schema/persona-schema.json', 'utf8'))"
+          echo "Schema is valid JSON"
+
+      - name: Validate all persona YAML against schema
+        run: |
+          npm run build
+          for dir in personas/*/; do
+            if [ -f "$dir/persona.yaml" ]; then
+              echo "Schema validating: $dir"
+              npm run cli -- validate "$dir" || exit 1
+            fi
+          done
