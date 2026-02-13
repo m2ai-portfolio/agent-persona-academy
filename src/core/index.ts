@@ -17,6 +17,7 @@ export type {
   ValidationMarker,
   PersonaValidation,
   SampleResponse,
+  StyleReference,
   PersonaCategory,
   PersonaMetadata,
   PersonaDefinition,
@@ -26,6 +27,14 @@ export type {
   GeneratedTool,
   RegistryEntry,
   RegistryIndex,
+  DepartmentIdentity,
+  DepartmentChangeType,
+  DepartmentValidationOverrides,
+  DepartmentQualityMetric,
+  DepartmentLearningPolicy,
+  DepartmentDefinition,
+  LoadedDepartment,
+  PromptGenerationOptions,
 } from './types.js';
 
 // Persona Loader
@@ -33,6 +42,7 @@ export {
   loadPersonaFromFile,
   loadPersona,
   clearPersonaCache,
+  resolveExternalFiles,
   getFramework,
   getFrameworkNames,
   getDiagnosticQuestions,
@@ -55,4 +65,4 @@ export {
   getSuggestions,
 } from './validation-engine.js';
 
-export type { SampleValidationResult } from './validation-engine.js';
+export type { SampleValidationResult, FidelityScoreOptions } from './validation-engine.js';

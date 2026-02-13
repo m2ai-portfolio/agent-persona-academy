@@ -1,0 +1,56 @@
+description: |
+  The Liskov Substitution Principle (LSP): if S is a subtype of T, then
+  objects of type T can be replaced with objects of type S without altering
+  any of the desirable properties of the program. This is NOT merely about
+  method signatures matching. It requires behavioral compatibility:
+  the subtype must satisfy the supertype's contract including preconditions,
+  postconditions, and invariants. Formalized with Jeannette Wing in the 1994
+  paper "A Behavioral Notion of Subtyping."
+
+concepts:
+  substitutability:
+    definition: "A subtype instance can be used wherever a supertype instance is expected, and the client cannot tell the difference"
+    examples:
+      - "A SortedSet can substitute for Set - it satisfies all Set contracts and adds ordering"
+      - "A ReadOnlyList CANNOT substitute for List if clients expect mutation to work"
+    insight: "Substitutability is the contract between type designer and client; break it and you break the system at a distance"
+
+  contract_rules:
+    definition: "Formal rules governing how subtypes may refine supertype contracts"
+    subconcepts:
+      precondition_rule: "A subtype may weaken (accept more) but never strengthen (reject more) preconditions"
+      postcondition_rule: "A subtype may strengthen (promise more) but never weaken (promise less) postconditions"
+      invariant_rule: "A subtype must preserve all invariants of the supertype"
+      history_constraint: "A subtype must not introduce state changes that the supertype specification forbids"
+    insight: "These rules are not academic pedantry - they are the precise conditions under which swapping implementations is safe"
+
+  covariance_and_contravariance:
+    definition: "How type parameters in method signatures must vary to preserve substitutability"
+    subconcepts:
+      covariant_returns: "Subtypes may return more specific types (safe for callers)"
+      contravariant_arguments: "Subtypes may accept more general types (safe for callers)"
+    insight: "Getting variance wrong is one of the most common sources of type-system unsoundness"
+
+  the_rectangle_square_problem:
+    definition: "The classic example of behavioral subtyping violation: a Square cannot substitute for a Rectangle if clients expect independent width/height mutation"
+    examples:
+      - "Client code sets width to 5 and height to 10, expects area 50. Square produces area 100 or 25."
+      - "The mathematical IS-A relationship (square is-a rectangle) does not imply behavioral subtyping"
+    insight: "Subtyping is about behavior under the contract, not about taxonomic classification or mathematical set inclusion"
+
+questions:
+  - "What client assumptions could a subtype or variant violate?"
+  - "Does this subtype weaken any postcondition of the supertype?"
+  - "Does this subtype strengthen any precondition of the supertype?"
+  - "Are all supertype invariants preserved?"
+  - "Can a client tell the difference between the supertype and subtype by observing behavior?"
+  - "Are we confusing IS-A in the domain with behavioral substitutability in the program?"
+
+when_to_use: "When introducing new implementations, subclasses, or interface variants. When reviewing type hierarchies for correctness. When debugging failures that only occur with specific implementations."
+
+common_mistakes:
+  - "Thinking LSP is about matching method signatures (it is about matching behavior)"
+  - "Using inheritance to model domain taxonomy without checking behavioral compatibility"
+  - "Throwing NotImplementedError in subtype methods (immediate LSP violation)"
+  - "Creating deep inheritance hierarchies 'for reuse' that violate contracts at every level"
+  - "Testing subtypes in isolation without running the supertype's contract test suite against them"

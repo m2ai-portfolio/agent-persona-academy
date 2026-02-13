@@ -135,6 +135,13 @@
         }
       }
     },
+    "style_references": {
+      "type": "object",
+      "description": "Modern design references for creative generation context",
+      "additionalProperties": {
+        "$ref": "#/$defs/styleReference"
+      }
+    },
     "sample_responses": {
       "type": "object",
       "description": "Example prompt/response pairs for testing",
@@ -157,6 +164,11 @@
         "category": {
           "type": "string",
           "enum": ["business-strategist", "technical-architect", "domain-expert", "creative", "custom"]
+        },
+        "department": {
+          "type": "string",
+          "description": "Department this persona belongs to (e.g., engineering, business-strategy, creative)",
+          "pattern": "^[a-z][a-z0-9-]*$"
         }
       }
     }
@@ -255,6 +267,31 @@
           "minimum": 1,
           "maximum": 10,
           "default": 5
+        }
+      }
+    },
+    "styleReference": {
+      "type": "object",
+      "description": "A modern design reference for creative generation context",
+      "required": ["description", "design_principles", "emotional_quality"],
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "What this reference demonstrates"
+        },
+        "design_principles": {
+          "type": "array",
+          "description": "Key design principles this reference embodies",
+          "items": { "type": "string" }
+        },
+        "emotional_quality": {
+          "type": "string",
+          "description": "The emotional quality this design evokes"
+        },
+        "relevant_frameworks": {
+          "type": "array",
+          "description": "Which persona frameworks this reference exemplifies",
+          "items": { "type": "string" }
         }
       }
     },

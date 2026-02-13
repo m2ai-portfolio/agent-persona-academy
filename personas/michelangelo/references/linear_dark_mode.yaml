@@ -1,0 +1,15 @@
+description: |
+  Dramatic dark palette with strategic luminance contrast. Near-black backgrounds
+  create a stage where content becomes the light source. Purple accent at #5E6AD2
+  provides just enough warmth against cool darkness — creating the same visual
+  tension Caravaggio used when painting sacred scenes by candlelight. Smooth
+  micro-interactions establish rhythmic expectation, making static moments feel
+  deliberate rather than broken.
+design_principles:
+  - "Dark mode as compositional choice, not theme toggle"
+  - "Accent color as chiaroscuro — where light falls, attention follows"
+  - "Micro-animation rhythm establishes visual expectation"
+  - "Content glows against darkness"
+emotional_quality: "Focused intensity — the quiet drama of a candlelit workspace"
+relevant_frameworks:
+  - "contrast_and_tension"

@@ -19,6 +19,7 @@ export const listCommand = new Command('list')
   .description('List available personas')
   .option('-d, --dir <path>', 'Personas directory', './personas')
   .option('-c, --category <category>', 'Filter by category')
+  .option('--department <department>', 'Filter by department')
   .option('--json', 'Output as JSON')
   .action(async (options) => {
     try {
@@ -56,6 +57,7 @@ export const listCommand = new Command('list')
             name: persona.identity.name,
             role: persona.identity.role,
             category: persona.metadata?.category ?? 'custom',
+            department: persona.metadata?.department,
             frameworks: Object.keys(persona.frameworks).length,
             caseStudies: Object.keys(persona.case_studies ?? {}).length,
             tags: persona.metadata?.tags ?? [],
@@ -63,6 +65,11 @@ export const listCommand = new Command('list')
 
           // Apply category filter
           if (options.category && summary.category !== options.category) {
+            continue;
+          }
+
+          // Apply department filter
+          if (options.department && summary.department !== options.department) {
             continue;
           }
 
@@ -123,6 +130,7 @@ interface PersonaSummary {
   name: string;
   role: string;
   category: PersonaCategory;
+  department?: string;
   frameworks: number;
   caseStudies: number;
   tags: string[];

@@ -1,0 +1,24 @@
+pattern: "Language-level enforcement of data abstraction"
+story: |
+  CLU (1975) was the first programming language to provide direct support
+  for abstract data types through its 'cluster' mechanism. Liskov and her
+  team at MIT designed CLU because existing languages made abstraction a
+  convention that programmers routinely violated. CLU clusters enforced
+  representation hiding: client code literally could not access the
+  internal representation of a type. CLU also introduced iterators
+  (yield-based generation), multiple return values, and structured
+  exception handling - all driven by the need to write correct,
+  abstract programs. These features were so practical that they were
+  adopted by Python, C++, Java, C#, Ruby, and many other languages
+  over the following decades.
+signals:
+  - "Conventions for abstraction are being violated in practice"
+  - "Representation leaks cause bugs that are hard to trace"
+  - "Language or framework does not enforce module boundaries"
+  - "Teams need to change representations without breaking clients"
+lessons:
+  - "Convention is not enough for abstraction at scale - enforcement is required"
+  - "Language design should support the engineering practices that produce correct software"
+  - "Features driven by practical need (iterators, exceptions) have lasting impact"
+  - "Ship the abstraction mechanism that working programmers actually need"
+source: "Liskov et al., CLU Reference Manual (1981); Turing Award Lecture (2008)"

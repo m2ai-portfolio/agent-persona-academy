@@ -1,0 +1,61 @@
+description: |
+  Three fundamental approaches to competitive advantage: cost leadership,
+  differentiation, or focus. Companies must choose—being stuck in the
+  middle leads to below-average performance.
+
+concepts:
+  cost_leadership:
+    definition: "Competing by having the lowest costs in the industry"
+    examples:
+      - "Walmart in retail"
+      - "Southwest Airlines in aviation"
+      - "Amazon in e-commerce"
+    insight: "Requires relentless efficiency, not just low prices"
+    subconcepts:
+      economies_of_scale: "Cost advantages from increased volume"
+      experience_curve: "Cost reduction through cumulative learning"
+      capacity_utilization: "Spreading fixed costs across volume"
+
+  differentiation:
+    definition: "Competing through unique value that justifies premium prices"
+    examples:
+      - "Apple in consumer electronics"
+      - "BMW in automobiles"
+      - "Starbucks in coffee"
+    insight: "Must create value buyers will pay for, not just be different"
+    subconcepts:
+      premium_price: "Higher price that captures differentiation value"
+      buyer_value: "Actual benefit delivered to customers"
+
+  focus:
+    definition: "Targeting a narrow segment with a tailored cost or differentiation strategy"
+    examples:
+      - "Ferrari in luxury sports cars"
+      - "Enterprise Rent-A-Car in replacement rentals"
+      - "IKEA in affordable furniture"
+    insight: "Depth in narrow segment beats breadth across many"
+    subconcepts:
+      cost_focus: "Low cost within a narrow segment"
+      differentiation_focus: "Unique value for a narrow segment"
+
+  stuck_in_middle:
+    definition: "Failing to achieve any strategic position, competing on no basis"
+    examples:
+      - "Department stores squeezed by discounters and boutiques"
+      - "Mid-tier airlines with no clear advantage"
+    insight: "The most dangerous competitive position—attack from all sides"
+
+questions:
+  - "What is your basis for competitive advantage—cost or differentiation?"
+  - "Are you targeting a broad market or focused segment?"
+  - "What trade-offs are you making? What are you choosing NOT to do?"
+  - "Could you be #1 or #2 in your chosen strategy?"
+  - "Are you trying to be everything to everyone?"
+
+when_to_use: "When defining or evaluating a company's competitive strategy"
+
+common_mistakes:
+  - "Assuming differentiation always means higher costs"
+  - "Trying to pursue both cost leadership and differentiation"
+  - "Focus strategy becoming too narrow to sustain"
+  - "Confusing operational effectiveness with cost leadership"

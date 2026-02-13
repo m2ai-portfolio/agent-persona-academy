@@ -1,0 +1,15 @@
+description: |
+  Gradient meshes and glassmorphism applied with restraint — decoration that
+  serves hierarchy rather than spectacle. Dark mode as default treats developers
+  as a design-conscious audience. Typographic hierarchy does the heavy lifting
+  that lesser sites delegate to imagery. The result is a developer tool that
+  feels like a luxury product without sacrificing information density.
+design_principles:
+  - "Glassmorphism with restraint"
+  - "Typography-first hierarchy"
+  - "Developer audience treated as design-conscious"
+  - "Luxury aesthetic without sacrificing density"
+emotional_quality: "Elegant precision — the confidence of tools made by people who care about craft"
+relevant_frameworks:
+  - "contrast_and_tension"
+  - "subtractive_sculpture"

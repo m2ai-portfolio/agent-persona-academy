@@ -198,6 +198,11 @@ export interface QualityReport {
     name: string;
     version?: string;
   };
+  /** Department context (if persona belongs to a department) */
+  department?: {
+    id: string;
+    name: string;
+  };
   /** Summary scores */
   scores: {
     fidelity: number;

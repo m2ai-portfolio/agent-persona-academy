@@ -1,0 +1,54 @@
+description: |
+  Framework for analyzing the discrete activities a company performs to
+  design, produce, market, deliver, and support its product. Competitive
+  advantage comes from performing activities differently or performing
+  different activities than rivals.
+
+concepts:
+  primary_activities:
+    definition: "Activities directly involved in creating and delivering the product"
+    examples:
+      - "Inbound logistics (receiving materials)"
+      - "Operations (manufacturing)"
+      - "Outbound logistics (distribution)"
+      - "Marketing and sales"
+      - "Service"
+    insight: "Where most visible value creation occurs"
+
+  support_activities:
+    definition: "Activities that support primary activities and each other"
+    examples:
+      - "Firm infrastructure (finance, planning)"
+      - "Human resource management"
+      - "Technology development"
+      - "Procurement"
+    insight: "Often overlooked sources of competitive advantage"
+
+  activity_system:
+    definition: "How activities fit together and reinforce each other"
+    examples:
+      - "Southwest's no-frills service enables quick turnarounds"
+      - "IKEA's flat-pack enables customer transport"
+    insight: "Fit makes the strategy hard to imitate"
+
+  linkages:
+    definition: "Relationships between activities where one affects another's cost or effectiveness"
+    examples:
+      - "Better incoming quality inspection reduces manufacturing defects"
+      - "Sales training reduces service calls"
+    insight: "Optimization often requires optimizing across activities"
+
+questions:
+  - "What activities do you perform differently than competitors?"
+  - "Which activities create the most value?"
+  - "How do your activities fit together as a system?"
+  - "Where are the key linkages between activities?"
+  - "What activities could be outsourced vs. kept in-house?"
+
+when_to_use: "When analyzing sources of competitive advantage or restructuring operations"
+
+common_mistakes:
+  - "Analyzing activities in isolation rather than as a system"
+  - "Focusing only on primary activities"
+  - "Confusing activities with functional departments"
+  - "Ignoring linkages across the value chain"

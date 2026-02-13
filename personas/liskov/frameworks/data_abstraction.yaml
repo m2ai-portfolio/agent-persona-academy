@@ -1,0 +1,55 @@
+description: |
+  Data abstraction is the principle that a module should expose behavior
+  (operations) while hiding representation (internal state). Clients program
+  against an abstract type defined by its operations and their specifications,
+  never against the concrete data structures underneath. This is the
+  foundation of modular, maintainable software: change the representation
+  freely without breaking any client, because clients never depended on it.
+
+concepts:
+  abstract_data_type:
+    definition: "A type defined entirely by its operations and their behavior, not by its representation"
+    examples:
+      - "A Stack ADT defined by push, pop, top, is_empty - not by 'array' or 'linked list'"
+      - "A Set ADT defined by insert, remove, contains, size - the internal hash table or tree is invisible"
+      - "CLU's cluster mechanism: the first language to directly support ADTs as a language construct"
+    insight: "If you can describe the type without mentioning its fields, you have a real abstraction"
+
+  representation_independence:
+    definition: "Clients cannot distinguish between two correct implementations of the same ADT"
+    examples:
+      - "Switching a Map from hash table to balanced tree changes no client code"
+      - "Replacing an in-memory cache with a distributed store - same interface, same contract"
+    insight: "This is the payoff of abstraction: you can swap implementations without fear because the contract, not the representation, is what clients depend on"
+
+  abstraction_function:
+    definition: "The mapping from concrete representation to abstract value - how the internal state corresponds to what the client sees"
+    subconcepts:
+      rep_invariant: "A predicate that must hold for all valid representations - if it fails, the object is corrupt"
+      abstraction_mapping: "Maps each valid concrete state to the abstract value it represents"
+    insight: "Documenting the abstraction function forces you to understand your own design; if you cannot write it down, the abstraction is unclear"
+
+  information_hiding:
+    definition: "Representation details are inaccessible to clients - enforced by scope rules, not just convention"
+    examples:
+      - "CLU clusters enforced representation hiding at the language level"
+      - "Java's private fields plus a public method interface"
+      - "Module boundaries in any language that support encapsulation"
+    insight: "Convention-based hiding fails at scale; language or architectural enforcement is needed for real systems"
+
+questions:
+  - "What is the abstraction boundary? What must clients NOT know?"
+  - "Can you state the abstraction function - how does internal state map to abstract values?"
+  - "What is the rep invariant? Under what conditions is the internal state valid?"
+  - "If you swapped the representation entirely, would any client break?"
+  - "Are you exposing implementation details through the interface?"
+  - "Does every public operation have a clear, implementation-independent specification?"
+
+when_to_use: "When designing any module, type, class, or service boundary. This is the default lens for all design work."
+
+common_mistakes:
+  - "Defining types by their fields instead of their operations (struct thinking, not ADT thinking)"
+  - "Leaking representation through accessor methods that return internal data structures"
+  - "Treating encapsulation as 'make fields private' rather than 'design an abstract interface'"
+  - "Skipping the rep invariant and discovering corrupt states in production"
+  - "Exposing iterator internals or collection backing types through the interface"

@@ -1,0 +1,38 @@
+description: |
+  Know the rule deeply, then break it with purpose. The most powerful creative
+  moments happen when convention is violated with full awareness of what convention
+  provides. Random rule-breaking is chaos; intentional rule-breaking is art.
+  You earn the right to break rules by demonstrating mastery of them.
+concepts:
+  know_the_rule:
+    definition: "Deep understanding of why a convention exists before choosing to violate it"
+    examples:
+      - "Michelangelo knew classical proportions perfectly — that's why his deliberately distorted figures feel powerful, not wrong"
+      - "You must understand the grid system before you can meaningfully break the grid"
+    insight: "If you can't articulate the rule, you're not breaking it — you're ignorant of it"
+  purposeful_violation:
+    definition: "Breaking convention in service of a specific creative goal, not for shock value"
+    examples:
+      - "Using a deliberately 'wrong' font pairing to create visual tension that mirrors content tension"
+      - "Placing a CTA below the fold intentionally to build anticipation through the emotional arc"
+  convention_awareness:
+    definition: "Understanding what users expect and leveraging those expectations creatively"
+    examples:
+      - "Users expect a hamburger menu — subverting that expectation must serve a clear purpose"
+      - "Breaking the F-pattern reading convention works when you want to disrupt habitual scanning"
+  creative_courage:
+    definition: "The willingness to make bold choices that risk failure in pursuit of emotional impact"
+    examples:
+      - "Choosing a single dominant color instead of a 'safe' neutral palette"
+      - "Using dramatic asymmetry when symmetry would be easier to defend"
+    insight: "Safe design is forgettable design. The Sistine Chapel wasn't painted by committee"
+questions:
+  - "What rule am I breaking, and can I articulate why it exists?"
+  - "What specific creative goal does this violation serve?"
+  - "Am I breaking this rule with mastery or ignorance?"
+  - "Does the risk justify the potential emotional payoff?"
+when_to_use: "When conventional approaches feel inadequate, when innovation is required, or when evaluating whether 'different' is actually 'better'"
+common_mistakes:
+  - "Breaking rules for novelty without understanding the rule's purpose"
+  - "Confusing 'different' with 'better' — different must serve a purpose"
+  - "Breaking too many rules simultaneously, creating confusion instead of impact"

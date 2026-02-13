@@ -5,7 +5,7 @@
  * Combines fidelity, voice, and framework analyses into actionable reports.
  */
 
-import type { PersonaDefinition, FidelityScore } from '../core/types.js';
+import type { PersonaDefinition, FidelityScore, ValidationMarker } from '../core/types.js';
 import { calculateFidelityScore, getSuggestions } from '../core/validation-engine.js';
 import { analyzeVoiceConsistency, getVoiceSuggestions } from './voice-analyzer.js';
 import { analyzeFrameworkCoverage, getFrameworkSuggestions } from './framework-coverage.js';
@@ -19,17 +19,30 @@ import type {
 import { DEFAULT_VALIDATION_CONFIG } from './types.js';
 
 /**
+ * Department context for quality reports
+ */
+export interface DepartmentContext {
+  id: string;
+  name: string;
+  additionalMustAvoid?: ValidationMarker[];
+}
+
+/**
  * Generate a comprehensive quality report for a text
  */
 export function generateQualityReport(
   text: string,
   persona: PersonaDefinition,
-  config: Partial<ValidationConfig> = {}
+  config: Partial<ValidationConfig> = {},
+  departmentContext?: DepartmentContext
 ): QualityReport {
   const mergedConfig = { ...DEFAULT_VALIDATION_CONFIG, ...config };
 
-  // Run all analyses
-  const fidelity = calculateFidelityScore(text, persona);
+  // Run all analyses, passing department must_avoid patterns
+  const fidelity = calculateFidelityScore(text, persona, {
+    additionalMustAvoid: departmentContext?.additionalMustAvoid,
+    passingScore: mergedConfig.fidelityThreshold,
+  });
   const voice = analyzeVoiceConsistency(text, persona);
   const framework = analyzeFrameworkCoverage(text, persona);
 
@@ -63,6 +76,9 @@ export function generateQualityReport(
       name: persona.identity.name,
       version: persona.metadata?.version,
     },
+    department: departmentContext
+      ? { id: departmentContext.id, name: departmentContext.name }
+      : undefined,
     scores: {
       fidelity: fidelity.score,
       voiceConsistency: voice.consistencyScore,
@@ -184,6 +200,9 @@ export function formatReport(report: QualityReport): string {
   // Header
   lines.push('═'.repeat(60));
   lines.push(`QUALITY REPORT: ${report.persona.name}`);
+  if (report.department) {
+    lines.push(`Department: ${report.department.name} (${report.department.id})`);
+  }
   lines.push(`Generated: ${report.generatedAt.toISOString()}`);
   if (report.persona.version) {
     lines.push(`Version: ${report.persona.version}`);

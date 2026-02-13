@@ -29,14 +29,26 @@ const DEFAULT_WEIGHTS = {
 };
 
 /**
+ * Options for customizing fidelity scoring
+ */
+export interface FidelityScoreOptions {
+  /** Additional must_avoid patterns (e.g., from department shared_must_avoid) */
+  additionalMustAvoid?: ValidationMarker[];
+  /** Override the default passing score threshold */
+  passingScore?: number;
+}
+
+/**
  * Calculate fidelity score for a text against persona validation markers
  */
 export function calculateFidelityScore(
   text: string,
-  persona: PersonaDefinition
+  persona: PersonaDefinition,
+  options?: FidelityScoreOptions
 ): FidelityScore {
   const { validation } = persona;
   const normalizedText = text.toLowerCase();
+  const passingScore = options?.passingScore ?? DEFAULT_WEIGHTS.passing_score;
 
   // Check must_include patterns
   const mustIncludeResults = checkPatterns(
@@ -52,10 +64,16 @@ export function calculateFidelityScore(
     text
   );
 
+  // Merge persona must_avoid with department shared_must_avoid
+  const allMustAvoid = [
+    ...(validation.must_avoid ?? []),
+    ...(options?.additionalMustAvoid ?? []),
+  ];
+
   // Check must_avoid patterns
   const mustAvoidResults = checkPatterns(
     normalizedText,
-    validation.must_avoid ?? [],
+    allMustAvoid,
     text
   );
 
@@ -72,7 +90,7 @@ export function calculateFidelityScore(
 
   const mustAvoidPenalty = calculateMustAvoidPenalty(
     mustAvoidResults,
-    validation.must_avoid ?? []
+    allMustAvoid
   );
 
   // Total score (capped at 0-100)
@@ -83,7 +101,7 @@ export function calculateFidelityScore(
   const mustIncludeRatio =
     mustIncludeResults.matched.length / validation.must_include.length;
   const passed =
-    score >= DEFAULT_WEIGHTS.passing_score &&
+    score >= passingScore &&
     mustIncludeRatio >= DEFAULT_WEIGHTS.must_include.threshold;
 
   // Generate assessment

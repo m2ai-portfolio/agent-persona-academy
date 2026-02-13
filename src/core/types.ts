@@ -161,6 +161,99 @@ export interface PersonaMetadata {
   tags?: string[];
   /** Persona category */
   category?: PersonaCategory;
+  /** Department this persona belongs to */
+  department?: string;
+}
+
+// ============================================================================
+// Department Types
+// ============================================================================
+
+export interface DepartmentIdentity {
+  /** Display name of the department */
+  name: string;
+  /** Unique identifier (kebab-case) */
+  id: string;
+  /** Department mission statement */
+  mission: string;
+}
+
+export type DepartmentChangeType =
+  | 'framework_refinement'
+  | 'validation_marker_change'
+  | 'voice_adjustment'
+  | 'case_study_addition'
+  | 'constraint_addition'
+  | 'constraint_removal';
+
+export interface DepartmentValidationOverrides {
+  /** Minimum fidelity score to pass */
+  fidelity_threshold?: number;
+  /** Minimum voice consistency score */
+  voice_threshold?: number;
+  /** Minimum framework coverage score */
+  framework_threshold?: number;
+  /** Custom weights for scoring dimensions */
+  weights?: {
+    fidelity?: number;
+    voice?: number;
+    framework?: number;
+  };
+}
+
+export interface DepartmentQualityMetric {
+  /** Override default validation thresholds */
+  validation_overrides: DepartmentValidationOverrides;
+  /** Validation patterns all department personas must avoid */
+  shared_must_avoid?: ValidationMarker[];
+}
+
+export interface DepartmentLearningPolicy {
+  /** Confidence threshold above which changes are auto-applied (0-1) */
+  auto_apply_threshold: number;
+  /** Confidence threshold below which changes are dropped (0-1) */
+  review_threshold: number;
+  /** Maximum number of changes per learning cycle */
+  max_changes_per_cycle: number;
+  /** Change types this department prefers */
+  preferred_change_types?: DepartmentChangeType[];
+  /** Change types that require manual review regardless of confidence */
+  restricted_change_types?: DepartmentChangeType[];
+}
+
+export interface DepartmentDefinition {
+  /** Department identity */
+  identity: DepartmentIdentity;
+  /** Quality criteria and validation overrides */
+  quality_criteria: DepartmentQualityMetric;
+  /** Learning policy for Sky-Lynx integration */
+  learning_policy: DepartmentLearningPolicy;
+  /** Persona IDs belonging to this department */
+  personas: string[];
+}
+
+export interface LoadedDepartment {
+  /** The parsed department definition */
+  definition: DepartmentDefinition;
+  /** Path to the source YAML file */
+  sourcePath: string;
+  /** Timestamp of when department was loaded */
+  loadedAt: Date;
+}
+
+// ============================================================================
+// Style Reference Types
+// ============================================================================
+
+export interface StyleReference {
+  /** What this reference demonstrates */
+  description: string;
+  /** Key design principles this reference embodies */
+  design_principles: string[];
+  /** The emotional quality this design evokes */
+  emotional_quality: string;
+  /** Which persona frameworks this reference exemplifies */
+  relevant_frameworks?: string[];
 }
 
 // ============================================================================
@@ -180,10 +273,21 @@ export interface PersonaDefinition {
   analysis_patterns?: AnalysisPatterns;
   /** Fidelity markers for validation */
   validation: PersonaValidation;
+  /** Modern design references for creative generation */
+  style_references?: Record<string, StyleReference>;
   /** Example prompt/response pairs */
   sample_responses?: Record<string, SampleResponse>;
   /** Administrative metadata */
   metadata?: PersonaMetadata;
+}
+
+// ============================================================================
+// Prompt Generation Options
+// ============================================================================
+
+export interface PromptGenerationOptions {
+  /** 'full' includes all content (default). 'lean' provides summaries with tool-call hints. */
+  mode?: 'full' | 'lean';
 }
 
 // ============================================================================

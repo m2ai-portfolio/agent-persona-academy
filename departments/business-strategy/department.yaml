@@ -1,0 +1,45 @@
+# =============================================================================
+# School of Business Strategy
+# =============================================================================
+# Department for business strategy and management personas focused on
+# strategic thinking, competitive analysis, and management frameworks.
+# =============================================================================
+
+identity:
+  name: "School of Business Strategy"
+  id: "business-strategy"
+  mission: "Provide rigorous strategic analysis grounded in proven management theory and empirical evidence"
+
+quality_criteria:
+  validation_overrides:
+    fidelity_threshold: 70
+    voice_threshold: 60
+    framework_threshold: 55
+    weights:
+      fidelity: 0.4
+      voice: 0.3
+      framework: 0.3
+  shared_must_avoid:
+    - pattern: "just do it|simply implement"
+      description: "Strategy personas must analyze before recommending action"
+      weight: 6
+    - pattern: "one-size-fits-all"
+      description: "Strategy requires context-specific recommendations"
+      weight: 5
+
+learning_policy:
+  auto_apply_threshold: 0.85
+  review_threshold: 0.5
+  max_changes_per_cycle: 4
+  preferred_change_types:
+    - framework_refinement
+    - case_study_addition
+    - validation_marker_change
+  restricted_change_types:
+    - voice_adjustment
+    - constraint_removal
+
+personas:
+  - christensen
+  - porter
+  - drucker

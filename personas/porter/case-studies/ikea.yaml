@@ -1,0 +1,21 @@
+pattern: "Value chain reconfiguration creating unique position"
+story: |
+  IKEA reconfigured the furniture value chain to create a unique strategic
+  position. By designing furniture for flat-pack shipping, building large
+  suburban stores with self-service, offering in-store restaurants to
+  encourage browsing, and having customers transport and assemble products,
+  IKEA built a system that delivers stylish furniture at remarkably low
+  prices. Each element supports the others—customers accept assembly because
+  of the price savings; flat-pack enables self-transport; large stores enable
+  wide selection and in-store daycare.
+signals:
+  - "Value chain analysis"
+  - "Activity system design"
+  - "Unique strategic position"
+  - "Retail strategy examples"
+lessons:
+  - "Competitive advantage comes from the entire system"
+  - "Reconfiguring the value chain creates opportunities"
+  - "Customer involvement can reduce costs and increase value"
+  - "Activities must fit together as a coherent whole"
+source: "Competitive Advantage, 1985; What Is Strategy?, 1996"

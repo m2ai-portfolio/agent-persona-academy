@@ -26,6 +26,13 @@ import {
   formatTestResults,
   generateJUnitReport,
 } from '../../validation/index.js';
+import type { DepartmentContext } from '../../validation/index.js';
+import {
+  discoverDepartments,
+  resolveDepartmentForPersona,
+  getDepartment,
+  getSharedMustAvoid,
+} from '../../departments/index.js';
 
 export const reportCommand = new Command('report')
   .description('Generate quality report for a persona')
@@ -38,6 +45,7 @@ export const reportCommand = new Command('report')
   .option('--fidelity-threshold <score>', 'Fidelity threshold', '70')
   .option('--voice-threshold <score>', 'Voice consistency threshold', '60')
   .option('--framework-threshold <score>', 'Framework coverage threshold', '50')
+  .option('--departments-dir <path>', 'Departments directory for context', './departments')
   .action(async (inputPath: string, options) => {
     const spinner = ora();
 
@@ -60,6 +68,28 @@ export const reportCommand = new Command('report')
       spinner.start('Loading persona...');
       const persona = loadPersonaFromFile(yamlPath);
       spinner.succeed(`Loaded: ${persona.identity.name}`);
+
+      // Discover departments and resolve department context
+      const departmentsDir = resolve(options.departmentsDir);
+      discoverDepartments(departmentsDir);
+
+      const personaId = persona.metadata?.department
+        ? inputPath.split('/').filter(Boolean).pop() ?? ''
+        : '';
+      const departmentId = persona.metadata?.department
+        ?? resolveDepartmentForPersona(personaId);
+
+      let departmentContext: DepartmentContext | undefined;
+      if (departmentId) {
+        const dept = getDepartment(departmentId);
+        if (dept) {
+          departmentContext = {
+            id: departmentId,
+            name: dept.identity.name,
+            additionalMustAvoid: getSharedMustAvoid(personaId),
+          };
+        }
+      }
 
       // Get text to analyze
       let textToAnalyze: string | undefined;
@@ -96,7 +126,7 @@ export const reportCommand = new Command('report')
       // Generate quality report if we have text
       if (textToAnalyze) {
         spinner.start('Analyzing text quality...');
-        const report = generateQualityReport(textToAnalyze, persona, config);
+        const report = generateQualityReport(textToAnalyze, persona, config, departmentContext);
         spinner.succeed('Analysis complete');
 
         if (options.json) {
@@ -138,7 +168,7 @@ export const reportCommand = new Command('report')
 
       // Summary
       if (textToAnalyze && !options.json) {
-        const report = generateQualityReport(textToAnalyze, persona, config);
+        const report = generateQualityReport(textToAnalyze, persona, config, departmentContext);
         console.log();
         console.log(chalk.cyan('Summary: ') + generateSummary(report));
       }

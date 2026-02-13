@@ -1,0 +1,138 @@
+api_design_review:
+  prompt: "We're designing a storage service interface. How should we approach it?"
+  good_response: |
+    Start with the abstraction boundary. What must clients NOT know about
+    the storage backend? Whether it is a file system, object store, or
+    database should be invisible. The interface should be defined entirely
+    by its operations and their contracts.
+
+    Define the contract for each operation. For example, store(key, value):
+    precondition - key is non-empty, value is within size limits. Postcondition -
+    after store returns, get(key) returns value. Invariant - keys are unique;
+    storing to an existing key replaces the value.
+
+    Specify failure explicitly. What happens when the store is unreachable?
+    The contract must say whether store() can partially succeed, whether
+    get() returns stale data, and what exceptions the client should expect.
+    An unspecified failure mode is a contract hole.
+
+    Keep the interface minimal. Do you need list_keys()? Do you need
+    batch operations? Every operation must justify its existence by
+    client need, not implementation convenience. You can always add
+    operations; removing them is a breaking change.
+
+    Write contract tests: store-then-get returns the value, delete-then-get
+    returns not-found, store-to-existing-key replaces. These tests must
+    pass for every implementation - local file, S3, database, mock. If
+    an implementation cannot pass them, it is not a valid subtype of
+    your StorageService.
+
+    Plan for versioning. How will you add new operations without breaking
+    existing clients? How will you deprecate operations? Version the
+    contract explicitly and maintain backward compatibility tests.
+  bad_response: |
+    We'll create a base class StorageService and let teams override
+    methods as needed. We can add S3Storage, FileStorage, and
+    DatabaseStorage as subclasses. If something breaks with a specific
+    backend, we'll document the edge cases and add notes about which
+    methods behave differently.
+  explanation: |
+    The good response starts with the abstraction boundary, defines
+    precise contracts, specifies failure behavior, enforces interface
+    minimality, proposes contract tests that all implementations must
+    pass, and plans for versioning. The bad response uses inheritance-first
+    design, allows uncontrolled overrides, and treats documentation of
+    broken contracts as acceptable.
+
+subtype_violation:
+  prompt: "We have a ReadOnlyCache that extends our Cache interface. Some clients are getting errors."
+  good_response: |
+    This is a substitutability violation. The contract for Cache includes
+    mutation operations: put(key, value) and evict(key). ReadOnlyCache
+    cannot satisfy these postconditions. If put() throws an exception
+    or silently does nothing, it violates the Cache contract that clients
+    depend on.
+
+    The question is: what can the client observe? A client holding a
+    Cache reference expects put() to succeed and a subsequent get() to
+    return the stored value. ReadOnlyCache breaks that expectation.
+    This is not a subtype of Cache in the behavioral sense, regardless
+    of what the class hierarchy says.
+
+    The fix is structural, not a workaround. You have options:
+
+    1. Separate the contracts. Define ReadableCache (get, contains) and
+       WritableCache (put, evict). Cache implements both. ReadOnlyCache
+       implements only ReadableCache. Clients that only read depend on
+       ReadableCache. No substitutability violation.
+
+    2. If your language supports it, use the interface-segregation approach:
+       small, focused interfaces that each have a clear contract.
+
+    Do NOT fix this by catching exceptions from ReadOnlyCache at every
+    call site or by adding instanceof checks. That means the abstraction
+    has failed - clients are now coupled to specific implementations.
+
+    Write a contract test suite for ReadableCache. Every implementation
+    that claims to be a ReadableCache must pass it. Run the same suite
+    against Cache, ReadOnlyCache, and any future variant.
+  bad_response: |
+    Just add a try-catch around the put() calls, or check if the cache
+    is read-only before calling put(). You could also add an isReadOnly()
+    method to the Cache interface so clients can check at runtime.
+  explanation: |
+    The good response identifies the behavioral subtyping violation,
+    explains why the client errors occur in terms of contract violation,
+    proposes a structural fix through interface segregation, and
+    recommends contract tests. The bad response patches the symptom
+    with runtime checks, breaks the abstraction by leaking implementation
+    details, and adds operations to the interface that serve implementation
+    convenience rather than client need.
+
+legacy_refactor:
+  prompt: "Our codebase has a huge God class with 50 public methods. How do we refactor?"
+  good_response: |
+    Fifty public methods means the abstraction boundary is missing.
+    No client needs all fifty operations, which means this class is
+    actually several ADTs collapsed into one.
+
+    First, identify the real abstractions. Group the methods by which
+    clients use them together. Each group is a candidate ADT with its
+    own contract. If methods A, B, C are always called together by
+    module X, and methods D, E, F are always called together by module Y,
+    those are two different abstractions.
+
+    For each candidate ADT, define the contract. What are the
+    preconditions, postconditions, and invariants? What is the
+    representation that this group of methods operates on? Can you
+    state the rep invariant for each group independently?
+
+    Extract one ADT at a time. Start with the group that has the
+    clearest contract and the fewest dependencies on the other groups.
+    Write contract tests for it before extracting. After extraction,
+    the God class delegates to the new ADT - clients do not change yet.
+
+    Migrate clients incrementally. Once the extracted ADT has a stable
+    contract with passing tests, update clients to depend on the
+    extracted type directly. The God class shrinks with each extraction.
+
+    Check substitutability at each step. The God class with delegation
+    must behave identically to the original from every client's
+    perspective. Contract tests are your safety net.
+
+    Do not attempt to design the final decomposition upfront. Extract
+    the obvious abstractions first. The right structure will become
+    clearer as you remove the easy cases.
+  bad_response: |
+    Let's create a class hierarchy. We can make an abstract base class
+    with the common methods and then create specialized subclasses for
+    each concern. We should also plan for future extensibility by adding
+    template methods that subclasses can override.
+  explanation: |
+    The good response identifies the problem as missing abstraction
+    boundaries, uses client usage patterns to discover real ADTs,
+    defines contracts before extracting, proposes incremental migration
+    with contract tests as safety nets, and avoids upfront over-design.
+    The bad response jumps to inheritance-first design, plans for
+    hypothetical flexibility, and proposes template methods that invite
+    uncontrolled overrides.

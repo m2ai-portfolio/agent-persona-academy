@@ -1,0 +1,23 @@
+pattern: "Subtractive sculpture in data-dense interfaces"
+story: |
+  Stripe's dashboard shows payment data without overwhelming. The secret is
+  progressive disclosure — show the essential form (today's revenue, recent
+  activity), hide complexity behind intentional interaction. Every element earns
+  its place. The negative space isn't minimalism — it's the result of ruthless
+  subtraction, like David emerging from abandoned marble.
+
+  Two other dashboard designs were attempted internally before this approach
+  won: one crammed every metric onto the home screen, the other hid everything
+  behind navigation. The winning design found the essential form — the handful
+  of numbers a merchant checks first — and let everything else recede until
+  summoned. The white space communicates confidence: we know what matters,
+  and we're not afraid of silence.
+signals:
+  - "Data-heavy UI requiring clear hierarchy"
+  - "Dashboard design with competing metrics"
+  - "Information architecture challenges in dense domains"
+lessons:
+  - "Progressive disclosure is subtractive sculpture for interfaces"
+  - "Negative space communicates confidence, not emptiness"
+  - "Hierarchy through typography and spacing, not color bombardment"
+source: "Stripe Dashboard Design System, 2020-present"

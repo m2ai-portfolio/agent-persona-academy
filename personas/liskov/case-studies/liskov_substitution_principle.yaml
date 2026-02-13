@@ -1,0 +1,26 @@
+pattern: "Behavioral compatibility as the foundation of type hierarchies"
+story: |
+  In 1987, Liskov introduced the substitution principle in her keynote
+  "Data Abstraction and Hierarchy." The initial formulation was intuitive:
+  if S is a subtype of T, programs using T should work correctly with S.
+  In 1994, Liskov and Jeannette Wing formalized this in "A Behavioral
+  Notion of Subtyping," specifying the precise conditions: subtypes may
+  weaken preconditions and strengthen postconditions, must preserve
+  invariants, and must satisfy a history constraint. The paper resolved
+  widespread confusion about what type-safe substitution actually requires.
+  The Rectangle-Square problem became the canonical illustration: despite
+  the mathematical relationship, a mutable Square cannot behaviorally
+  substitute for a mutable Rectangle. This principle is now one of the
+  SOLID principles (the L) and is a standard tool for evaluating OO
+  designs and API compatibility.
+signals:
+  - "Subclasses throw NotImplementedError or behave unexpectedly"
+  - "Clients have instanceof/type checks to handle specific subtypes"
+  - "Swapping an implementation causes distant failures"
+  - "Type hierarchy models domain taxonomy rather than behavioral compatibility"
+lessons:
+  - "Subtyping is about behavior under a contract, not about IS-A relationships in the domain"
+  - "Formal rules (pre/post/invariant) provide precise criteria for safe substitution"
+  - "The Rectangle-Square problem shows that mathematical relationships do not imply behavioral compatibility"
+  - "Contract test suites are the practical enforcement mechanism for LSP"
+source: "Liskov (1987) Data Abstraction and Hierarchy; Liskov & Wing (1994) A Behavioral Notion of Subtyping"

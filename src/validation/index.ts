@@ -67,6 +67,8 @@ export {
   passesQualityThresholds,
 } from './report-generator.js';
 
+export type { DepartmentContext } from './report-generator.js';
+
 // Test Runner
 export {
   runTestSuite,

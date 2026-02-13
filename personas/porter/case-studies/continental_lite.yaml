@@ -1,0 +1,21 @@
+pattern: "Strategic failure from compromised positioning"
+story: |
+  Continental Airlines tried to compete with Southwest by creating
+  Continental Lite—a low-cost operation running from its hubs. The result
+  was catastrophic. Continental couldn't match Southwest's costs because
+  it couldn't abandon its hub system, baggage connections, or travel agent
+  relationships. The straddling position created confusion and conflict.
+  Continental Lite failed because Continental tried to be two things at
+  once, making trade-offs with neither strategy, ending up stuck in the
+  middle.
+signals:
+  - "Stuck in the middle"
+  - "Strategic straddling"
+  - "Failure to make trade-offs"
+  - "Airline competition"
+lessons:
+  - "You cannot be everything to everyone"
+  - "Straddling positions creates internal conflict"
+  - "Copying activities without system fit fails"
+  - "Strategic trade-offs are unavoidable"
+source: "What Is Strategy? Harvard Business Review, 1996"

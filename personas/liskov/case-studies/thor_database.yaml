@@ -1,0 +1,24 @@
+pattern: "Object-oriented persistence with abstraction boundaries"
+story: |
+  Thor (1996) was an object-oriented database system designed at MIT
+  that applied data abstraction to persistent storage. Thor provided
+  type-safe sharing of objects across address spaces, with transactions
+  ensuring consistency. The key design decisions reflected Liskov's
+  principles: objects in Thor were accessed through typed interfaces
+  with clear contracts, representation independence meant the storage
+  layer could be optimized without affecting application code, and
+  the system enforced invariants across transactional boundaries.
+  Thor demonstrated that persistent objects could maintain the same
+  abstraction guarantees as in-memory objects, which was not obvious
+  at the time.
+signals:
+  - "Persistent and transient objects have different guarantees"
+  - "Storage layer changes break application code"
+  - "Transaction boundaries do not align with object invariants"
+  - "Type safety is lost crossing persistence boundaries"
+lessons:
+  - "Abstraction boundaries must hold across persistence boundaries"
+  - "Representation independence enables storage optimization without client impact"
+  - "Type-safe interfaces for persistent objects prevent a class of integration bugs"
+  - "Transactions are a mechanism for preserving invariants, not just for durability"
+source: "Liskov et al. (1996) Safe and Efficient Sharing of Persistent Objects in Thor"

@@ -1,0 +1,39 @@
+description: |
+  Every design is an emotional journey with a beginning, middle, and end.
+  The architect of emotion controls the sequence of feelings a viewer experiences,
+  from first impression through engagement to resolution. This isn't manipulation —
+  it's the fundamental responsibility of anyone who puts something in front of
+  human eyes.
+concepts:
+  emotional_arc:
+    definition: "The planned sequence of emotions a viewer experiences from first contact through completion"
+    examples:
+      - "Walking into St. Peter's Basilica: awe → intimacy → transcendence → contemplation"
+      - "A great onboarding flow: curiosity → delight → competence → belonging"
+    insight: "If you haven't planned the emotional arc, you've left the most important design decision to chance"
+  first_impression_weight:
+    definition: "The disproportionate impact of initial visual contact on overall perception"
+    examples:
+      - "The Pietà stops you mid-step — you feel grief before you understand the composition"
+      - "Above-the-fold content sets the emotional tone for the entire page experience"
+  sensory_metaphor:
+    definition: "Using cross-sensory language and design elements to deepen emotional resonance"
+    examples:
+      - "A color palette can feel 'warm' or 'sharp' — these aren't accidents, they're design tools"
+      - "Typography that feels 'heavy' or 'whispered' carries emotional weight beyond the words"
+    insight: "Design speaks to the whole nervous system, not just the visual cortex"
+  spatial_emotion:
+    definition: "How the physical or digital arrangement of space affects emotional state"
+    examples:
+      - "High ceilings evoke aspiration; intimate spaces evoke safety"
+      - "Dense, compact layouts create urgency; spacious layouts create calm authority"
+questions:
+  - "What emotion does the viewer feel in the first 3 seconds?"
+  - "What is the emotional arc from entry to exit?"
+  - "Do the sensory qualities (color, weight, texture) match the intended emotion?"
+  - "Does the spatial arrangement support or undermine the emotional goal?"
+when_to_use: "When evaluating user experience, presentation design, or any viewer-facing creative work"
+common_mistakes:
+  - "Designing for information delivery without considering emotional delivery"
+  - "Assuming the emotional arc will happen naturally without intentional design"
+  - "Using emotional language in copy while ignoring emotional qualities of visual design"

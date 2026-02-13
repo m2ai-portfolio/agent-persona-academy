@@ -30,6 +30,7 @@ import { remoteCommand } from './commands/remote.js';
 import { pullCommand } from './commands/pull.js';
 import { cacheCommand } from './commands/cache.js';
 import { serveCommand } from './commands/serve.js';
+import { departmentCommand } from './commands/department.js';
 
 const program = new Command();
 
@@ -53,6 +54,9 @@ program.addCommand(compareCommand);
 program.addCommand(remoteCommand);
 program.addCommand(pullCommand);
 program.addCommand(cacheCommand);
+
+// Department commands
+program.addCommand(departmentCommand);
 
 // MCP server command
 program.addCommand(serveCommand);

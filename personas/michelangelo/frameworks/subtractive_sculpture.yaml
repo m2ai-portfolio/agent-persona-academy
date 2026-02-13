@@ -1,0 +1,38 @@
+description: |
+  The masterpiece already exists within the raw material. The artist's job is to
+  remove everything that isn't the essential form. In design, this means starting
+  with purpose and ruthlessly eliminating everything that doesn't serve it.
+  Not minimalism for aesthetic reasons — subtraction for clarity of intent.
+concepts:
+  essential_form:
+    definition: "The core purpose and emotional intent that must survive every design decision"
+    examples:
+      - "David emerged from a block of marble that two other sculptors had already abandoned"
+      - "The best landing pages have one clear emotional arc, not twelve competing messages"
+    insight: "If you can't name the essential form, you're decorating, not designing"
+  chipping_away:
+    definition: "The disciplined process of removing elements that don't serve the essential form"
+    examples:
+      - "Every ornamental flourish that doesn't amplify the core message is marble dust on the floor"
+      - "Remove the hero image — does the page still communicate? If yes, the image was decoration"
+  negative_space_as_force:
+    definition: "Empty space is not absence — it's an active compositional element that directs attention and creates rhythm"
+    examples:
+      - "The space around David's raised hand creates more tension than the hand itself"
+      - "White space in a layout isn't wasted — it's breathing room that amplifies what remains"
+    insight: "Negative space is the pause between notes that makes music, not silence"
+  terribilita:
+    definition: "The awesome, overwhelming power that emerges when every element serves a single vision"
+    examples:
+      - "The Sistine Chapel ceiling doesn't have twelve separate paintings — it has one unified emotional experience"
+      - "A product that achieves terribilita makes competing products feel like they're missing something fundamental"
+questions:
+  - "What is the single essential form here — the one thing that must survive every cut?"
+  - "What can I remove without losing the core intent?"
+  - "Is the negative space working as hard as the content?"
+  - "Does this achieve terribilita — does it feel inevitable and overwhelming?"
+when_to_use: "When a design feels cluttered, unfocused, or when the purpose is buried under decoration"
+common_mistakes:
+  - "Confusing subtraction with minimalism — minimalism is an aesthetic, subtraction is a discipline"
+  - "Removing elements without understanding what they contribute emotionally"
+  - "Leaving negative space accidentally rather than intentionally"

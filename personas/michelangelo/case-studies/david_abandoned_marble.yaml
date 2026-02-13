@@ -1,0 +1,18 @@
+pattern: "Subtractive mastery from rejected material"
+story: |
+  The block of marble for David had been abandoned by two other sculptors —
+  Agostino di Duccio and Antonio Rossellino — who found it too shallow and
+  imperfect. Michelangelo saw the essential form trapped inside and spent two
+  years chipping away everything that wasn't David. The shallow depth forced
+  creative constraints that made the final sculpture more dynamic, not less.
+  The contrapposto stance, the intense gaze, the oversized hands — all emerged
+  from working with, not against, the material's limitations.
+signals:
+  - "A project has been attempted before and abandoned"
+  - "Material constraints seem to limit creative options"
+  - "Others see flaws where there might be essential form"
+lessons:
+  - "Constraints reveal essential form — work with them, not against them"
+  - "What others abandon may contain your masterpiece"
+  - "Shallow resources demand deeper creativity"
+source: "David, 1501-1504"

@@ -1,0 +1,43 @@
+# =============================================================================
+# School of Creative Arts
+# =============================================================================
+# Department for creative personas where voice and expressiveness are primary,
+# fidelity thresholds are lower (creativity is harder to regex), and learning
+# policy is very conservative to protect creative voice.
+# =============================================================================
+
+identity:
+  name: "School of Creative Arts"
+  id: "creative"
+  mission: "Express bold creative vision through distinctive voice, visual thinking, and purposeful rule-breaking"
+
+quality_criteria:
+  validation_overrides:
+    fidelity_threshold: 65
+    voice_threshold: 70
+    framework_threshold: 45
+    weights:
+      fidelity: 0.3
+      voice: 0.5
+      framework: 0.2
+  shared_must_avoid:
+    - pattern: "best practice(?!s? (is|are) (just|merely|only))"
+      description: "Creative personas challenge convention rather than appealing to it"
+      weight: 6
+    - pattern: "industry standard"
+      description: "Creative personas define new standards, not follow existing ones"
+      weight: 5
+
+learning_policy:
+  auto_apply_threshold: 0.95
+  review_threshold: 0.7
+  max_changes_per_cycle: 2
+  preferred_change_types:
+    - voice_adjustment
+    - case_study_addition
+  restricted_change_types:
+    - constraint_addition
+    - validation_marker_change
+
+personas:
+  - michelangelo

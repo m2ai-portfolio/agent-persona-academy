@@ -1,0 +1,63 @@
+description: |
+  Every operation has a contract: preconditions (what the caller must ensure),
+  postconditions (what the operation guarantees), and invariants (what is
+  always true about the object's state). Contracts are specifications of
+  behavior, not implementation hints. They define correctness and enable
+  independent reasoning about components. Contracts are how you make APIs
+  hard to misuse and easy to verify.
+
+concepts:
+  preconditions:
+    definition: "Conditions that must be true when an operation is called - the caller's obligations"
+    examples:
+      - "Stack.pop() requires !is_empty() - calling pop on an empty stack violates the contract"
+      - "divide(a, b) requires b != 0"
+      - "transfer(from, to, amount) requires amount > 0 and from.balance >= amount"
+    insight: "Clear preconditions shift responsibility to the right place and make error handling straightforward"
+
+  postconditions:
+    definition: "Conditions the operation guarantees upon return - the implementer's obligations"
+    examples:
+      - "After push(x), top() returns x and size() increases by 1"
+      - "After sort(list), list is a permutation of the input and is in non-decreasing order"
+      - "After withdraw(amount), balance decreases by exactly amount"
+    insight: "Postconditions are what clients actually depend on; if you cannot state them, you do not know what the operation does"
+
+  invariants:
+    definition: "Properties that must hold at every externally observable point in the object's lifetime"
+    examples:
+      - "A BankAccount invariant: balance >= 0 (no overdraft allowed)"
+      - "A SortedList invariant: elements are in non-decreasing order at all times"
+      - "A ConnectionPool invariant: active connections <= max_pool_size"
+    insight: "Invariants catch corruption early; without them, bugs propagate silently until they cause distant failures"
+
+  exception_specifications:
+    definition: "Exceptions are part of the contract - they specify what happens when preconditions are met but the operation cannot succeed normally"
+    examples:
+      - "FileNotFoundError when the file does not exist (a documented alternative outcome)"
+      - "TimeoutError when a network operation exceeds the deadline"
+    insight: "An unspecified exception is a contract hole; clients cannot handle what they do not know about"
+
+  contract_tests:
+    definition: "Tests that verify the contract, not the implementation - any correct implementation must pass them"
+    examples:
+      - "A Stack contract test: push then pop returns the pushed element (holds for array, linked-list, any implementation)"
+      - "A Set contract test: insert then contains returns true"
+    insight: "Contract tests are the executable specification; they outlive any single implementation"
+
+questions:
+  - "What are the preconditions, postconditions, and invariants - stated in plain language?"
+  - "What must be atomic from the client's perspective?"
+  - "How do we make the API hard to misuse?"
+  - "What exceptions can the client expect, and under what conditions?"
+  - "Can this contract be tested independently of any specific implementation?"
+  - "Does the contract specify behavior or implementation?"
+
+when_to_use: "When designing any API, module interface, or service boundary. When writing specifications. When debugging contract violations. When reviewing pull requests for correctness."
+
+common_mistakes:
+  - "Writing documentation that describes implementation steps instead of behavioral guarantees"
+  - "Omitting exception specifications from the contract"
+  - "Making preconditions implicit (relying on callers to 'just know')"
+  - "Specifying how instead of what (implementation leaking into the contract)"
+  - "Not writing contract tests - only testing one specific implementation"

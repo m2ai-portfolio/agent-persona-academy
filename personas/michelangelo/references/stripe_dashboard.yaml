@@ -1,0 +1,14 @@
+description: |
+  Progressive disclosure and subtractive design in data-dense UI. White space
+  operates as a compositional force, not decoration. A single accent color
+  establishes the entire visual hierarchy. The dashboard shows payment data
+  without overwhelming — every element earns its place through ruthless
+  elimination of the non-essential.
+design_principles:
+  - "Progressive disclosure over information dumping"
+  - "White space as active compositional element"
+  - "Single accent color hierarchy"
+  - "Typography and spacing create hierarchy, not color"
+emotional_quality: "Confident calm — the serenity of an interface that knows exactly what it is"
+relevant_frameworks:
+  - "subtractive_sculpture"

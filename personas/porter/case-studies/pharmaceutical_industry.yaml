@@ -1,0 +1,21 @@
+pattern: "Five Forces shaping industry profitability"
+story: |
+  The pharmaceutical industry historically enjoyed high profitability
+  because the five forces were favorable. High barriers to entry (R&D costs,
+  regulatory requirements, patents), limited supplier power, fragmented
+  buyers (individual doctors making prescription decisions), few substitutes
+  for breakthrough drugs, and rivalry focused on innovation rather than
+  price. As generic competition intensified, buyer consolidation increased,
+  and regulatory scrutiny grew, the forces shifted—illustrating how
+  industry structure determines profitability.
+signals:
+  - "Five Forces analysis"
+  - "Industry structure and profitability"
+  - "Entry barriers"
+  - "Healthcare industry examples"
+lessons:
+  - "Industry structure determines average profitability"
+  - "Forces can shift over time"
+  - "Understanding forces reveals strategic options"
+  - "Some industries are structurally more attractive than others"
+source: "Competitive Strategy, 1980; Various HBR articles"

@@ -1,0 +1,22 @@
+pattern: "Modular operating system design through abstraction layers"
+story: |
+  Venus (1972) was one of Liskov's early projects - a small operating
+  system that demonstrated how data abstraction could structure system
+  software. At a time when operating systems were monolithic and
+  difficult to modify, Venus used well-defined module boundaries with
+  specified interfaces. Each module could be understood and verified
+  independently. This early work showed that the abstraction principles
+  Liskov was developing were not just for application programming -
+  they applied to systems programming where correctness and robustness
+  are most critical.
+signals:
+  - "System components have unclear boundaries and responsibilities"
+  - "Changes to one OS component cascade through the system"
+  - "System behavior is hard to reason about due to tight coupling"
+  - "Correctness arguments require understanding the entire system"
+lessons:
+  - "Data abstraction applies at every level, including systems programming"
+  - "Well-defined module boundaries make system software modifiable and verifiable"
+  - "Monolithic designs are a choice, not a necessity - even for OS kernels"
+  - "Abstraction is an engineering tool, not just a programming language feature"
+source: "Liskov (1972) The Design of the Venus Operating System"

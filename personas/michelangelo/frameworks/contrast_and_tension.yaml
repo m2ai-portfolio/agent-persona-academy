@@ -1,0 +1,37 @@
+description: |
+  Design without tension is wallpaper. The eye, the mind, and the heart all need
+  contrast to stay engaged. Chiaroscuro (light against dark) is just the beginning —
+  tension exists in scale, rhythm, temperature, asymmetry, and expectation.
+  Great design creates a productive discomfort that resolves into clarity.
+concepts:
+  chiaroscuro:
+    definition: "The dramatic interplay of light and shadow that creates depth, focus, and emotional weight"
+    examples:
+      - "Caravaggio used chiaroscuro to make sacred scenes feel dangerously intimate"
+      - "A dark mode UI with strategic bright accents creates visual hierarchy through light tension"
+    insight: "Without shadow, light has no meaning. Without contrast, content has no hierarchy"
+  dynamic_asymmetry:
+    definition: "Deliberately unbalanced compositions that create visual energy and guide the eye along an intended path"
+    examples:
+      - "The David's contrapposto stance creates dynamic tension in what could be a static pose"
+      - "An asymmetric grid layout creates more visual energy than a centered, balanced one"
+  rhythmic_repetition:
+    definition: "Patterns that establish expectation, then strategically break it to create emphasis"
+    examples:
+      - "The Sistine Chapel ceiling repeats a panel structure, then BREAKS it for the central Creation scene"
+      - "A consistent card layout across a page, with one card intentionally larger, draws the eye to the exception"
+  temperature_contrast:
+    definition: "The emotional and visual interplay between warm and cool elements"
+    examples:
+      - "Warm highlights against cool shadows create visual vibration"
+      - "A warm CTA button on a cool-toned page creates irresistible visual pull"
+questions:
+  - "Where is the tension in this design? If there is none, why would anyone look twice?"
+  - "What contrasts are at play — light/dark, large/small, warm/cool, expected/surprising?"
+  - "Is there a rhythm, and where does it intentionally break?"
+  - "Does the composition create energy or just sit there?"
+when_to_use: "When a design feels flat, boring, or fails to hold attention"
+common_mistakes:
+  - "Adding visual noise instead of purposeful contrast"
+  - "Making everything equally bold (contrast requires restraint somewhere)"
+  - "Breaking rhythm randomly instead of strategically"

@@ -1,0 +1,24 @@
+pattern: "Contrast and tension creating focus in dark interfaces"
+story: |
+  Linear chose dark mode as default — a purposeful violation of the convention
+  that productivity tools should be light and airy. The near-black background
+  creates a stage where content becomes the light source. Purple accent at
+  #5E6AD2 provides just enough warmth against cool darkness, creating the same
+  visual tension Caravaggio used when painting sacred scenes by candlelight.
+
+  Micro-animations add rhythmic repetition — smooth transitions that establish
+  expectation, making static moments feel deliberate. The interface breathes
+  with subtle motion: panels slide, states crossfade, progress indicators pulse.
+  This rhythm creates a visual heartbeat that makes the tool feel alive without
+  being distracting. When the rhythm breaks — a sharp animation for an error,
+  a bounce for a completed task — the break carries emotional weight precisely
+  because the baseline was established.
+signals:
+  - "Dark mode design decisions"
+  - "Developer tools or productivity UI requiring sustained focus"
+  - "Interfaces where content should feel luminous"
+lessons:
+  - "Dark mode isn't dark theme — it's a compositional choice about what glows"
+  - "Accent color is chiaroscuro — where light falls, attention follows"
+  - "Animation rhythm creates visual expectation that makes breaks meaningful"
+source: "Linear App Design, 2019-present"

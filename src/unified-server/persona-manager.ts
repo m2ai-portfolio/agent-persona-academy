@@ -19,6 +19,7 @@ import {
   getCachedPersonaPath,
   resolveCacheDir,
 } from '../registry/cache-manager.js';
+import { discoverDepartments } from '../departments/index.js';
 
 /**
  * Persona summary for listing
@@ -28,6 +29,7 @@ export interface PersonaSummary {
   name: string;
   role: string;
   category: string;
+  department?: string;
   frameworkCount: number;
   caseStudyCount: number;
   source: 'local' | 'cache';
@@ -56,14 +58,18 @@ export function initializeManager(options: {
   localDir?: string;
   includeCache?: boolean;
   defaultPersona?: string;
+  departmentsDir?: string;
 }): PersonaSummary[] {
-  const { localDir = './personas', includeCache = true, defaultPersona } = options;
+  const { localDir = './personas', includeCache = true, defaultPersona, departmentsDir = './departments' } = options;
 
   // Clear any existing state
   state.loadedPersonas.clear();
   state.personaSources.clear();
   state.activePersonaId = null;
   clearPersonaCache();
+
+  // Discover departments
+  discoverDepartments(departmentsDir);
 
   const discovered: PersonaSummary[] = [];
 
@@ -136,6 +142,7 @@ function createSummary(
     name: persona.identity.name,
     role: persona.identity.role,
     category: persona.metadata?.category ?? 'custom',
+    department: persona.metadata?.department,
     frameworkCount: Object.keys(persona.frameworks).length,
     caseStudyCount: Object.keys(persona.case_studies ?? {}).length,
     source,

@@ -1,0 +1,17 @@
+pattern: "Emotional architecture at monumental scale"
+story: |
+  Pope Julius II wanted decorative figures on the ceiling. Michelangelo spent four
+  years lying on scaffolding to create 343 figures across 5,800 square feet that
+  tell the story of creation — an emotional arc from divine origin through human
+  failure to redemption. He broke every convention of ceiling painting: the scale,
+  the narrative complexity, the physical perspective tricks. The result achieves
+  terribilita because every panel serves one unified vision.
+signals:
+  - "A project scope seems too large for mere decoration"
+  - "The client asks for something simple but the content demands emotional depth"
+  - "There's an opportunity to create a unified experience from many components"
+lessons:
+  - "Constraints (the client wanted simple) can be the catalyst for transcendence"
+  - "Unified emotional arc beats collection of beautiful fragments"
+  - "The scale of ambition should match the scale of the opportunity"
+source: "Sistine Chapel Ceiling, 1508-1512"

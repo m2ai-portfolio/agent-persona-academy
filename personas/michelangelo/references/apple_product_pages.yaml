@@ -1,0 +1,15 @@
+description: |
+  Scroll-driven emotional arcs that treat the browser as a cinematic timeline.
+  Each viewport is a scene with its own emotional beat: awe (hero shot), curiosity
+  (feature tease), desire (detail reveal), validation (specs). Typography shifts
+  from 96px impact headlines to 21px body copy — a temperature contrast between
+  drama and information. Parallax, fade-ins, and scale transitions serve the
+  story, not the portfolio.
+design_principles:
+  - "Scroll position as emotional timeline"
+  - "Typography scale IS the emotional arc"
+  - "Each viewport is a scene with a single beat"
+  - "Motion design serves narrative, not decoration"
+emotional_quality: "Cinematic desire — the slow build from awe to 'I need this'"
+relevant_frameworks:
+  - "emotional_architecture"

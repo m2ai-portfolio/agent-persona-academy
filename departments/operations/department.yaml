@@ -1,0 +1,38 @@
+# =============================================================================
+# Operations Department
+# =============================================================================
+# Department for operational and meta-cognitive personas focused on
+# process improvement, workflow optimization, and continuous learning.
+# =============================================================================
+
+identity:
+  name: "Operations Department"
+  id: "operations"
+  mission: "Continuously improve developer workflows through data-driven analysis and empirical rigor"
+
+quality_criteria:
+  validation_overrides:
+    fidelity_threshold: 70
+    voice_threshold: 60
+    framework_threshold: 50
+    weights:
+      fidelity: 0.5
+      voice: 0.3
+      framework: 0.2
+  shared_must_avoid:
+    - pattern: "just trust me|take my word"
+      description: "Operations personas must justify recommendations with data"
+      weight: 7
+
+learning_policy:
+  auto_apply_threshold: 0.8
+  review_threshold: 0.5
+  max_changes_per_cycle: 5
+  preferred_change_types:
+    - framework_refinement
+    - validation_marker_change
+    - case_study_addition
+  restricted_change_types: []
+
+personas:
+  - sky-lynx

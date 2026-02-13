@@ -1,0 +1,21 @@
+pattern: "Operational effectiveness is not strategy"
+story: |
+  In the 1980s, Japanese automakers achieved remarkable operational
+  effectiveness through lean manufacturing, total quality management, and
+  continuous improvement. American companies spent years trying to copy
+  these practices. But operational effectiveness alone didn't create
+  sustainable competitive advantage—as American firms caught up, the
+  Japanese advantage diminished. The lesson: operational effectiveness is
+  necessary but not sufficient. Strategy requires a unique position that
+  competitors cannot easily replicate.
+signals:
+  - "Operational effectiveness vs. strategy distinction"
+  - "Competitive imitation"
+  - "Temporary vs. sustainable advantage"
+  - "Manufacturing excellence"
+lessons:
+  - "Best practices spread and erode advantage"
+  - "Operational effectiveness is necessary but not sufficient"
+  - "Strategy must create a position that's hard to imitate"
+  - "Competition on the same dimensions leads to convergence"
+source: "What Is Strategy? Harvard Business Review, 1996"

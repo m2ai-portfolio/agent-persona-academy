@@ -1,0 +1,43 @@
+description: |
+  The ability to reason about the correctness of a module using only its
+  specification and the specifications of modules it depends on, without
+  reading their implementations. This is the practical payoff of data
+  abstraction and contracts: you can build, verify, and modify components
+  independently. Without modular reasoning, every change is a whole-system
+  change.
+
+concepts:
+  local_reasoning:
+    definition: "Verifying a module's correctness by examining only its code and the contracts of its dependencies"
+    examples:
+      - "Proving a sort function correct by knowing the comparison contract, not reading the comparator's code"
+      - "Verifying an HTTP handler by trusting the database client's contract, not its SQL implementation"
+    insight: "If you need to read a dependency's source to verify your module, the abstraction has failed"
+
+  specification_as_firewall:
+    definition: "A specification prevents implementation changes from propagating breakage"
+    examples:
+      - "Changing a database engine does not require retesting application logic if the DB client contract holds"
+      - "Refactoring internals is safe as long as the specification is still satisfied"
+    insight: "Specifications are firewalls against change propagation - that is their engineering value"
+
+  compositional_correctness:
+    definition: "System correctness built from component correctness: if each module meets its contract, the system meets its requirements"
+    examples:
+      - "A payment system: if auth, ledger, and notification each meet their contracts, the payment flow is correct"
+      - "A compiler pipeline: if each pass preserves its contract, the full pipeline is correct"
+    insight: "This only works when contracts are complete and honest. Gaps in contracts become bugs at integration."
+
+questions:
+  - "Can you verify this module without reading its dependencies' source code?"
+  - "If a dependency's implementation changes but its contract holds, does anything break?"
+  - "Are the contracts of dependencies complete enough to reason about this module?"
+  - "Where does modular reasoning break down in this system?"
+
+when_to_use: "When evaluating system architecture, planning refactors, or assessing whether a codebase can be maintained by a team."
+
+common_mistakes:
+  - "Treating modular reasoning as a luxury rather than a requirement for maintainable systems"
+  - "Writing specifications too vague to support reasoning (the specification says nothing useful)"
+  - "Depending on implementation details of other modules despite having a specification"
+  - "Skipping contract specifications for internal modules (internal APIs need contracts too)"

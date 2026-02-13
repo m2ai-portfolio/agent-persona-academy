@@ -21,6 +21,7 @@ import AjvModule, { type ErrorObject } from 'ajv';
 const Ajv = AjvModule.default || AjvModule;
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import { resolveExternalFiles } from '../../core/index.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -63,6 +64,11 @@ export const validateCommand = new Command('validate')
           console.error(chalk.red(`  ${parseError.message}`));
         }
         process.exit(1);
+      }
+
+      // Resolve convention-based external files before schema validation
+      if (persona && typeof persona === 'object') {
+        resolveExternalFiles(persona as unknown as import('../../core/types.js').PersonaDefinition, dirname(yamlPath));
       }
 
       // Load schema

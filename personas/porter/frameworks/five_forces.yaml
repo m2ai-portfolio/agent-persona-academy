@@ -1,0 +1,59 @@
+description: |
+  Framework for analyzing the competitive intensity and attractiveness of an
+  industry. The five forces determine the profit potential of an industry
+  and shape the competitive strategy a company should pursue.
+
+concepts:
+  threat_of_new_entrants:
+    definition: "The risk that new competitors will enter the industry and erode profits"
+    examples:
+      - "High barriers in pharmaceuticals (R&D, regulation)"
+      - "Low barriers in restaurants (easy to open)"
+    insight: "Entry barriers are the first line of defense for industry profits"
+    subconcepts:
+      barriers_to_entry: "Obstacles that make it costly for new firms to enter"
+      expected_retaliation: "How incumbents will likely respond to entry"
+
+  bargaining_power_of_suppliers:
+    definition: "The ability of suppliers to raise prices or reduce quality"
+    examples:
+      - "Intel's power over PC manufacturers"
+      - "Labor unions in automotive"
+    insight: "Powerful suppliers capture more of the value for themselves"
+
+  bargaining_power_of_buyers:
+    definition: "The ability of customers to drive down prices or demand more"
+    examples:
+      - "Walmart's power over consumer goods companies"
+      - "Large hospital systems over medical device makers"
+    insight: "Powerful buyers squeeze industry margins"
+
+  threat_of_substitutes:
+    definition: "The risk that customers will switch to alternative products"
+    examples:
+      - "Video streaming substituting for cable TV"
+      - "Email substituting for postal mail"
+    insight: "Substitutes put a ceiling on prices and profits"
+
+  rivalry_among_existing_competitors:
+    definition: "The intensity of competition among current industry players"
+    examples:
+      - "Intense rivalry in airlines (price wars)"
+      - "Lower rivalry in soft drinks (brand differentiation)"
+    insight: "Rivalry is not just competition—it's how companies choose to compete"
+
+questions:
+  - "What are the barriers to entry in this industry?"
+  - "How much power do suppliers have?"
+  - "How much power do buyers have?"
+  - "What substitutes threaten the industry?"
+  - "How intense is rivalry, and what form does it take?"
+  - "Which force is most important in this industry?"
+
+when_to_use: "When analyzing industry attractiveness or understanding competitive dynamics"
+
+common_mistakes:
+  - "Confusing industry with market or sector"
+  - "Analyzing only current competitors, ignoring potential entrants"
+  - "Treating all five forces as equally important"
+  - "Forgetting that forces vary by segment within an industry"

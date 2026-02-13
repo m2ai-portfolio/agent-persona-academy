@@ -5,7 +5,7 @@
  * to persona components. Supports both local files and cached personas.
  */
 
-import { readFileSync, existsSync } from 'fs';
+import { readFileSync, existsSync, readdirSync } from 'fs';
 import { parse as parseYaml } from 'yaml';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
@@ -17,6 +17,9 @@ import type {
   PersonaVoice,
   ValidationMarker,
   SampleResponse,
+  StyleReference,
+  PersonaValidation,
+  PromptGenerationOptions,
 } from './types.js';
 
 // Module directory resolution for ESM
@@ -37,10 +40,92 @@ export function loadPersonaFromFile(filePath: string): PersonaDefinition {
   const content = readFileSync(filePath, 'utf-8');
   const definition = parseYaml(content) as PersonaDefinition;
 
+  // Resolve convention-based external files before validation
+  const personaDir = dirname(filePath);
+  resolveExternalFiles(definition, personaDir);
+
   // Basic validation
   validatePersonaStructure(definition);
 
   return definition;
+}
+
+/**
+ * Resolve convention-based external YAML files and merge into the definition.
+ *
+ * Convention:
+ *   frameworks/       → each .yaml becomes a key in definition.frameworks
+ *   case-studies/     → each .yaml becomes a key in definition.case_studies
+ *   references/       → each .yaml becomes a key in definition.style_references
+ *   validation.yaml   → merged into definition.validation
+ *   samples.yaml      → merged into definition.sample_responses
+ *
+ * External files override inline keys with the same name.
+ */
+export function resolveExternalFiles(
+  definition: PersonaDefinition,
+  personaDir: string
+): void {
+  // frameworks/ directory
+  const frameworksDir = join(personaDir, 'frameworks');
+  if (existsSync(frameworksDir)) {
+    const files = readdirSync(frameworksDir).filter((f) => f.endsWith('.yaml'));
+    for (const file of files) {
+      const key = file.replace(/\.yaml$/, '');
+      const content = readFileSync(join(frameworksDir, file), 'utf-8');
+      const parsed = parseYaml(content) as Framework;
+      if (!definition.frameworks) {
+        definition.frameworks = {};
+      }
+      definition.frameworks[key] = parsed;
+    }
+  }
+
+  // case-studies/ directory
+  const caseStudiesDir = join(personaDir, 'case-studies');
+  if (existsSync(caseStudiesDir)) {
+    const files = readdirSync(caseStudiesDir).filter((f) => f.endsWith('.yaml'));
+    for (const file of files) {
+      const key = file.replace(/\.yaml$/, '');
+      const content = readFileSync(join(caseStudiesDir, file), 'utf-8');
+      const parsed = parseYaml(content) as CaseStudy;
+      if (!definition.case_studies) {
+        definition.case_studies = {};
+      }
+      definition.case_studies[key] = parsed;
+    }
+  }
+
+  // references/ directory
+  const referencesDir = join(personaDir, 'references');
+  if (existsSync(referencesDir)) {
+    const files = readdirSync(referencesDir).filter((f) => f.endsWith('.yaml'));
+    for (const file of files) {
+      const key = file.replace(/\.yaml$/, '');
+      const content = readFileSync(join(referencesDir, file), 'utf-8');
+      const parsed = parseYaml(content) as StyleReference;
+      if (!definition.style_references) {
+        definition.style_references = {};
+      }
+      definition.style_references[key] = parsed;
+    }
+  }
+
+  // validation.yaml
+  const validationFile = join(personaDir, 'validation.yaml');
+  if (existsSync(validationFile)) {
+    const content = readFileSync(validationFile, 'utf-8');
+    const parsed = parseYaml(content) as PersonaValidation;
+    definition.validation = { ...definition.validation, ...parsed };
+  }
+
+  // samples.yaml
+  const samplesFile = join(personaDir, 'samples.yaml');
+  if (existsSync(samplesFile)) {
+    const content = readFileSync(samplesFile, 'utf-8');
+    const parsed = parseYaml(content) as Record<string, SampleResponse>;
+    definition.sample_responses = { ...definition.sample_responses, ...parsed };
+  }
 }
 
 /**
@@ -230,19 +315,24 @@ function validatePersonaStructure(definition: PersonaDefinition): void {
 /**
  * Generate system prompt from persona definition
  */
-export function generateSystemPrompt(persona: PersonaDefinition): string {
-  const { identity, voice, frameworks, case_studies, analysis_patterns } = persona;
+export function generateSystemPrompt(
+  persona: PersonaDefinition,
+  options?: PromptGenerationOptions
+): string {
+  const { identity, voice, frameworks, case_studies, style_references, analysis_patterns } =
+    persona;
+  const lean = options?.mode === 'lean';
 
   const sections: string[] = [];
 
-  // Identity section
+  // Identity section (same in both modes)
   sections.push(`# ${identity.name}
 
 ${identity.role}
 
 ${identity.background.trim()}`);
 
-  // Voice section
+  // Voice section (same in both modes)
   sections.push(`## Communication Style
 
 **Tone**: ${voice.tone.join(', ')}
@@ -261,7 +351,17 @@ ${voice.constraints.map((c) => `- ${c}`).join('\n')}`);
 
   // Frameworks section
   const frameworkEntries = Object.entries(frameworks);
-  sections.push(`## Analytical Frameworks
+  if (lean) {
+    sections.push(`## Analytical Frameworks
+
+${frameworkEntries
+  .map(([name, fw]) => {
+    const firstSentence = fw.description.trim().split(/\.\s/)[0] + '.';
+    return `- **${formatFrameworkName(name)}**: ${firstSentence} *(Use get_framework tool for details)*`;
+  })
+  .join('\n')}`);
+  } else {
+    sections.push(`## Analytical Frameworks
 
 ${frameworkEntries
   .map(
@@ -278,10 +378,21 @@ ${Object.entries(fw.concepts)
 ${(fw.questions ?? []).map((q) => `- ${q}`).join('\n')}`
   )
   .join('\n\n')}`);
+  }
 
   // Case studies if present
   if (case_studies && Object.keys(case_studies).length > 0) {
-    sections.push(`## Reference Cases
+    if (lean) {
+      sections.push(`## Reference Cases
+
+${Object.entries(case_studies)
+  .map(
+    ([name, cs]) =>
+      `- **${formatConceptName(name)}**: ${cs.pattern} *(Use get_case_study tool for details)*`
+  )
+  .join('\n')}`);
+    } else {
+      sections.push(`## Reference Cases
 
 ${Object.entries(case_studies)
   .map(
@@ -293,9 +404,25 @@ ${cs.story.trim()}
 **When to reference**: ${(cs.signals ?? []).slice(0, 3).join(', ')}`
   )
   .join('\n\n')}`);
+    }
   }
 
-  // Analysis approach if present
+  // Style references if present (omitted in lean mode)
+  if (!lean && style_references && Object.keys(style_references).length > 0) {
+    sections.push(`## Design References
+
+${Object.entries(style_references)
+  .map(
+    ([name, ref]) => `### ${formatConceptName(name)}
+${ref.description.trim()}
+
+**Design Principles**: ${ref.design_principles.join('; ')}
+**Emotional Quality**: ${ref.emotional_quality}${ref.relevant_frameworks?.length ? `\n**Frameworks**: ${ref.relevant_frameworks.map((f) => formatFrameworkName(f)).join(', ')}` : ''}`
+  )
+  .join('\n\n')}`);
+  }
+
+  // Analysis approach if present (approach only in lean mode, no output_structure)
   if (analysis_patterns?.approach?.length) {
     sections.push(`## Analysis Approach
 

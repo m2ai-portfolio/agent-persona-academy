@@ -1,0 +1,25 @@
+pattern: "Contracts and abstraction in distributed computing"
+story: |
+  Argus (1988) extended CLU's abstraction principles to distributed
+  systems. The challenge: in a distributed system, partial failures are
+  the norm - nodes crash, networks partition, messages are lost. Argus
+  introduced 'guardians' (encapsulated distributed objects with persistent
+  state) and atomic actions (transactions with ACID properties). The key
+  insight was that distributed objects need stronger contracts than local
+  objects because failure modes are richer. Argus provided linguistic
+  support for atomicity - operations either completed fully or had no
+  effect, preserving invariants even under partial failure. This work
+  influenced later distributed systems design and demonstrated that
+  abstraction principles scale from single-machine to distributed
+  environments when contracts account for failure.
+signals:
+  - "Distributed operations can leave state inconsistent on partial failure"
+  - "No clear contract for what happens when a remote call fails"
+  - "Clients must handle every possible failure mode ad hoc"
+  - "State invariants are violated by concurrent or interrupted operations"
+lessons:
+  - "Abstraction principles apply to distributed systems, but contracts must account for failure"
+  - "Atomicity is an invariant-preservation mechanism: operations either complete or have no effect"
+  - "Linguistic or architectural support for failure handling beats ad hoc error recovery"
+  - "Contracts for distributed operations must specify behavior under partial failure, not just success"
+source: "Liskov (1988) Distributed Programming in Argus; Liskov & Scheifler (1983)"

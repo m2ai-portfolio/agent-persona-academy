@@ -1,0 +1,164 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/m2ai-portfolio/agent-persona-academy/schema/department-v1.json",
+  "title": "Department Definition",
+  "description": "Schema for defining persona departments with quality criteria and learning policies",
+  "type": "object",
+  "required": ["identity", "quality_criteria", "learning_policy", "personas"],
+  "properties": {
+    "identity": {
+      "type": "object",
+      "description": "Department identity",
+      "required": ["name", "id", "mission"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Display name of the department",
+          "minLength": 1,
+          "examples": ["School of Engineering", "School of Business Strategy"]
+        },
+        "id": {
+          "type": "string",
+          "description": "Unique identifier (kebab-case)",
+          "pattern": "^[a-z][a-z0-9-]*$",
+          "examples": ["engineering", "business-strategy"]
+        },
+        "mission": {
+          "type": "string",
+          "description": "Department mission statement"
+        }
+      }
+    },
+    "quality_criteria": {
+      "type": "object",
+      "description": "Department-specific quality standards",
+      "required": ["validation_overrides"],
+      "properties": {
+        "validation_overrides": {
+          "type": "object",
+          "description": "Override default validation thresholds",
+          "properties": {
+            "fidelity_threshold": {
+              "type": "number",
+              "description": "Minimum fidelity score to pass",
+              "minimum": 0,
+              "maximum": 100,
+              "default": 70
+            },
+            "voice_threshold": {
+              "type": "number",
+              "description": "Minimum voice consistency score",
+              "minimum": 0,
+              "maximum": 100,
+              "default": 60
+            },
+            "framework_threshold": {
+              "type": "number",
+              "description": "Minimum framework coverage score",
+              "minimum": 0,
+              "maximum": 100,
+              "default": 50
+            },
+            "weights": {
+              "type": "object",
+              "description": "Custom weights for scoring dimensions",
+              "properties": {
+                "fidelity": { "type": "number", "minimum": 0, "maximum": 1 },
+                "voice": { "type": "number", "minimum": 0, "maximum": 1 },
+                "framework": { "type": "number", "minimum": 0, "maximum": 1 }
+              }
+            }
+          }
+        },
+        "shared_must_avoid": {
+          "type": "array",
+          "description": "Validation patterns all department personas must avoid",
+          "items": {
+            "type": "object",
+            "required": ["pattern"],
+            "properties": {
+              "pattern": {
+                "type": "string",
+                "description": "Regex pattern or keyword to detect"
+              },
+              "description": {
+                "type": "string",
+                "description": "Why this pattern should be avoided"
+              },
+              "weight": {
+                "type": "number",
+                "description": "Penalty weight (1-10)",
+                "minimum": 1,
+                "maximum": 10,
+                "default": 5
+              }
+            }
+          }
+        }
+      }
+    },
+    "learning_policy": {
+      "type": "object",
+      "description": "Controls how Sky-Lynx improvements are applied to this department",
+      "required": ["auto_apply_threshold", "review_threshold", "max_changes_per_cycle"],
+      "properties": {
+        "auto_apply_threshold": {
+          "type": "number",
+          "description": "Confidence threshold above which changes are auto-applied (0-1)",
+          "minimum": 0,
+          "maximum": 1,
+          "default": 0.9
+        },
+        "review_threshold": {
+          "type": "number",
+          "description": "Confidence threshold below which changes are dropped (0-1)",
+          "minimum": 0,
+          "maximum": 1,
+          "default": 0.6
+        },
+        "max_changes_per_cycle": {
+          "type": "integer",
+          "description": "Maximum number of changes per learning cycle",
+          "minimum": 1,
+          "default": 3
+        },
+        "preferred_change_types": {
+          "type": "array",
+          "description": "Change types this department prefers",
+          "items": {
+            "type": "string",
+            "enum": [
+              "framework_refinement",
+              "validation_marker_change",
+              "voice_adjustment",
+              "case_study_addition",
+              "constraint_addition",
+              "constraint_removal"
+            ]
+          }
+        },
+        "restricted_change_types": {
+          "type": "array",
+          "description": "Change types that require manual review regardless of confidence",
+          "items": {
+            "type": "string",
+            "enum": [
+              "framework_refinement",
+              "validation_marker_change",
+              "voice_adjustment",
+              "case_study_addition",
+              "constraint_addition",
+              "constraint_removal"
+            ]
+          }
+        }
+      }
+    },
+    "personas": {
+      "type": "array",
+      "description": "Persona IDs belonging to this department",
+      "items": { "type": "string" },
+      "minItems": 1
+    }
+  }
+}

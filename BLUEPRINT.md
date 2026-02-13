@@ -1,7 +1,7 @@
 # Agent Persona Academy - Blueprint
 
 **Project**: Persona factory and runtime system for Claude agents
-**Status**: Phase 7 Complete (All Phases Done)
+**Status**: Phase 12 Complete
 **Started**: 2025-01-14
 **Updated**: 2026-01-14
 **Blueprint Pattern**: Based on christensen-mcp (proven in 4.5 hours)
@@ -194,6 +194,95 @@ Personas are stored in a remote registry (GitHub-based) for sharing across Claud
 - [x] `personas/porter/` - Michael Porter competitive strategy persona
 - [x] `personas/drucker/` - Peter Drucker management philosophy persona
 - [x] README with quick start (updated)
+
+---
+
+### Phase 8: Department Infrastructure ✅
+**Goal**: Establish department system without breaking existing functionality
+
+- [x] **8.1** Create `schema/department-schema.json` defining department YAML format
+- [x] **8.2** Add department types to `src/core/types.ts` (`DepartmentDefinition`, `DepartmentQualityMetric`, `DepartmentValidationOverrides`, `DepartmentLearningPolicy`, `LoadedDepartment`)
+- [x] **8.3** Add optional `department` field to `PersonaMetadata` in types and JSON schema
+- [x] **8.4** Create `src/departments/` module (department-loader, department-manager, index)
+- [x] **8.5** Create department YAML files (engineering, business-strategy, operations)
+- [x] **8.6** Add `department` field to all 8 existing persona metadata
+
+**Deliverables**:
+- [x] `schema/department-schema.json`
+- [x] `src/departments/` module (3 files)
+- [x] `departments/engineering/department.yaml` (carmack, hopper, lamport, liskov)
+- [x] `departments/business-strategy/department.yaml` (christensen, porter, drucker)
+- [x] `departments/operations/department.yaml` (sky-lynx)
+- [x] All 8 persona.yaml files updated with `department` field
+
+---
+
+### Phase 9: Department-Aware Validation ✅
+**Goal**: Validation engine respects department configuration
+
+- [x] **9.1** Update `calculateFidelityScore()` to accept `additionalMustAvoid` and configurable `passingScore`
+- [x] **9.2** Add `department` context to `QualityReport` type
+- [x] **9.3** Update `report-generator.ts` to pass department context and display in reports
+- [x] **9.4** Update `PersonaSummary` in persona-manager to include `department`
+
+**Deliverables**:
+- [x] `FidelityScoreOptions` type with `additionalMustAvoid` and `passingScore`
+- [x] `DepartmentContext` type in report-generator
+- [x] Department name displayed in formatted quality reports
+
+---
+
+### Phase 10: Michelangelo Persona & Creative Department ✅
+**Goal**: First creative persona proves the department system works
+
+- [x] **10.1** Create `departments/creative/department.yaml` with voice-dominant weights
+- [x] **10.2** Create `personas/michelangelo/persona.yaml` with 4 frameworks, 3 case studies
+- [x] **10.3** Create `departments/creative/LEARNED_RULES.md` (empty initial)
+- [x] **10.4** Validate Michelangelo persona against schema and fidelity tests
+
+**Deliverables**:
+- [x] `departments/creative/department.yaml` — voice weight 0.5, fidelity threshold 65
+- [x] `personas/michelangelo/persona.yaml` — Creative Director & Visual Philosopher
+- [x] Fidelity test: good response 84/100, bad response 0/100
+- [x] Isolation proof: Carmack's must_include "measur|profil|benchmark" is Michelangelo's must_avoid
+
+---
+
+### Phase 11: Sky-Lynx Department Scoping ✅
+**Goal**: Sky-Lynx can target recommendations to departments
+
+- [x] **11.1** Add `ALL_IN_DEPARTMENT` to `TargetScope` enum in Snow-Town contracts
+- [x] **11.2** Add `target_department` field to `ImprovementRecommendation`
+- [x] **11.3** Add `target_department` column and query support to Snow-Town store
+- [x] **11.4** Update Sky-Lynx `Recommendation` model with `target_department`
+- [x] **11.5** Update Sky-Lynx analysis prompt to include department context
+- [x] **11.6** Update Sky-Lynx parser to extract `target_department`
+- [x] **11.7** Create `src/departments/learning-adapter.ts` with policy evaluation
+
+**Deliverables**:
+- [x] Snow-Town contracts updated with department scoping
+- [x] Sky-Lynx loads department definitions for analysis context
+- [x] Learning adapter evaluates recommendations against department policies
+
+---
+
+### Phase 12: CLI & Server Integration ✅
+**Goal**: Surface department functionality in CLI and MCP server
+
+- [x] **12.1** Create `src/cli/commands/department.ts` (list, info subcommands)
+- [x] **12.2** Add `--department` filter to `list` command
+- [x] **12.3** Update `report` command with department context
+- [x] **12.4** Add `list_departments` tool to MCP server
+- [x] **12.5** Add `department` filter to `list_personas` tool
+- [x] **12.6** Update persona-manager to discover departments on init
+- [x] **12.7** Update CLAUDE.md with department system documentation
+- [x] **12.8** Update BLUEPRINT.md with Phases 8-12
+
+**Deliverables**:
+- [x] `persona-academy department list` and `department info <id>` commands
+- [x] `persona-academy list --department engineering` filtering
+- [x] MCP server `list_departments` tool (7 total tools)
+- [x] Updated documentation
 
 ---
 

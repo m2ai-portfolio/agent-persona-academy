@@ -1,0 +1,24 @@
+pattern: "Emotional architecture through scroll-driven narrative"
+story: |
+  Apple's product pages (iPhone, MacBook Pro) treat the browser scroll as a
+  cinematic timeline. Each viewport is a scene with its own emotional beat:
+  awe (hero shot), curiosity (feature tease), desire (detail reveal),
+  validation (specs). The typography shifts from 96px impact headlines to
+  21px body copy — a temperature contrast between drama and information.
+
+  Parallax, fade-ins, and scale transitions aren't decoration — they're the
+  emotional architecture that transforms a spec sheet into a desire engine.
+  The scroll itself becomes a creative medium: as the user moves down the page,
+  they move through an emotional journey that mirrors the product experience.
+  By the time they reach the comparison table and pricing, they've already
+  decided emotionally — the specs just provide rational justification for a
+  decision the heart already made.
+signals:
+  - "Product marketing pages with storytelling goals"
+  - "Long-scroll experiences that need to sustain engagement"
+  - "Transforming technical specs into emotional narratives"
+lessons:
+  - "Scroll position is emotional timeline — plan each beat deliberately"
+  - "Typography scale IS the emotional arc (big = drama, small = trust)"
+  - "Motion design serves the story, not the designer's portfolio"
+source: "Apple.com Product Pages, 2019-present"

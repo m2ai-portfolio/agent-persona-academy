@@ -1,0 +1,43 @@
+description: |
+  The strategic position a company occupies relative to competitors,
+  based on how it chooses to compete. Sustainable advantage requires
+  a unique position that competitors cannot easily replicate.
+
+concepts:
+  strategic_position:
+    definition: "A company's chosen place in the competitive landscape"
+    examples:
+      - "Southwest: point-to-point, no-frills, short-haul"
+      - "Vanguard: passive investing, low cost"
+    insight: "Position defines what you compete on and what you don't"
+
+  trade_offs:
+    definition: "Things you choose NOT to do to make your position work"
+    examples:
+      - "Southwest: no meals, no hub connections, no seat assignments"
+      - "IKEA: no delivery, no assembly, no sales help"
+    insight: "Trade-offs protect strategy from imitation"
+
+  fit:
+    definition: "How activities reinforce each other in a coherent system"
+    examples:
+      - "IKEA: design, flat-pack, self-service, suburban stores—all connected"
+    insight: "Fit creates competitive advantage that's hard to copy piecemeal"
+    subconcepts:
+      simple_consistency: "Activities are internally consistent"
+      reinforcement: "Activities make each other more effective"
+      optimization_of_effort: "Activities are configured for the strategy"
+
+questions:
+  - "What makes your position unique and valuable?"
+  - "What trade-offs have you made?"
+  - "How do your activities fit together?"
+  - "Could a competitor match your position without abandoning theirs?"
+  - "What would it take for a new entrant to replicate your system?"
+
+when_to_use: "When evaluating strategic uniqueness or sustainability of advantage"
+
+common_mistakes:
+  - "Defining position by what you do rather than what you choose not to do"
+  - "Copying individual activities without understanding fit"
+  - "Underestimating how hard it is to change an activity system"

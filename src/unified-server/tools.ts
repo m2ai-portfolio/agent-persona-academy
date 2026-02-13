@@ -16,6 +16,10 @@ import {
   getActiveCaseStudies,
   getRandomPhrase,
 } from './persona-manager.js';
+import {
+  listDepartments,
+  getDepartment,
+} from '../departments/index.js';
 
 /**
  * Tool definitions for MCP
@@ -45,6 +49,10 @@ export const listPersonasTool: ToolDefinition = {
         description: 'Filter by category (business-strategist, technical-architect, domain-expert, creative, custom)',
         enum: ['business-strategist', 'technical-architect', 'domain-expert', 'creative', 'custom'],
       },
+      department: {
+        type: 'string',
+        description: 'Filter by department (engineering, business-strategy, operations, creative)',
+      },
     },
   },
 };
@@ -52,18 +60,26 @@ export const listPersonasTool: ToolDefinition = {
 /**
  * Handle list_personas tool call
  */
-export function handleListPersonas(args: { category?: string }): string {
+export function handleListPersonas(args: { category?: string; department?: string }): string {
   const personas = listPersonas();
   const activeId = getActivePersonaId();
 
   let filtered = personas;
   if (args.category) {
-    filtered = personas.filter((p) => p.category === args.category);
+    filtered = filtered.filter((p) => p.category === args.category);
+  }
+  if (args.department) {
+    filtered = filtered.filter((p) => p.department === args.department);
   }
 
   if (filtered.length === 0) {
-    return args.category
-      ? `No personas found in category "${args.category}".`
+    const filterDesc = args.department
+      ? `department "${args.department}"`
+      : args.category
+        ? `category "${args.category}"`
+        : '';
+    return filterDesc
+      ? `No personas found in ${filterDesc}.`
       : 'No personas available.';
   }
 
@@ -75,6 +91,9 @@ export function handleListPersonas(args: { category?: string }): string {
     lines.push(`- **ID**: ${persona.id}`);
     lines.push(`- **Role**: ${persona.role}`);
     lines.push(`- **Category**: ${persona.category}`);
+    if (persona.department) {
+      lines.push(`- **Department**: ${persona.department}`);
+    }
     lines.push(`- **Frameworks**: ${persona.frameworkCount}`);
     lines.push(`- **Case Studies**: ${persona.caseStudyCount}`);
     lines.push(`- **Source**: ${persona.source}`);
@@ -497,6 +516,51 @@ export function handleGetActivePersona(): string {
 }
 
 /**
+ * List Departments Tool
+ */
+export const listDepartmentsTool: ToolDefinition = {
+  name: 'list_departments',
+  description:
+    'List all Academy departments with their personas, quality criteria, and learning policies.',
+  inputSchema: {
+    type: 'object',
+    properties: {},
+  },
+};
+
+/**
+ * Handle list_departments tool call
+ */
+export function handleListDepartments(): string {
+  const departments = listDepartments();
+
+  if (departments.length === 0) {
+    return 'No departments configured.';
+  }
+
+  const lines = ['# Academy Departments\n'];
+
+  for (const dept of departments) {
+    lines.push(`## ${dept.name}`);
+    lines.push(`- **ID**: ${dept.id}`);
+    lines.push(`- **Mission**: ${dept.mission}`);
+    lines.push(`- **Personas**: ${dept.personas.join(', ')}`);
+
+    const deptDef = getDepartment(dept.id);
+    if (deptDef) {
+      const overrides = deptDef.quality_criteria.validation_overrides;
+      if (overrides.weights) {
+        lines.push(`- **Weights**: fidelity=${overrides.weights.fidelity}, voice=${overrides.weights.voice}, framework=${overrides.weights.framework}`);
+      }
+      lines.push(`- **Learning**: auto-apply>${deptDef.learning_policy.auto_apply_threshold}, max ${deptDef.learning_policy.max_changes_per_cycle} changes/cycle`);
+    }
+    lines.push('');
+  }
+
+  return lines.join('\n');
+}
+
+/**
  * All tool definitions
  */
 export const ALL_TOOLS: ToolDefinition[] = [
@@ -506,6 +570,7 @@ export const ALL_TOOLS: ToolDefinition[] = [
   getFrameworkTool,
   getCaseStudyTool,
   getActivePersonaTool,
+  listDepartmentsTool,
 ];
 
 /**
@@ -517,7 +582,7 @@ export function handleToolCall(
 ): string {
   switch (toolName) {
     case 'list_personas':
-      return handleListPersonas(args as { category?: string });
+      return handleListPersonas(args as { category?: string; department?: string });
 
     case 'switch_persona':
       return handleSwitchPersona(args as { persona_id: string });
@@ -535,6 +600,9 @@ export function handleToolCall(
 
     case 'get_active_persona':
       return handleGetActivePersona();
+
+    case 'list_departments':
+      return handleListDepartments();
 
     default:
       return `Unknown tool: ${toolName}`;

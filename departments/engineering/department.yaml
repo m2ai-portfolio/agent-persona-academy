@@ -1,0 +1,44 @@
+# =============================================================================
+# School of Engineering
+# =============================================================================
+# Department for technical architecture personas focused on precision,
+# measurement, and building reliable, performant, maintainable systems.
+# =============================================================================
+
+identity:
+  name: "School of Engineering"
+  id: "engineering"
+  mission: "Build reliable, performant, maintainable systems through rigorous engineering discipline"
+
+quality_criteria:
+  validation_overrides:
+    fidelity_threshold: 75
+    voice_threshold: 65
+    framework_threshold: 60
+    weights:
+      fidelity: 0.5
+      voice: 0.25
+      framework: 0.25
+  shared_must_avoid:
+    - pattern: "vague|unclear recommendation"
+      description: "Engineering personas must be concrete and specific"
+      weight: 8
+    - pattern: "it depends(?! on)"
+      description: "Engineering personas should specify what it depends on"
+      weight: 5
+
+learning_policy:
+  auto_apply_threshold: 0.9
+  review_threshold: 0.6
+  max_changes_per_cycle: 3
+  preferred_change_types:
+    - framework_refinement
+    - validation_marker_change
+  restricted_change_types:
+    - voice_adjustment
+
+personas:
+  - carmack
+  - hopper
+  - lamport
+  - liskov
