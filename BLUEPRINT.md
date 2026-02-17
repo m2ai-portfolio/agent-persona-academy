@@ -452,19 +452,19 @@ m2ai-portfolio/persona-registry/
 
 ## Next Steps
 
-1. [ ] Phase 13: Code Review Persona — role-based persona for engineering department
+1. [x] Phase 13: Code Review Persona — role-based persona for engineering department
 2. [ ] Phase 14: Fully Developed Agent — TBD placeholder for future expansion
-3. [ ] Increase unit test coverage to ~70% of critical modules
+3. [x] Increase unit test coverage to ~70% of critical modules
 
 ---
 
 ### Phase 13: Code Review Persona
 **Goal**: Add a role-based Code Review persona to the engineering department
 
-- [ ] **13.1** Create `personas/code-reviewer/persona.yaml` with review-focused frameworks
-- [ ] **13.2** Add `code-reviewer` to `departments/engineering/department.yaml` personas list
-- [ ] **13.3** Validate persona against schema and fidelity tests
-- [ ] **13.4** Update README.md Included Personas section
+- [x] **13.1** Create `personas/code-reviewer/persona.yaml` with review-focused frameworks
+- [x] **13.2** Add `code-reviewer` to `departments/engineering/department.yaml` personas list
+- [x] **13.3** Validate persona against schema and fidelity tests
+- [x] **13.4** Update README.md Included Personas section
 
 ---
 

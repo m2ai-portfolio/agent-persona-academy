@@ -39,6 +39,7 @@ learning_policy:
 
 personas:
   - carmack
+  - code-reviewer
   - hopper
   - lamport
   - liskov

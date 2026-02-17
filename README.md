@@ -401,6 +401,21 @@ Management philosopher focusing on effectiveness, knowledge work, and organizati
 - Nonprofit effectiveness
 - Knowledge society prediction
 
+### Code Reviewer
+
+Senior Code Quality Engineer and Review Specialist focused on constructive, specific, evidence-based code review that teaches rather than gatekeeps.
+
+**Frameworks:**
+- Code Clarity (naming, structure, cognitive complexity)
+- Error Handling (failure modes, recovery, observability)
+- Design Principles (SOLID, DRY, coupling/cohesion)
+- Test Quality (coverage, maintainability, confidence)
+
+**Case Studies:**
+- Rubber Stamp Anti-Pattern (superficial review habits)
+- Over-Engineering Review (complexity vs. simplicity trade-offs)
+- Teaching Review (knowledge transfer through review)
+
 ### John Carmack
 
 Systems architect and performance engineer focused on ruthless simplicity, measurement-driven optimization, and constraint-driven engineering.
@@ -592,7 +607,7 @@ See [BLUEPRINT.md](./BLUEPRINT.md) for the complete implementation plan:
 - [x] Phase 10: Michelangelo Persona & Creative Department
 - [x] Phase 11: Sky-Lynx Department Scoping
 - [x] Phase 12: CLI & Server Integration
-- [ ] Phase 13: Code Review Persona
+- [x] Phase 13: Code Review Persona
 - [ ] Phase 14: Fully Developed Agent (TBD)
 
 ## License
