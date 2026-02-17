@@ -74,10 +74,9 @@ export const reportCommand = new Command('report')
       discoverDepartments(departmentsDir);
 
       const personaId = persona.metadata?.department
-        ? inputPath.split('/').filter(Boolean).pop() ?? ''
+        ? (inputPath.split('/').filter(Boolean).pop() ?? '')
         : '';
-      const departmentId = persona.metadata?.department
-        ?? resolveDepartmentForPersona(personaId);
+      const departmentId = persona.metadata?.department ?? resolveDepartmentForPersona(personaId);
 
       let departmentContext: DepartmentContext | undefined;
       if (departmentId) {
@@ -113,7 +112,11 @@ export const reportCommand = new Command('report')
       }
 
       if (!textToAnalyze) {
-        console.error(chalk.yellow('No text to analyze. Provide --text or --file, or add sample_responses to persona.'));
+        console.error(
+          chalk.yellow(
+            'No text to analyze. Provide --text or --file, or add sample_responses to persona.',
+          ),
+        );
         console.log(chalk.dim('Running test suite only...'));
       }
 
@@ -151,7 +154,9 @@ export const reportCommand = new Command('report')
       if (options.runTests || options.junit) {
         spinner.start('Running test suite...');
         const testResults = runTestSuite(persona, config);
-        spinner.succeed(`Tests complete: ${testResults.passedTests}/${testResults.totalTests} passed`);
+        spinner.succeed(
+          `Tests complete: ${testResults.passedTests}/${testResults.totalTests} passed`,
+        );
 
         if (options.junit) {
           console.log(generateJUnitReport(testResults));
@@ -172,7 +177,6 @@ export const reportCommand = new Command('report')
         console.log();
         console.log(chalk.cyan('Summary: ') + generateSummary(report));
       }
-
     } catch (error) {
       spinner.fail(chalk.red('Report error'));
       if (error instanceof Error) {

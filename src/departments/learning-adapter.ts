@@ -48,12 +48,11 @@ export interface PolicyDecision {
 /**
  * Evaluate a recommendation against department learning policy
  */
-export function evaluateRecommendation(
-  rec: PendingRecommendation
-): PolicyDecision {
+export function evaluateRecommendation(rec: PendingRecommendation): PolicyDecision {
   // Resolve department
-  const departmentId = rec.target_department
-    ?? (rec.target_persona_ids.length > 0
+  const departmentId =
+    rec.target_department ??
+    (rec.target_persona_ids.length > 0
       ? resolveDepartmentForPersona(rec.target_persona_ids[0])
       : null);
 
@@ -120,9 +119,7 @@ export function evaluateRecommendation(
 /**
  * Process a batch of recommendations respecting max_changes_per_cycle
  */
-export function processBatch(
-  recommendations: PendingRecommendation[]
-): PolicyDecision[] {
+export function processBatch(recommendations: PendingRecommendation[]): PolicyDecision[] {
   const decisions: PolicyDecision[] = [];
   const autoApplyCountByDept = new Map<string, number>();
 
@@ -156,7 +153,7 @@ export function appendLearnedRule(
   departmentsDir: string,
   departmentId: string,
   rec: PendingRecommendation,
-  decision: PolicyDecision
+  decision: PolicyDecision,
 ): void {
   const rulesPath = join(departmentsDir, departmentId, 'LEARNED_RULES.md');
 

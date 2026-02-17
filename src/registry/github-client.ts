@@ -5,12 +5,7 @@
  * Supports both authenticated and unauthenticated requests.
  */
 
-import type {
-  RegistryConfig,
-  RegistryIndex,
-  RegistryEntry,
-  PullResult,
-} from './types.js';
+import type { RegistryConfig, RegistryIndex, RegistryEntry, PullResult } from './types.js';
 import { DEFAULT_REGISTRY_CONFIG } from './types.js';
 import {
   cachePersona,
@@ -43,10 +38,7 @@ function getGitHubToken(): string | undefined {
 /**
  * Make a GitHub API request
  */
-async function githubRequest<T>(
-  endpoint: string,
-  options: RequestInit = {}
-): Promise<T> {
+async function githubRequest<T>(endpoint: string, options: RequestInit = {}): Promise<T> {
   const token = getGitHubToken();
 
   const headers: Record<string, string> = {
@@ -75,11 +67,7 @@ async function githubRequest<T>(
 /**
  * Fetch raw file content from GitHub
  */
-async function fetchRawContent(
-  repo: string,
-  branch: string,
-  path: string
-): Promise<string> {
+async function fetchRawContent(repo: string, branch: string, path: string): Promise<string> {
   const { owner, name } = parseRepository(repo);
   const url = `${GITHUB_RAW_BASE}/${owner}/${name}/${branch}/${path}`;
 
@@ -100,16 +88,12 @@ async function fetchRawContent(
  * Fetch the registry index
  */
 export async function fetchRegistryIndex(
-  config: RegistryConfig = DEFAULT_REGISTRY_CONFIG
+  config: RegistryConfig = DEFAULT_REGISTRY_CONFIG,
 ): Promise<RegistryIndex> {
   const indexPath = `${config.basePath}/index.json`;
 
   try {
-    const content = await fetchRawContent(
-      config.repository,
-      config.branch,
-      indexPath
-    );
+    const content = await fetchRawContent(config.repository, config.branch, indexPath);
     return JSON.parse(content) as RegistryIndex;
   } catch (error) {
     // If index doesn't exist, return empty registry
@@ -139,7 +123,7 @@ export async function fetchRegistryIndex(
  */
 export async function fetchPersona(
   personaId: string,
-  config: RegistryConfig = DEFAULT_REGISTRY_CONFIG
+  config: RegistryConfig = DEFAULT_REGISTRY_CONFIG,
 ): Promise<{ content: string; sha?: string }> {
   const personaPath = `${config.basePath}/${personaId}/persona.yaml`;
 
@@ -148,18 +132,14 @@ export async function fetchPersona(
   try {
     const { owner, name } = parseRepository(config.repository);
     const response = await githubRequest<{ sha: string }>(
-      `/repos/${owner}/${name}/contents/${personaPath}?ref=${config.branch}`
+      `/repos/${owner}/${name}/contents/${personaPath}?ref=${config.branch}`,
     );
     sha = response.sha;
   } catch {
     // SHA fetch is optional, continue without it
   }
 
-  const content = await fetchRawContent(
-    config.repository,
-    config.branch,
-    personaPath
-  );
+  const content = await fetchRawContent(config.repository, config.branch, personaPath);
 
   return { content, sha };
 }
@@ -168,7 +148,7 @@ export async function fetchPersona(
  * List all personas in the registry
  */
 export async function listRegistryPersonas(
-  config: RegistryConfig = DEFAULT_REGISTRY_CONFIG
+  config: RegistryConfig = DEFAULT_REGISTRY_CONFIG,
 ): Promise<RegistryEntry[]> {
   const index = await fetchRegistryIndex(config);
   return index.personas;
@@ -179,7 +159,7 @@ export async function listRegistryPersonas(
  */
 export async function searchRegistryPersonas(
   query: string,
-  config: RegistryConfig = DEFAULT_REGISTRY_CONFIG
+  config: RegistryConfig = DEFAULT_REGISTRY_CONFIG,
 ): Promise<RegistryEntry[]> {
   const index = await fetchRegistryIndex(config);
   const lowerQuery = query.toLowerCase();
@@ -188,7 +168,7 @@ export async function searchRegistryPersonas(
     (p) =>
       p.name.toLowerCase().includes(lowerQuery) ||
       p.summary.toLowerCase().includes(lowerQuery) ||
-      p.tags.some((t) => t.toLowerCase().includes(lowerQuery))
+      p.tags.some((t) => t.toLowerCase().includes(lowerQuery)),
   );
 }
 
@@ -198,7 +178,7 @@ export async function searchRegistryPersonas(
 export async function pullPersona(
   personaId: string,
   force: boolean = false,
-  config: RegistryConfig = DEFAULT_REGISTRY_CONFIG
+  config: RegistryConfig = DEFAULT_REGISTRY_CONFIG,
 ): Promise<PullResult> {
   try {
     // Fetch the persona content and SHA
@@ -254,10 +234,7 @@ export async function pullPersona(
       success: false,
       personaId,
       action: 'failed',
-      message:
-        error instanceof Error
-          ? error.message
-          : `Failed to pull persona "${personaId}"`,
+      message: error instanceof Error ? error.message : `Failed to pull persona "${personaId}"`,
     };
   }
 }
@@ -268,7 +245,7 @@ export async function pullPersona(
 export async function pullPersonas(
   personaIds: string[],
   force: boolean = false,
-  config: RegistryConfig = DEFAULT_REGISTRY_CONFIG
+  config: RegistryConfig = DEFAULT_REGISTRY_CONFIG,
 ): Promise<PullResult[]> {
   const results: PullResult[] = [];
 
@@ -284,7 +261,7 @@ export async function pullPersonas(
  * Check if registry is accessible
  */
 export async function checkRegistryAccess(
-  config: RegistryConfig = DEFAULT_REGISTRY_CONFIG
+  config: RegistryConfig = DEFAULT_REGISTRY_CONFIG,
 ): Promise<{ accessible: boolean; authenticated: boolean; message: string }> {
   try {
     const { owner, name } = parseRepository(config.repository);
@@ -305,10 +282,7 @@ export async function checkRegistryAccess(
     return {
       accessible: false,
       authenticated: false,
-      message:
-        error instanceof Error
-          ? error.message
-          : 'Failed to access registry',
+      message: error instanceof Error ? error.message : 'Failed to access registry',
     };
   }
 }

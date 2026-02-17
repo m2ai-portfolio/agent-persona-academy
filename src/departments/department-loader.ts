@@ -61,7 +61,7 @@ export function loadDepartment(departmentId: string, baseDir?: string): LoadedDe
 
   if (!definition) {
     throw new Error(
-      `Department '${departmentId}' not found. Searched:\n${possiblePaths.join('\n')}`
+      `Department '${departmentId}' not found. Searched:\n${possiblePaths.join('\n')}`,
     );
   }
 

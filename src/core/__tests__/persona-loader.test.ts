@@ -50,7 +50,7 @@ describe('resolveExternalFiles', () => {
     mkdirSync(join(tempDir, 'frameworks'));
     writeFileSync(
       join(tempDir, 'frameworks', 'test_framework.yaml'),
-      'description: "A test framework"\nconcepts:\n  idea:\n    definition: "An idea"'
+      'description: "A test framework"\nconcepts:\n  idea:\n    definition: "An idea"',
     );
 
     const def = makeMinimalDefinition();
@@ -65,7 +65,7 @@ describe('resolveExternalFiles', () => {
     mkdirSync(join(tempDir, 'frameworks'));
     writeFileSync(
       join(tempDir, 'frameworks', 'existing.yaml'),
-      'description: "External version"\nconcepts:\n  c:\n    definition: "def"'
+      'description: "External version"\nconcepts:\n  c:\n    definition: "def"',
     );
 
     const def = makeMinimalDefinition({
@@ -85,7 +85,7 @@ describe('resolveExternalFiles', () => {
     mkdirSync(join(tempDir, 'case-studies'));
     writeFileSync(
       join(tempDir, 'case-studies', 'example_case.yaml'),
-      'pattern: "Test pattern"\nstory: "Test story"\nsignals:\n  - "signal"\nlessons:\n  - "lesson"'
+      'pattern: "Test pattern"\nstory: "Test story"\nsignals:\n  - "signal"\nlessons:\n  - "lesson"',
     );
 
     const def = makeMinimalDefinition();
@@ -100,7 +100,7 @@ describe('resolveExternalFiles', () => {
     mkdirSync(join(tempDir, 'references'));
     writeFileSync(
       join(tempDir, 'references', 'stripe_dashboard.yaml'),
-      'description: "Stripe dashboard reference"\ndesign_principles:\n  - "Progressive disclosure"'
+      'description: "Stripe dashboard reference"\ndesign_principles:\n  - "Progressive disclosure"',
     );
 
     const def = makeMinimalDefinition();
@@ -109,14 +109,14 @@ describe('resolveExternalFiles', () => {
     expect(def.style_references).toBeDefined();
     expect(def.style_references!['stripe_dashboard']).toBeDefined();
     expect(def.style_references!['stripe_dashboard'].description).toBe(
-      'Stripe dashboard reference'
+      'Stripe dashboard reference',
     );
   });
 
   it('merges samples.yaml into sample_responses', () => {
     writeFileSync(
       join(tempDir, 'samples.yaml'),
-      'greeting:\n  prompt: "Say hi"\n  good_response: "Hello!"\n  bad_response: "..."\n  explanation: "Friendly"'
+      'greeting:\n  prompt: "Say hi"\n  good_response: "Hello!"\n  bad_response: "..."\n  explanation: "Friendly"',
     );
 
     const def = makeMinimalDefinition();
@@ -130,7 +130,7 @@ describe('resolveExternalFiles', () => {
   it('merges validation.yaml into validation', () => {
     writeFileSync(
       join(tempDir, 'validation.yaml'),
-      'should_include:\n  - pattern: "extra"\n    description: "Extra marker"\n    weight: 3'
+      'should_include:\n  - pattern: "extra"\n    description: "Extra marker"\n    weight: 3',
     );
 
     const def = makeMinimalDefinition();
@@ -145,11 +145,11 @@ describe('resolveExternalFiles', () => {
     mkdirSync(join(tempDir, 'frameworks'));
     writeFileSync(
       join(tempDir, 'frameworks', 'external_fw.yaml'),
-      'description: "External"\nconcepts:\n  c:\n    definition: "def"'
+      'description: "External"\nconcepts:\n  c:\n    definition: "def"',
     );
     writeFileSync(
       join(tempDir, 'samples.yaml'),
-      'test_sample:\n  prompt: "Q"\n  good_response: "A"\n  bad_response: "B"\n  explanation: "E"'
+      'test_sample:\n  prompt: "Q"\n  good_response: "A"\n  bad_response: "B"\n  explanation: "E"',
     );
 
     const def = makeMinimalDefinition({
@@ -186,7 +186,7 @@ describe('resolveExternalFiles', () => {
     writeFileSync(join(tempDir, 'frameworks', '.DS_Store'), '');
     writeFileSync(
       join(tempDir, 'frameworks', 'real.yaml'),
-      'description: "Real"\nconcepts:\n  c:\n    definition: "def"'
+      'description: "Real"\nconcepts:\n  c:\n    definition: "def"',
     );
 
     const def = makeMinimalDefinition();
@@ -199,7 +199,7 @@ describe('resolveExternalFiles', () => {
     mkdirSync(join(tempDir, 'frameworks'));
     writeFileSync(
       join(tempDir, 'frameworks', 'broken.yaml'),
-      'description: [\n  this is not valid yaml: {{{'
+      'description: [\n  this is not valid yaml: {{{',
     );
 
     const def = makeMinimalDefinition();

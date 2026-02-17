@@ -11,13 +11,11 @@
 import { Command } from 'commander';
 import chalk from 'chalk';
 import { resolve } from 'path';
-import {
-  discoverDepartments,
-  getDepartment,
-} from '../../departments/index.js';
+import { discoverDepartments, getDepartment } from '../../departments/index.js';
 
-export const departmentCommand = new Command('department')
-  .description('Manage Academy departments');
+export const departmentCommand = new Command('department').description(
+  'Manage Academy departments',
+);
 
 departmentCommand
   .command('list')
@@ -92,14 +90,18 @@ departmentCommand
       }
       if (overrides.weights) {
         const w = overrides.weights;
-        console.log(`  Weights: fidelity=${w.fidelity}, voice=${w.voice}, framework=${w.framework}`);
+        console.log(
+          `  Weights: fidelity=${w.fidelity}, voice=${w.voice}, framework=${w.framework}`,
+        );
       }
 
       const sharedAvoid = dept.quality_criteria.shared_must_avoid ?? [];
       if (sharedAvoid.length > 0) {
         console.log(`\n${chalk.bold('Shared Must-Avoid Patterns:')}`);
         for (const marker of sharedAvoid) {
-          console.log(`  - ${chalk.red(marker.pattern)} ${chalk.dim(`(${marker.description ?? ''})`)}`);
+          console.log(
+            `  - ${chalk.red(marker.pattern)} ${chalk.dim(`(${marker.description ?? ''})`)}`,
+          );
         }
       }
 

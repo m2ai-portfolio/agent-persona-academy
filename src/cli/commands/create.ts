@@ -36,9 +36,7 @@ export const createCommand = new Command('create')
       // Validate name format
       const kebabName = toKebabCase(name);
       if (kebabName !== name.toLowerCase()) {
-        console.log(
-          chalk.yellow(`Note: Converting "${name}" to "${kebabName}"`)
-        );
+        console.log(chalk.yellow(`Note: Converting "${name}" to "${kebabName}"`));
       }
 
       // Check if persona already exists
@@ -87,10 +85,15 @@ export const createCommand = new Command('create')
 
       console.log(chalk.cyan('\n🚀 Next steps:'));
       console.log(`   1. Edit ${chalk.bold('persona.yaml')} to refine your persona`);
-      console.log(`   2. Run ${chalk.bold(`persona-academy validate ${outputDir}`)} to check schema`);
-      console.log(`   3. Run ${chalk.bold(`persona-academy test ${outputDir}`)} to validate fidelity`);
-      console.log(`   4. Run ${chalk.bold(`persona-academy build ${outputDir}`)} to create MCP server`);
-
+      console.log(
+        `   2. Run ${chalk.bold(`persona-academy validate ${outputDir}`)} to check schema`,
+      );
+      console.log(
+        `   3. Run ${chalk.bold(`persona-academy test ${outputDir}`)} to validate fidelity`,
+      );
+      console.log(
+        `   4. Run ${chalk.bold(`persona-academy build ${outputDir}`)} to create MCP server`,
+      );
     } catch (error) {
       spinner.fail(chalk.red('Failed to create persona'));
       if (error instanceof Error) {
@@ -146,7 +149,7 @@ async function collectPersonaData(kebabName: string): Promise<PersonaData> {
     validate: (v) => v.length > 0 || 'Role is required',
   });
 
-  const category = await select({
+  const category = (await select({
     message: 'Category:',
     choices: [
       { value: 'business-strategist', name: 'Business Strategist (Porter, Drucker, etc.)' },
@@ -155,7 +158,7 @@ async function collectPersonaData(kebabName: string): Promise<PersonaData> {
       { value: 'creative', name: 'Creative (Writers, Designers, etc.)' },
       { value: 'custom', name: 'Custom' },
     ],
-  }) as PersonaCategory;
+  })) as PersonaCategory;
 
   const background = await input({
     message: 'Background (2-4 sentences about credentials & expertise):',
@@ -188,7 +191,8 @@ async function collectPersonaData(kebabName: string): Promise<PersonaData> {
 
   const styleInput = await input({
     message: 'Communication style (comma-separated, how they structure thinking):',
-    default: 'Asks clarifying questions first, Uses examples to illustrate, Acknowledges complexity',
+    default:
+      'Asks clarifying questions first, Uses examples to illustrate, Acknowledges complexity',
   });
 
   const constraintsInput = await input({
@@ -294,9 +298,7 @@ function getMinimalTemplate(kebabName: string): PersonaData {
         key: 'core_framework',
         name: 'Core Framework',
         description: 'The primary mental model used for analysis.',
-        concepts: [
-          { key: 'key_concept', definition: 'A fundamental concept in this framework' },
-        ],
+        concepts: [{ key: 'key_concept', definition: 'A fundamental concept in this framework' }],
         questions: [
           'What is the core problem we are trying to solve?',
           'What constraints are we working within?',
@@ -332,11 +334,11 @@ function generatePersonaYaml(data: PersonaData): string {
         {
           description: fw.description,
           concepts: Object.fromEntries(
-            fw.concepts.map((c) => [c.key, { definition: c.definition }])
+            fw.concepts.map((c) => [c.key, { definition: c.definition }]),
           ),
           questions: fw.questions,
         },
-      ])
+      ]),
     ),
     validation: {
       must_include: [

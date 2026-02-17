@@ -109,14 +109,12 @@ export const remoteCommand = new Command('remote')
           const cached = isPersonaCached(persona.id, config);
           const cacheIndicator = cached ? chalk.green(' [cached]') : '';
 
-          console.log(
-            `  ${chalk.cyan(persona.id)}${cacheIndicator} - ${persona.name}`
-          );
+          console.log(`  ${chalk.cyan(persona.id)}${cacheIndicator} - ${persona.name}`);
           console.log(chalk.dim(`    ${persona.summary}`));
           console.log(
             chalk.dim(
-              `    v${persona.version} | ${persona.frameworkCount} frameworks | ${persona.caseStudyCount} cases | by ${persona.author}`
-            )
+              `    v${persona.version} | ${persona.frameworkCount} frameworks | ${persona.caseStudyCount} cases | by ${persona.author}`,
+            ),
           );
 
           if (persona.tags.length > 0) {
@@ -132,9 +130,7 @@ export const remoteCommand = new Command('remote')
       console.log(chalk.dim('\nUse "persona-academy pull <id>" to download'));
 
       if (!access.authenticated) {
-        console.log(
-          chalk.yellow('\n⚠️  Unauthenticated - rate limits apply.')
-        );
+        console.log(chalk.yellow('\n⚠️  Unauthenticated - rate limits apply.'));
         console.log(chalk.dim('   Set GITHUB_TOKEN for higher limits.'));
       }
     } catch (error) {
@@ -146,9 +142,7 @@ export const remoteCommand = new Command('remote')
     }
   });
 
-function groupByCategory(
-  personas: RegistryEntry[]
-): Record<string, RegistryEntry[]> {
+function groupByCategory(personas: RegistryEntry[]): Record<string, RegistryEntry[]> {
   const grouped: Record<string, RegistryEntry[]> = {};
 
   for (const persona of personas) {

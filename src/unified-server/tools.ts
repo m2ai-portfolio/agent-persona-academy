@@ -16,10 +16,7 @@ import {
   getActiveCaseStudies,
   getRandomPhrase,
 } from './persona-manager.js';
-import {
-  listDepartments,
-  getDepartment,
-} from '../departments/index.js';
+import { listDepartments, getDepartment } from '../departments/index.js';
 
 /**
  * Tool definitions for MCP
@@ -46,7 +43,8 @@ export const listPersonasTool: ToolDefinition = {
     properties: {
       category: {
         type: 'string',
-        description: 'Filter by category (business-strategist, technical-architect, domain-expert, creative, custom)',
+        description:
+          'Filter by category (business-strategist, technical-architect, domain-expert, creative, custom)',
         enum: ['business-strategist', 'technical-architect', 'domain-expert', 'creative', 'custom'],
       },
       department: {
@@ -78,9 +76,7 @@ export function handleListPersonas(args: { category?: string; department?: strin
       : args.category
         ? `category "${args.category}"`
         : '';
-    return filterDesc
-      ? `No personas found in ${filterDesc}.`
-      : 'No personas available.';
+    return filterDesc ? `No personas found in ${filterDesc}.` : 'No personas available.';
   }
 
   const lines = ['# Available Personas\n'];
@@ -214,10 +210,7 @@ export function handlePersonaAnalyze(args: {
   const caseStudies = def.case_studies ?? {};
 
   // Build analysis prompt
-  const lines = [
-    `# Analysis by ${def.identity.name}\n`,
-    `*${def.identity.role}*\n`,
-  ];
+  const lines = [`# Analysis by ${def.identity.name}\n`, `*${def.identity.role}*\n`];
 
   // Add characteristic opening
   const phrase = getRandomPhrase();
@@ -550,9 +543,13 @@ export function handleListDepartments(): string {
     if (deptDef) {
       const overrides = deptDef.quality_criteria.validation_overrides;
       if (overrides.weights) {
-        lines.push(`- **Weights**: fidelity=${overrides.weights.fidelity}, voice=${overrides.weights.voice}, framework=${overrides.weights.framework}`);
+        lines.push(
+          `- **Weights**: fidelity=${overrides.weights.fidelity}, voice=${overrides.weights.voice}, framework=${overrides.weights.framework}`,
+        );
       }
-      lines.push(`- **Learning**: auto-apply>${deptDef.learning_policy.auto_apply_threshold}, max ${deptDef.learning_policy.max_changes_per_cycle} changes/cycle`);
+      lines.push(
+        `- **Learning**: auto-apply>${deptDef.learning_policy.auto_apply_threshold}, max ${deptDef.learning_policy.max_changes_per_cycle} changes/cycle`,
+      );
     }
     lines.push('');
   }
@@ -576,10 +573,7 @@ export const ALL_TOOLS: ToolDefinition[] = [
 /**
  * Tool handler dispatch
  */
-export function handleToolCall(
-  toolName: string,
-  args: Record<string, unknown>
-): string {
+export function handleToolCall(toolName: string, args: Record<string, unknown>): string {
   switch (toolName) {
     case 'list_personas':
       return handleListPersonas(args as { category?: string; department?: string });
@@ -589,7 +583,7 @@ export function handleToolCall(
 
     case 'persona_analyze':
       return handlePersonaAnalyze(
-        args as { situation: string; context?: string; focus_frameworks?: string[] }
+        args as { situation: string; context?: string; focus_frameworks?: string[] },
       );
 
     case 'get_framework':

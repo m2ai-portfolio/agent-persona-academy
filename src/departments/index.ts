@@ -28,10 +28,6 @@ export {
 export type { DepartmentSummary } from './department-manager.js';
 
 // Learning Adapter
-export {
-  evaluateRecommendation,
-  processBatch,
-  appendLearnedRule,
-} from './learning-adapter.js';
+export { evaluateRecommendation, processBatch, appendLearnedRule } from './learning-adapter.js';
 
 export type { PendingRecommendation, PolicyDecision } from './learning-adapter.js';

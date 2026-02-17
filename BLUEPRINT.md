@@ -452,9 +452,45 @@ m2ai-portfolio/persona-registry/
 
 ## Next Steps
 
-1. [ ] Review and approve this blueprint
-2. [ ] Begin Phase 1: Core Engine Foundation
-3. [ ] Set up project structure and dependencies
+1. [ ] Phase 13: Code Review Persona — role-based persona for engineering department
+2. [ ] Phase 14: Fully Developed Agent — TBD placeholder for future expansion
+3. [ ] Increase unit test coverage to ~70% of critical modules
+
+---
+
+### Phase 13: Code Review Persona
+**Goal**: Add a role-based Code Review persona to the engineering department
+
+- [ ] **13.1** Create `personas/code-reviewer/persona.yaml` with review-focused frameworks
+- [ ] **13.2** Add `code-reviewer` to `departments/engineering/department.yaml` personas list
+- [ ] **13.3** Validate persona against schema and fidelity tests
+- [ ] **13.4** Update README.md Included Personas section
+
+---
+
+### Phase 14: Fully Developed Agent (TBD)
+**Goal**: Placeholder for future expansion into a fully developed agent workflow
+
+- [ ] **14.1** Define requirements and scope
+- [ ] **14.2** Design agent architecture
+- [ ] **14.3** Implementation
+- [ ] **14.4** Testing and validation
+
+*Details to be determined based on project direction and user needs.*
+
+---
+
+## Backlog (Deferred from Phases 1-7)
+
+Items deferred during initial development, tracked for future consideration:
+
+- [ ] **1.5** Build tool factory (generate tools from config) — *deferred from Phase 1*
+- [ ] **2.3** Create framework.ts template — *deferred from Phase 2*
+- [ ] **2.4** Create MCP server template (index.ts boilerplate) — *deferred from Phase 2*
+- [ ] **3.4** `build` command - compile persona MCP server — *deferred from Phase 3*
+- [ ] **4.3** `push` command - publish persona to registry — *deferred from Phase 4*
+- [ ] **1.6b** Unit tests for core modules — *deferred from Phase 1*
+- [ ] **7.6** Video walkthrough or demo — *deferred from Phase 7*
 
 ---
 

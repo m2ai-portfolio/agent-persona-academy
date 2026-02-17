@@ -6,12 +6,7 @@
  */
 
 import type { PersonaDefinition } from '../core/types.js';
-import type {
-  VoiceAnalysisResult,
-  ToneMatch,
-  PhraseMatch,
-  StyleMatch,
-} from './types.js';
+import type { VoiceAnalysisResult, ToneMatch, PhraseMatch, StyleMatch } from './types.js';
 
 /**
  * Tone detection patterns
@@ -52,11 +47,7 @@ const TONE_PATTERNS: Record<string, RegExp[]> = {
   ],
 
   // Communication style tones
-  curious: [
-    /\?/g,
-    /\b(wonder|curious|interesting|intriguing)\b/i,
-    /what (if|about|would)/i,
-  ],
+  curious: [/\?/g, /\b(wonder|curious|interesting|intriguing)\b/i, /what (if|about|would)/i],
   thoughtful: [
     /\b(consider|reflect|think about|ponder)\b/i,
     /it's worth (noting|considering|asking)/i,
@@ -67,10 +58,7 @@ const TONE_PATTERNS: Record<string, RegExp[]> = {
   ],
 
   // Expertise tones
-  authoritative: [
-    /\b(must|should|need to|essential)\b/i,
-    /\b(always|never|critical|vital)\b/i,
-  ],
+  authoritative: [/\b(must|should|need to|essential)\b/i, /\b(always|never|critical|vital)\b/i],
   humble: [
     /\b(might|perhaps|possibly|may)\b/i,
     /I (think|believe|suspect)/i,
@@ -88,78 +76,80 @@ const TONE_PATTERNS: Record<string, RegExp[]> = {
     /\b(once|when|back in|years ago)\b/i,
     /\b(story|narrative|example|case)\b/i,
   ],
-  illustrative: [
-    /\b(for example|for instance|such as|like)\b/i,
-    /consider (the case|how|what)/i,
-  ],
+  illustrative: [/\b(for example|for instance|such as|like)\b/i, /consider (the case|how|what)/i],
 };
 
 /**
  * Style pattern detectors
  */
-const STYLE_DETECTORS: Record<string, (text: string) => { followed: boolean; confidence: number }> = {
-  'Asks questions first': (text) => {
-    const sentences = text.split(/[.!?]+/);
-    const firstFewSentences = sentences.slice(0, 3).join(' ');
-    const hasQuestion = /\?/.test(firstFewSentences);
-    return { followed: hasQuestion, confidence: hasQuestion ? 0.8 : 0.2 };
-  },
+const STYLE_DETECTORS: Record<string, (text: string) => { followed: boolean; confidence: number }> =
+  {
+    'Asks questions first': (text) => {
+      const sentences = text.split(/[.!?]+/);
+      const firstFewSentences = sentences.slice(0, 3).join(' ');
+      const hasQuestion = /\?/.test(firstFewSentences);
+      return { followed: hasQuestion, confidence: hasQuestion ? 0.8 : 0.2 };
+    },
 
-  'Uses examples': (text) => {
-    const examplePatterns = /\b(for example|for instance|such as|consider|like when|take the case)\b/i;
-    const hasExamples = examplePatterns.test(text);
-    const exampleCount = (text.match(examplePatterns) || []).length;
-    return { followed: hasExamples, confidence: Math.min(exampleCount * 0.3, 1) };
-  },
+    'Uses examples': (text) => {
+      const examplePatterns =
+        /\b(for example|for instance|such as|consider|like when|take the case)\b/i;
+      const hasExamples = examplePatterns.test(text);
+      const exampleCount = (text.match(examplePatterns) || []).length;
+      return { followed: hasExamples, confidence: Math.min(exampleCount * 0.3, 1) };
+    },
 
-  'Builds on theory': (text) => {
-    const theoryPatterns = /\b(theory|framework|model|concept|principle)\b/i;
-    const hasTheory = theoryPatterns.test(text);
-    return { followed: hasTheory, confidence: hasTheory ? 0.7 : 0.3 };
-  },
+    'Builds on theory': (text) => {
+      const theoryPatterns = /\b(theory|framework|model|concept|principle)\b/i;
+      const hasTheory = theoryPatterns.test(text);
+      return { followed: hasTheory, confidence: hasTheory ? 0.7 : 0.3 };
+    },
 
-  'Cites evidence': (text) => {
-    const evidencePatterns = /\b(research|study|data|evidence|findings|analysis shows)\b/i;
-    const hasEvidence = evidencePatterns.test(text);
-    return { followed: hasEvidence, confidence: hasEvidence ? 0.8 : 0.2 };
-  },
+    'Cites evidence': (text) => {
+      const evidencePatterns = /\b(research|study|data|evidence|findings|analysis shows)\b/i;
+      const hasEvidence = evidencePatterns.test(text);
+      return { followed: hasEvidence, confidence: hasEvidence ? 0.8 : 0.2 };
+    },
 
-  'Acknowledges complexity': (text) => {
-    const complexityPatterns = /\b(however|but|although|while|on the other hand|it depends|nuanced)\b/i;
-    const acknowledges = complexityPatterns.test(text);
-    return { followed: acknowledges, confidence: acknowledges ? 0.7 : 0.3 };
-  },
+    'Acknowledges complexity': (text) => {
+      const complexityPatterns =
+        /\b(however|but|although|while|on the other hand|it depends|nuanced)\b/i;
+      const acknowledges = complexityPatterns.test(text);
+      return { followed: acknowledges, confidence: acknowledges ? 0.7 : 0.3 };
+    },
 
-  'Structured response': (text) => {
-    const hasStructure = /\b(first|second|third|finally|in conclusion|to summarize)\b/i.test(text);
-    const hasBullets = /^[\s]*[-•*]\s/m.test(text);
-    const hasNumbering = /^\s*\d+[.)]/m.test(text);
-    const followed = hasStructure || hasBullets || hasNumbering;
-    return { followed, confidence: followed ? 0.8 : 0.2 };
-  },
+    'Structured response': (text) => {
+      const hasStructure = /\b(first|second|third|finally|in conclusion|to summarize)\b/i.test(
+        text,
+      );
+      const hasBullets = /^[\s]*[-•*]\s/m.test(text);
+      const hasNumbering = /^\s*\d+[.)]/m.test(text);
+      const followed = hasStructure || hasBullets || hasNumbering;
+      return { followed, confidence: followed ? 0.8 : 0.2 };
+    },
 
-  'Socratic method': (text) => {
-    const questionCount = (text.match(/\?/g) || []).length;
-    const hasSocratic = questionCount >= 2;
-    return { followed: hasSocratic, confidence: Math.min(questionCount * 0.25, 1) };
-  },
+    'Socratic method': (text) => {
+      const questionCount = (text.match(/\?/g) || []).length;
+      const hasSocratic = questionCount >= 2;
+      return { followed: hasSocratic, confidence: Math.min(questionCount * 0.25, 1) };
+    },
 
-  'Concrete over abstract': (text) => {
-    const concretePatterns = /\b(specific|example|case|instance|situation|scenario)\b/i;
-    const abstractPatterns = /\b(abstract|theoretical|conceptual|philosophical)\b/i;
-    const concreteCount = (text.match(concretePatterns) || []).length;
-    const abstractCount = (text.match(abstractPatterns) || []).length;
-    const followed = concreteCount >= abstractCount;
-    return { followed, confidence: followed ? 0.7 : 0.4 };
-  },
-};
+    'Concrete over abstract': (text) => {
+      const concretePatterns = /\b(specific|example|case|instance|situation|scenario)\b/i;
+      const abstractPatterns = /\b(abstract|theoretical|conceptual|philosophical)\b/i;
+      const concreteCount = (text.match(concretePatterns) || []).length;
+      const abstractCount = (text.match(abstractPatterns) || []).length;
+      const followed = concreteCount >= abstractCount;
+      return { followed, confidence: followed ? 0.7 : 0.4 };
+    },
+  };
 
 /**
  * Analyze text for voice consistency with a persona
  */
 export function analyzeVoiceConsistency(
   text: string,
-  persona: PersonaDefinition
+  persona: PersonaDefinition,
 ): VoiceAnalysisResult {
   const { voice } = persona;
 
@@ -180,7 +170,7 @@ export function analyzeVoiceConsistency(
     toneMarkers,
     phraseMatches,
     stylePatterns,
-    constraintViolations
+    constraintViolations,
   );
 
   // Generate assessment
@@ -190,7 +180,7 @@ export function analyzeVoiceConsistency(
     phraseMatches,
     stylePatterns,
     constraintViolations,
-    persona.identity.name
+    persona.identity.name,
   );
 
   return {
@@ -250,9 +240,7 @@ function analyzePhrases(text: string, expectedPhrases: string[]): PhraseMatch[] 
       .slice(0, 3);
 
     if (keyWords.length > 0) {
-      const keyWordsFound = keyWords.filter((word) =>
-        normalizedText.includes(word)
-      );
+      const keyWordsFound = keyWords.filter((word) => normalizedText.includes(word));
       if (keyWordsFound.length >= Math.ceil(keyWords.length / 2)) {
         return {
           phrase,
@@ -280,10 +268,11 @@ function analyzeStyles(text: string, expectedStyles: string[]): StyleMatch[] {
     }
 
     // Generic detection - look for keywords from the style description
-    const keywords = style.toLowerCase().split(/\s+/).filter((w) => w.length > 4);
-    const keywordsFound = keywords.filter((kw) =>
-      text.toLowerCase().includes(kw)
-    );
+    const keywords = style
+      .toLowerCase()
+      .split(/\s+/)
+      .filter((w) => w.length > 4);
+    const keywordsFound = keywords.filter((kw) => text.toLowerCase().includes(kw));
     const followed = keywordsFound.length >= Math.ceil(keywords.length / 3);
 
     return {
@@ -327,7 +316,10 @@ function checkConstraints(text: string, constraints: string[]): string[] {
 
     // Check for specific antipattern keywords
     const antipatternKeywords = [
-      { constraint: 'overconfident', patterns: [/\b(definitely|absolutely|certainly|guaranteed)\b/i] },
+      {
+        constraint: 'overconfident',
+        patterns: [/\b(definitely|absolutely|certainly|guaranteed)\b/i],
+      },
       { constraint: 'jargon', patterns: [/\b(synergy|leverage|pivot|disrupt)\b/i] },
       { constraint: 'condescending', patterns: [/\b(obviously|clearly you|as anyone knows)\b/i] },
     ];
@@ -354,7 +346,7 @@ function calculateConsistencyScore(
   toneMarkers: ToneMatch[],
   phraseMatches: PhraseMatch[],
   stylePatterns: StyleMatch[],
-  constraintViolations: string[]
+  constraintViolations: string[],
 ): number {
   let score = 0;
   let maxScore = 0;
@@ -371,21 +363,15 @@ function calculateConsistencyScore(
   maxScore += phrasePoints;
   const exactPhrases = phraseMatches.filter((p) => p.matchType === 'exact').length;
   const variantPhrases = phraseMatches.filter((p) => p.matchType === 'variant').length;
-  const phraseScore = phraseMatches.length > 0
-    ? (exactPhrases + variantPhrases * 0.5) / phraseMatches.length
-    : 0;
+  const phraseScore =
+    phraseMatches.length > 0 ? (exactPhrases + variantPhrases * 0.5) / phraseMatches.length : 0;
   score += phraseScore * phrasePoints;
 
   // Style score (30 points max)
   const stylePoints = 30;
   maxScore += stylePoints;
-  const styleScoreSum = stylePatterns.reduce(
-    (sum, s) => sum + (s.followed ? s.confidence : 0),
-    0
-  );
-  const styleAvg = stylePatterns.length > 0
-    ? styleScoreSum / stylePatterns.length
-    : 0;
+  const styleScoreSum = stylePatterns.reduce((sum, s) => sum + (s.followed ? s.confidence : 0), 0);
+  const styleAvg = stylePatterns.length > 0 ? styleScoreSum / stylePatterns.length : 0;
   score += styleAvg * stylePoints;
 
   // Constraint penalty (up to -20 points)
@@ -405,7 +391,7 @@ function generateVoiceAssessment(
   phraseMatches: PhraseMatch[],
   stylePatterns: StyleMatch[],
   constraintViolations: string[],
-  personaName: string
+  personaName: string,
 ): string {
   const lines: string[] = [];
 
@@ -432,7 +418,9 @@ function generateVoiceAssessment(
   // Phrase feedback
   const exactCount = phraseMatches.filter((p) => p.matchType === 'exact').length;
   const variantCount = phraseMatches.filter((p) => p.matchType === 'variant').length;
-  lines.push(`Phrase matches: ${exactCount} exact, ${variantCount} variant of ${phraseMatches.length} expected`);
+  lines.push(
+    `Phrase matches: ${exactCount} exact, ${variantCount} variant of ${phraseMatches.length} expected`,
+  );
 
   // Style feedback
   const followedStyles = stylePatterns.filter((s) => s.followed).length;
@@ -449,11 +437,7 @@ function generateVoiceAssessment(
 /**
  * Quick check if voice is consistent enough
  */
-export function quickVoiceCheck(
-  text: string,
-  persona: PersonaDefinition,
-  threshold = 60
-): boolean {
+export function quickVoiceCheck(text: string, persona: PersonaDefinition, threshold = 60): boolean {
   const result = analyzeVoiceConsistency(text, persona);
   return result.consistencyScore >= threshold;
 }
@@ -461,10 +445,7 @@ export function quickVoiceCheck(
 /**
  * Get voice improvement suggestions
  */
-export function getVoiceSuggestions(
-  text: string,
-  persona: PersonaDefinition
-): string[] {
+export function getVoiceSuggestions(text: string, persona: PersonaDefinition): string[] {
   const result = analyzeVoiceConsistency(text, persona);
   const suggestions: string[] = [];
 
@@ -475,9 +456,7 @@ export function getVoiceSuggestions(
   }
 
   // Missing phrases
-  const missingPhrases = result.phraseMatches.filter(
-    (p) => p.matchType === 'absent'
-  );
+  const missingPhrases = result.phraseMatches.filter((p) => p.matchType === 'absent');
   for (const phrase of missingPhrases.slice(0, 2)) {
     suggestions.push(`Consider using phrase: "${phrase.phrase}"`);
   }

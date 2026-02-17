@@ -24,7 +24,7 @@ import { DEFAULT_VALIDATION_CONFIG } from './types.js';
  */
 export function runTestSuite(
   persona: PersonaDefinition,
-  config: Partial<ValidationConfig> = {}
+  config: Partial<ValidationConfig> = {},
 ): TestSuiteResult {
   const mergedConfig = { ...DEFAULT_VALIDATION_CONFIG, ...config };
   const startTime = Date.now();
@@ -49,9 +49,7 @@ export function runTestSuite(
   }
 
   const totalExecutionTime = Date.now() - startTime;
-  const passRate = testCases.length > 0
-    ? Math.round((passedTests / testCases.length) * 100)
-    : 100;
+  const passRate = testCases.length > 0 ? Math.round((passedTests / testCases.length) * 100) : 100;
 
   return {
     personaId: persona.identity.name.toLowerCase().replace(/\s+/g, '-'),
@@ -68,10 +66,7 @@ export function runTestSuite(
 /**
  * Generate test cases from persona definition
  */
-function generateTestCases(
-  persona: PersonaDefinition,
-  config: ValidationConfig
-): TestCase[] {
+function generateTestCases(persona: PersonaDefinition, config: ValidationConfig): TestCase[] {
   const testCases: TestCase[] = [];
 
   // Test cases from sample_responses
@@ -173,7 +168,8 @@ function generateEdgeCaseTests(persona: PersonaDefinition): TestCase[] {
     id: 'edge_corporate',
     description: 'Generic corporate speak should score low',
     category: 'negative',
-    input: 'We need to leverage our synergies and pivot to a more scalable solution that disrupts the market paradigm.',
+    input:
+      'We need to leverage our synergies and pivot to a more scalable solution that disrupts the market paradigm.',
     expected: {
       shouldPass: false,
       maxScore: 50,
@@ -198,10 +194,7 @@ function generateEdgeCaseTests(persona: PersonaDefinition): TestCase[] {
 /**
  * Run a single test case
  */
-function runSingleTest(
-  testCase: TestCase,
-  persona: PersonaDefinition
-): TestResult {
+function runSingleTest(testCase: TestCase, persona: PersonaDefinition): TestResult {
   const startTime = Date.now();
 
   try {
@@ -258,7 +251,7 @@ function runSingleTest(
 function evaluateExpectation(
   actualScore: number,
   expected: TestExpectation,
-  matchedPatterns: string[]
+  matchedPatterns: string[],
 ): boolean {
   // Check shouldPass
   if (expected.shouldPass) {
@@ -296,7 +289,7 @@ function evaluateExpectation(
 export function runCustomTest(
   text: string,
   persona: PersonaDefinition,
-  expected: Partial<TestExpectation> = {}
+  expected: Partial<TestExpectation> = {},
 ): TestResult {
   const testCase: TestCase = {
     id: 'custom',
@@ -329,7 +322,9 @@ export function formatTestResults(results: TestSuiteResult): string {
 
   // Summary
   const passEmoji = results.failedTests === 0 ? '✓' : '✗';
-  lines.push(`${passEmoji} ${results.passedTests}/${results.totalTests} tests passed (${results.passRate}%)`);
+  lines.push(
+    `${passEmoji} ${results.passedTests}/${results.totalTests} tests passed (${results.passRate}%)`,
+  );
   lines.push(`   Execution time: ${results.totalExecutionTime}ms`);
   lines.push('');
 
@@ -386,11 +381,15 @@ export function generateJUnitReport(results: TestSuiteResult): string {
   const lines: string[] = [];
 
   lines.push('<?xml version="1.0" encoding="UTF-8"?>');
-  lines.push(`<testsuite name="${escapeXml(results.personaId)}" tests="${results.totalTests}" failures="${results.failedTests}" time="${results.totalExecutionTime / 1000}">`);
+  lines.push(
+    `<testsuite name="${escapeXml(results.personaId)}" tests="${results.totalTests}" failures="${results.failedTests}" time="${results.totalExecutionTime / 1000}">`,
+  );
 
   for (const result of results.results) {
     const time = result.executionTime / 1000;
-    lines.push(`  <testcase name="${escapeXml(result.testCase.id)}" classname="${escapeXml(result.testCase.category)}" time="${time}">`);
+    lines.push(
+      `  <testcase name="${escapeXml(result.testCase.id)}" classname="${escapeXml(result.testCase.category)}" time="${time}">`,
+    );
 
     if (!result.passed) {
       const message = result.error ?? `Score ${result.actualScore} did not meet expectation`;
@@ -427,7 +426,7 @@ function escapeXml(text: string): string {
  */
 export function passesCI(
   results: TestSuiteResult,
-  minPassRate = 80
+  minPassRate = 80,
 ): { passed: boolean; message: string } {
   if (results.passRate < minPassRate) {
     return {

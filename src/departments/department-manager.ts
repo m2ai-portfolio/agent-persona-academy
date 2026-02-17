@@ -12,11 +12,7 @@ import {
   clearDepartmentCache,
   getDepartmentsDirectory,
 } from './department-loader.js';
-import type {
-  DepartmentDefinition,
-  LoadedDepartment,
-  ValidationMarker,
-} from '../core/types.js';
+import type { DepartmentDefinition, LoadedDepartment, ValidationMarker } from '../core/types.js';
 import type { ValidationConfig } from '../validation/types.js';
 import { DEFAULT_VALIDATION_CONFIG } from '../validation/types.js';
 
@@ -156,7 +152,8 @@ export function getValidationConfigForPersona(personaId: string): ValidationConf
   return {
     fidelityThreshold: overrides.fidelity_threshold ?? DEFAULT_VALIDATION_CONFIG.fidelityThreshold,
     voiceThreshold: overrides.voice_threshold ?? DEFAULT_VALIDATION_CONFIG.voiceThreshold,
-    frameworkThreshold: overrides.framework_threshold ?? DEFAULT_VALIDATION_CONFIG.frameworkThreshold,
+    frameworkThreshold:
+      overrides.framework_threshold ?? DEFAULT_VALIDATION_CONFIG.frameworkThreshold,
     strictConstraints: DEFAULT_VALIDATION_CONFIG.strictConstraints,
     weights: overrides.weights
       ? {

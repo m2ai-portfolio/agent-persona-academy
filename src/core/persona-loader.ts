@@ -62,10 +62,7 @@ export function loadPersonaFromFile(filePath: string): PersonaDefinition {
  *
  * External files override inline keys with the same name.
  */
-export function resolveExternalFiles(
-  definition: PersonaDefinition,
-  personaDir: string
-): void {
+export function resolveExternalFiles(definition: PersonaDefinition, personaDir: string): void {
   // frameworks/ directory
   const frameworksDir = join(personaDir, 'frameworks');
   if (existsSync(frameworksDir)) {
@@ -159,9 +156,7 @@ export function loadPersona(personaName: string): LoadedPersona {
   }
 
   if (!definition) {
-    throw new Error(
-      `Persona '${personaName}' not found. Searched:\n${possiblePaths.join('\n')}`
-    );
+    throw new Error(`Persona '${personaName}' not found. Searched:\n${possiblePaths.join('\n')}`);
   }
 
   // Generate system prompt
@@ -192,7 +187,7 @@ export function clearPersonaCache(): void {
  */
 export function getFramework(
   persona: PersonaDefinition,
-  frameworkName: string
+  frameworkName: string,
 ): Framework | undefined {
   return persona.frameworks[frameworkName];
 }
@@ -209,7 +204,7 @@ export function getFrameworkNames(persona: PersonaDefinition): string[] {
  */
 export function getDiagnosticQuestions(
   persona: PersonaDefinition,
-  frameworkName: string
+  frameworkName: string,
 ): string[] {
   const framework = persona.frameworks[frameworkName];
   return framework?.questions ?? [];
@@ -225,10 +220,7 @@ export function getAllDiagnosticQuestions(persona: PersonaDefinition): string[] 
 /**
  * Get a specific case study from a persona
  */
-export function getCaseStudy(
-  persona: PersonaDefinition,
-  caseName: string
-): CaseStudy | undefined {
+export function getCaseStudy(persona: PersonaDefinition, caseName: string): CaseStudy | undefined {
   return persona.case_studies?.[caseName];
 }
 
@@ -257,18 +249,14 @@ export function getRandomPhrase(persona: PersonaDefinition): string {
 /**
  * Get validation markers from a persona
  */
-export function getValidationMarkers(
-  persona: PersonaDefinition
-): PersonaDefinition['validation'] {
+export function getValidationMarkers(persona: PersonaDefinition): PersonaDefinition['validation'] {
   return persona.validation;
 }
 
 /**
  * Get sample responses from a persona
  */
-export function getSampleResponses(
-  persona: PersonaDefinition
-): Record<string, SampleResponse> {
+export function getSampleResponses(persona: PersonaDefinition): Record<string, SampleResponse> {
   return persona.sample_responses ?? {};
 }
 
@@ -317,7 +305,7 @@ function validatePersonaStructure(definition: PersonaDefinition): void {
  */
 export function generateSystemPrompt(
   persona: PersonaDefinition,
-  options?: PromptGenerationOptions
+  options?: PromptGenerationOptions,
 ): string {
   const { identity, voice, frameworks, case_studies, style_references, analysis_patterns } =
     persona;
@@ -375,7 +363,7 @@ ${Object.entries(fw.concepts)
   .join('\n')}
 
 **Diagnostic Questions**:
-${(fw.questions ?? []).map((q) => `- ${q}`).join('\n')}`
+${(fw.questions ?? []).map((q) => `- ${q}`).join('\n')}`,
   )
   .join('\n\n')}`);
   }
@@ -388,7 +376,7 @@ ${(fw.questions ?? []).map((q) => `- ${q}`).join('\n')}`
 ${Object.entries(case_studies)
   .map(
     ([name, cs]) =>
-      `- **${formatConceptName(name)}**: ${cs.pattern} *(Use get_case_study tool for details)*`
+      `- **${formatConceptName(name)}**: ${cs.pattern} *(Use get_case_study tool for details)*`,
   )
   .join('\n')}`);
     } else {
@@ -401,7 +389,7 @@ ${Object.entries(case_studies)
 
 ${cs.story.trim()}
 
-**When to reference**: ${(cs.signals ?? []).slice(0, 3).join(', ')}`
+**When to reference**: ${(cs.signals ?? []).slice(0, 3).join(', ')}`,
   )
   .join('\n\n')}`);
     }
@@ -417,7 +405,7 @@ ${Object.entries(style_references)
 ${ref.description.trim()}
 
 **Design Principles**: ${ref.design_principles.join('; ')}
-**Emotional Quality**: ${ref.emotional_quality}${ref.relevant_frameworks?.length ? `\n**Frameworks**: ${ref.relevant_frameworks.map((f) => formatFrameworkName(f)).join(', ')}` : ''}`
+**Emotional Quality**: ${ref.emotional_quality}${ref.relevant_frameworks?.length ? `\n**Frameworks**: ${ref.relevant_frameworks.map((f) => formatFrameworkName(f)).join(', ')}` : ''}`,
   )
   .join('\n\n')}`);
   }
@@ -455,10 +443,7 @@ function formatConceptName(name: string): string {
 // Export the import helper for finding persona files
 export function getPersonasDirectory(): string {
   // Try multiple possible locations
-  const possibleDirs = [
-    join(__dirname, '../../personas'),
-    join(__dirname, '../../../personas'),
-  ];
+  const possibleDirs = [join(__dirname, '../../personas'), join(__dirname, '../../../personas')];
 
   for (const dir of possibleDirs) {
     if (existsSync(dir)) {

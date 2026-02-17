@@ -13,8 +13,8 @@
     "cli": "node dist/cli/index.js",
     "test": "vitest",
     "test:core": "vitest src/core",
-    "lint": "eslint src/",
-    "format": "prettier --write src/"
+    "lint": "eslint src/ --ext .ts",
+    "format": "prettier --write \"src/**/*.ts\""
   },
   "keywords": [
     "mcp",
@@ -38,6 +38,8 @@
   },
   "devDependencies": {
     "@types/node": "^20.10.0",
+    "@typescript-eslint/eslint-plugin": "^8.56.0",
+    "@typescript-eslint/parser": "^8.56.0",
     "eslint": "^8.56.0",
     "prettier": "^3.2.0",
     "typescript": "^5.3.0",

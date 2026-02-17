@@ -62,9 +62,7 @@ cacheCommand
     console.log(chalk.cyan('\n📦 Cached Personas\n'));
 
     for (const persona of cached) {
-      const changesIndicator = persona.hasLocalChanges
-        ? chalk.yellow(' [modified]')
-        : '';
+      const changesIndicator = persona.hasLocalChanges ? chalk.yellow(' [modified]') : '';
 
       console.log(`  ${chalk.green(persona.entry.id)}${changesIndicator}`);
       console.log(chalk.dim(`    ${persona.entry.name} v${persona.entry.version}`));

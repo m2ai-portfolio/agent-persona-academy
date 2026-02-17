@@ -34,7 +34,7 @@ export function generateQualityReport(
   text: string,
   persona: PersonaDefinition,
   config: Partial<ValidationConfig> = {},
-  departmentContext?: DepartmentContext
+  departmentContext?: DepartmentContext,
 ): QualityReport {
   const mergedConfig = { ...DEFAULT_VALIDATION_CONFIG, ...config };
 
@@ -55,8 +55,8 @@ export function generateQualityReport(
 
   const overall = Math.round(
     fidelity.score * (weights.fidelity ?? 0.5) +
-    voice.consistencyScore * (weights.voice ?? 0.3) +
-    framework.coverageScore * (weights.framework ?? 0.2)
+      voice.consistencyScore * (weights.voice ?? 0.3) +
+      framework.coverageScore * (weights.framework ?? 0.2),
   );
 
   // Generate recommendations
@@ -66,13 +66,15 @@ export function generateQualityReport(
     fidelity,
     voice,
     framework,
-    mergedConfig
+    mergedConfig,
   );
 
   return {
     generatedAt: new Date(),
     persona: {
-      id: persona.metadata?.version ? `${persona.identity.name.toLowerCase().replace(/\s+/g, '-')}` : 'unknown',
+      id: persona.metadata?.version
+        ? `${persona.identity.name.toLowerCase().replace(/\s+/g, '-')}`
+        : 'unknown',
       name: persona.identity.name,
       version: persona.metadata?.version,
     },
@@ -103,7 +105,7 @@ function generateRecommendations(
   fidelity: FidelityScore,
   voice: VoiceAnalysisResult,
   framework: FrameworkCoverageResult,
-  config: ValidationConfig
+  config: ValidationConfig,
 ): Recommendation[] {
   const recommendations: Recommendation[] = [];
 
@@ -172,8 +174,8 @@ function generateRecommendations(
 
   // Low priority: Could be better
   if (fidelity.score >= config.fidelityThreshold && fidelity.score < 90) {
-    const missedPatterns = fidelity.breakdown.must_include.total -
-      fidelity.breakdown.must_include.matched;
+    const missedPatterns =
+      fidelity.breakdown.must_include.total - fidelity.breakdown.must_include.matched;
     if (missedPatterns > 0) {
       recommendations.push({
         category: 'validation',
@@ -223,8 +225,12 @@ export function formatReport(report: QualityReport): string {
   lines.push('FIDELITY ANALYSIS');
   lines.push('─'.repeat(40));
   const fidelity = report.analysis.fidelity;
-  lines.push(`  Required patterns: ${fidelity.breakdown.must_include.matched}/${fidelity.breakdown.must_include.total}`);
-  lines.push(`  Bonus patterns:    ${fidelity.breakdown.should_include.matched}/${fidelity.breakdown.should_include.total}`);
+  lines.push(
+    `  Required patterns: ${fidelity.breakdown.must_include.matched}/${fidelity.breakdown.must_include.total}`,
+  );
+  lines.push(
+    `  Bonus patterns:    ${fidelity.breakdown.should_include.matched}/${fidelity.breakdown.should_include.total}`,
+  );
   if (fidelity.breakdown.must_avoid.triggered > 0) {
     lines.push(`  Violations:        ${fidelity.breakdown.must_avoid.triggered}`);
   }
@@ -250,14 +256,18 @@ export function formatReport(report: QualityReport): string {
   lines.push('FRAMEWORK COVERAGE');
   lines.push('─'.repeat(40));
   const framework = report.analysis.framework;
-  lines.push(`  Frameworks used:   ${framework.referencedFrameworks.length}/${Object.keys(framework.frameworkCoverage).length}`);
+  lines.push(
+    `  Frameworks used:   ${framework.referencedFrameworks.length}/${Object.keys(framework.frameworkCoverage).length}`,
+  );
   lines.push(`  Concepts applied:  ${framework.conceptsMentioned.length}`);
   lines.push(`  Questions used:    ${framework.questionsUsed.length}`);
   lines.push('');
 
   for (const [name, coverage] of Object.entries(framework.frameworkCoverage)) {
     const status = coverage.referenced ? '✓' : '○';
-    lines.push(`    ${status} ${name}: ${coverage.coverage}% (${coverage.conceptsFound.length}/${coverage.totalConcepts} concepts)`);
+    lines.push(
+      `    ${status} ${name}: ${coverage.coverage}% (${coverage.conceptsFound.length}/${coverage.totalConcepts} concepts)`,
+    );
   }
   lines.push('');
 
@@ -333,13 +343,14 @@ export function generateSummary(report: QualityReport): string {
   }
 
   const highPriorityCount = recommendations.filter((r) => r.priority === 'high').length;
-  const issueNote = highPriorityCount > 0
-    ? ` ${highPriorityCount} high-priority issue(s) require attention.`
-    : '';
+  const issueNote =
+    highPriorityCount > 0 ? ` ${highPriorityCount} high-priority issue(s) require attention.` : '';
 
-  return `${persona.name} persona quality is ${status} (${scores.overall}/100). ` +
+  return (
+    `${persona.name} persona quality is ${status} (${scores.overall}/100). ` +
     `Fidelity: ${scores.fidelity}, Voice: ${scores.voiceConsistency}, Framework: ${scores.frameworkCoverage}.` +
-    issueNote;
+    issueNote
+  );
 }
 
 /**
@@ -347,21 +358,27 @@ export function generateSummary(report: QualityReport): string {
  */
 export function passesQualityThresholds(
   report: QualityReport,
-  config: Partial<ValidationConfig> = {}
+  config: Partial<ValidationConfig> = {},
 ): { passed: boolean; failures: string[] } {
   const mergedConfig = { ...DEFAULT_VALIDATION_CONFIG, ...config };
   const failures: string[] = [];
 
   if (report.scores.fidelity < mergedConfig.fidelityThreshold) {
-    failures.push(`Fidelity ${report.scores.fidelity} < threshold ${mergedConfig.fidelityThreshold}`);
+    failures.push(
+      `Fidelity ${report.scores.fidelity} < threshold ${mergedConfig.fidelityThreshold}`,
+    );
   }
 
   if (report.scores.voiceConsistency < mergedConfig.voiceThreshold) {
-    failures.push(`Voice ${report.scores.voiceConsistency} < threshold ${mergedConfig.voiceThreshold}`);
+    failures.push(
+      `Voice ${report.scores.voiceConsistency} < threshold ${mergedConfig.voiceThreshold}`,
+    );
   }
 
   if (report.scores.frameworkCoverage < mergedConfig.frameworkThreshold) {
-    failures.push(`Framework ${report.scores.frameworkCoverage} < threshold ${mergedConfig.frameworkThreshold}`);
+    failures.push(
+      `Framework ${report.scores.frameworkCoverage} < threshold ${mergedConfig.frameworkThreshold}`,
+    );
   }
 
   if (mergedConfig.strictConstraints) {

@@ -9,11 +9,7 @@ import type { PersonaDefinition } from '../core/types.js';
 import { calculateFidelityScore } from '../core/validation-engine.js';
 import { analyzeVoiceConsistency } from './voice-analyzer.js';
 import { analyzeFrameworkCoverage } from './framework-coverage.js';
-import type {
-  PersonaComparisonResult,
-  CrossPersonaComparison,
-  ValidationConfig,
-} from './types.js';
+import type { PersonaComparisonResult, CrossPersonaComparison, ValidationConfig } from './types.js';
 import { DEFAULT_VALIDATION_CONFIG } from './types.js';
 
 /**
@@ -22,7 +18,7 @@ import { DEFAULT_VALIDATION_CONFIG } from './types.js';
 export function compareAcrossPersonas(
   text: string,
   personas: Map<string, PersonaDefinition>,
-  config: Partial<ValidationConfig> = {}
+  config: Partial<ValidationConfig> = {},
 ): CrossPersonaComparison {
   const mergedConfig = { ...DEFAULT_VALIDATION_CONFIG, ...config };
   const results: PersonaComparisonResult[] = [];
@@ -57,7 +53,7 @@ function analyzeForPersona(
   text: string,
   personaId: string,
   persona: PersonaDefinition,
-  config: ValidationConfig
+  config: ValidationConfig,
 ): PersonaComparisonResult {
   // Run all analyses
   const fidelityScore = calculateFidelityScore(text, persona);
@@ -73,8 +69,8 @@ function analyzeForPersona(
 
   const qualityScore = Math.round(
     fidelityScore.score * (weights.fidelity ?? 0.5) +
-    voiceAnalysis.consistencyScore * (weights.voice ?? 0.3) +
-    frameworkCoverage.coverageScore * (weights.framework ?? 0.2)
+      voiceAnalysis.consistencyScore * (weights.voice ?? 0.3) +
+      frameworkCoverage.coverageScore * (weights.framework ?? 0.2),
   );
 
   return {
@@ -90,10 +86,7 @@ function analyzeForPersona(
 /**
  * Generate comparison summary
  */
-function generateComparisonSummary(
-  results: PersonaComparisonResult[],
-  text: string
-): string {
+function generateComparisonSummary(results: PersonaComparisonResult[], text: string): string {
   if (results.length === 0) {
     return 'No personas to compare against.';
   }
@@ -139,7 +132,7 @@ function generateComparisonSummary(
  */
 export function findBestPersonaMatch(
   text: string,
-  personas: Map<string, PersonaDefinition>
+  personas: Map<string, PersonaDefinition>,
 ): { personaId: string; personaName: string; score: number } | null {
   if (personas.size === 0) return null;
 
@@ -160,7 +153,7 @@ export function findBestPersonaMatch(
  */
 export function comparePersonaCharacteristics(
   persona1: PersonaDefinition,
-  persona2: PersonaDefinition
+  persona2: PersonaDefinition,
 ): {
   voiceSimilarity: number;
   frameworkOverlap: number;
@@ -168,47 +161,34 @@ export function comparePersonaCharacteristics(
   overall: number;
 } {
   // Voice similarity
-  const voice1 = new Set([
-    ...persona1.voice.tone,
-    ...persona1.voice.style,
-  ]);
-  const voice2 = new Set([
-    ...persona2.voice.tone,
-    ...persona2.voice.style,
-  ]);
+  const voice1 = new Set([...persona1.voice.tone, ...persona1.voice.style]);
+  const voice2 = new Set([...persona2.voice.tone, ...persona2.voice.style]);
   const voiceIntersection = [...voice1].filter((x) => voice2.has(x));
   const voiceUnion = new Set([...voice1, ...voice2]);
-  const voiceSimilarity = voiceUnion.size > 0
-    ? Math.round((voiceIntersection.length / voiceUnion.size) * 100)
-    : 0;
+  const voiceSimilarity =
+    voiceUnion.size > 0 ? Math.round((voiceIntersection.length / voiceUnion.size) * 100) : 0;
 
   // Framework overlap (by name)
   const frameworks1 = new Set(Object.keys(persona1.frameworks));
   const frameworks2 = new Set(Object.keys(persona2.frameworks));
   const frameworkIntersection = [...frameworks1].filter((x) => frameworks2.has(x));
   const frameworkUnion = new Set([...frameworks1, ...frameworks2]);
-  const frameworkOverlap = frameworkUnion.size > 0
-    ? Math.round((frameworkIntersection.length / frameworkUnion.size) * 100)
-    : 0;
+  const frameworkOverlap =
+    frameworkUnion.size > 0
+      ? Math.round((frameworkIntersection.length / frameworkUnion.size) * 100)
+      : 0;
 
   // Validation pattern similarity
-  const patterns1 = new Set(
-    persona1.validation.must_include.map((m) => m.pattern)
-  );
-  const patterns2 = new Set(
-    persona2.validation.must_include.map((m) => m.pattern)
-  );
+  const patterns1 = new Set(persona1.validation.must_include.map((m) => m.pattern));
+  const patterns2 = new Set(persona2.validation.must_include.map((m) => m.pattern));
   const patternIntersection = [...patterns1].filter((x) => patterns2.has(x));
   const patternUnion = new Set([...patterns1, ...patterns2]);
-  const validationSimilarity = patternUnion.size > 0
-    ? Math.round((patternIntersection.length / patternUnion.size) * 100)
-    : 0;
+  const validationSimilarity =
+    patternUnion.size > 0 ? Math.round((patternIntersection.length / patternUnion.size) * 100) : 0;
 
   // Overall (weighted average)
   const overall = Math.round(
-    voiceSimilarity * 0.4 +
-    frameworkOverlap * 0.4 +
-    validationSimilarity * 0.2
+    voiceSimilarity * 0.4 + frameworkOverlap * 0.4 + validationSimilarity * 0.2,
   );
 
   return {
@@ -223,7 +203,7 @@ export function comparePersonaCharacteristics(
  * Generate a matrix comparing all personas
  */
 export function generateSimilarityMatrix(
-  personas: Map<string, PersonaDefinition>
+  personas: Map<string, PersonaDefinition>,
 ): Map<string, Map<string, number>> {
   const matrix = new Map<string, Map<string, number>>();
   const personaIds = [...personas.keys()];
@@ -251,9 +231,7 @@ export function generateSimilarityMatrix(
 /**
  * Identify which aspects differentiate personas most
  */
-export function identifyDifferentiators(
-  personas: Map<string, PersonaDefinition>
-): {
+export function identifyDifferentiators(personas: Map<string, PersonaDefinition>): {
   uniqueFrameworks: Map<string, string[]>;
   uniqueTones: Map<string, string[]>;
   uniquePhrases: Map<string, string[]>;
@@ -283,7 +261,7 @@ export function identifyDifferentiators(
     }
     uniqueFrameworks.set(
       id,
-      [...frameworks].filter((f) => !otherFrameworks.has(f))
+      [...frameworks].filter((f) => !otherFrameworks.has(f)),
     );
   }
 
@@ -294,7 +272,10 @@ export function identifyDifferentiators(
         otherT.forEach((t) => otherTones.add(t));
       }
     }
-    uniqueTones.set(id, [...tones].filter((t) => !otherTones.has(t)));
+    uniqueTones.set(
+      id,
+      [...tones].filter((t) => !otherTones.has(t)),
+    );
   }
 
   for (const [id, phrases] of allPhrases) {
@@ -304,7 +285,10 @@ export function identifyDifferentiators(
         otherP.forEach((p) => otherPhrases.add(p));
       }
     }
-    uniquePhrases.set(id, [...phrases].filter((p) => !otherPhrases.has(p)));
+    uniquePhrases.set(
+      id,
+      [...phrases].filter((p) => !otherPhrases.has(p)),
+    );
   }
 
   return { uniqueFrameworks, uniqueTones, uniquePhrases };
@@ -313,9 +297,7 @@ export function identifyDifferentiators(
 /**
  * Get a comparative analysis summary for multiple personas
  */
-export function getComparativeAnalysis(
-  personas: Map<string, PersonaDefinition>
-): string {
+export function getComparativeAnalysis(personas: Map<string, PersonaDefinition>): string {
   const lines: string[] = [];
 
   lines.push(`Comparative Analysis of ${personas.size} Personas`);

@@ -6,17 +6,14 @@
  */
 
 import type { PersonaDefinition, Framework } from '../core/types.js';
-import type {
-  FrameworkCoverageResult,
-  SingleFrameworkCoverage,
-} from './types.js';
+import type { FrameworkCoverageResult, SingleFrameworkCoverage } from './types.js';
 
 /**
  * Analyze text for framework coverage
  */
 export function analyzeFrameworkCoverage(
   text: string,
-  persona: PersonaDefinition
+  persona: PersonaDefinition,
 ): FrameworkCoverageResult {
   const { frameworks } = persona;
   const normalizedText = text.toLowerCase();
@@ -28,12 +25,7 @@ export function analyzeFrameworkCoverage(
   const questionsUsed: string[] = [];
 
   for (const [frameworkName, framework] of Object.entries(frameworks)) {
-    const coverage = analyzeFramework(
-      normalizedText,
-      text,
-      frameworkName,
-      framework
-    );
+    const coverage = analyzeFramework(normalizedText, text, frameworkName, framework);
 
     frameworkCoverage[frameworkName] = coverage;
 
@@ -58,7 +50,7 @@ export function analyzeFrameworkCoverage(
     frameworkCoverage,
     conceptsMentioned,
     questionsUsed,
-    persona
+    persona,
   );
 
   // Generate assessment
@@ -67,7 +59,7 @@ export function analyzeFrameworkCoverage(
     frameworkCoverage,
     conceptsMentioned,
     questionsUsed,
-    persona.identity.name
+    persona.identity.name,
   );
 
   return {
@@ -87,7 +79,7 @@ function analyzeFramework(
   normalizedText: string,
   originalText: string,
   frameworkName: string,
-  framework: Framework
+  framework: Framework,
 ): SingleFrameworkCoverage {
   // Check if framework is referenced by name
   const frameworkNameNormalized = normalizeFrameworkName(frameworkName);
@@ -106,9 +98,7 @@ function analyzeFramework(
   }
 
   // Calculate coverage percentage
-  const coverage = totalConcepts > 0
-    ? Math.round((conceptsFound.length / totalConcepts) * 100)
-    : 0;
+  const coverage = totalConcepts > 0 ? Math.round((conceptsFound.length / totalConcepts) * 100) : 0;
 
   return {
     name: frameworkName,
@@ -123,10 +113,7 @@ function analyzeFramework(
  * Normalize framework name for matching
  */
 function normalizeFrameworkName(name: string): string {
-  return name
-    .toLowerCase()
-    .replace(/_/g, ' ')
-    .replace(/-/g, ' ');
+  return name.toLowerCase().replace(/_/g, ' ').replace(/-/g, ' ');
 }
 
 /**
@@ -136,7 +123,7 @@ function isConceptMentioned(
   normalizedText: string,
   originalText: string,
   conceptName: string,
-  concept: { definition: string; examples?: string[] }
+  concept: { definition: string; examples?: string[] },
 ): boolean {
   // Check concept name
   const conceptNameNormalized = conceptName.toLowerCase().replace(/_/g, ' ');
@@ -153,9 +140,7 @@ function isConceptMentioned(
 
   // Check for key terms from the definition
   const definitionKeywords = extractKeywords(concept.definition);
-  const keywordMatches = definitionKeywords.filter((kw) =>
-    normalizedText.includes(kw)
-  );
+  const keywordMatches = definitionKeywords.filter((kw) => normalizedText.includes(kw));
   if (keywordMatches.length >= 3) {
     return true;
   }
@@ -163,7 +148,10 @@ function isConceptMentioned(
   // Check examples (if mentioned, concept is being used)
   if (concept.examples) {
     for (const example of concept.examples) {
-      const exampleWords = example.toLowerCase().split(' ').filter((w) => w.length > 4);
+      const exampleWords = example
+        .toLowerCase()
+        .split(' ')
+        .filter((w) => w.length > 4);
       const exampleMatches = exampleWords.filter((w) => normalizedText.includes(w));
       if (exampleMatches.length >= Math.ceil(exampleWords.length * 0.5)) {
         return true;
@@ -179,16 +167,96 @@ function isConceptMentioned(
  */
 function extractKeywords(text: string): string[] {
   const stopWords = new Set([
-    'the', 'a', 'an', 'is', 'are', 'was', 'were', 'be', 'been', 'being',
-    'have', 'has', 'had', 'do', 'does', 'did', 'will', 'would', 'could',
-    'should', 'may', 'might', 'must', 'shall', 'can', 'need', 'dare',
-    'ought', 'used', 'to', 'of', 'in', 'for', 'on', 'with', 'at', 'by',
-    'from', 'up', 'about', 'into', 'over', 'after', 'beneath', 'under',
-    'above', 'this', 'that', 'these', 'those', 'it', 'its', 'and', 'but',
-    'or', 'nor', 'so', 'yet', 'both', 'either', 'neither', 'not', 'only',
-    'own', 'same', 'than', 'too', 'very', 'just', 'also', 'now', 'here',
-    'there', 'when', 'where', 'why', 'how', 'all', 'each', 'every', 'few',
-    'more', 'most', 'other', 'some', 'such', 'no', 'any', 'which', 'who',
+    'the',
+    'a',
+    'an',
+    'is',
+    'are',
+    'was',
+    'were',
+    'be',
+    'been',
+    'being',
+    'have',
+    'has',
+    'had',
+    'do',
+    'does',
+    'did',
+    'will',
+    'would',
+    'could',
+    'should',
+    'may',
+    'might',
+    'must',
+    'shall',
+    'can',
+    'need',
+    'dare',
+    'ought',
+    'used',
+    'to',
+    'of',
+    'in',
+    'for',
+    'on',
+    'with',
+    'at',
+    'by',
+    'from',
+    'up',
+    'about',
+    'into',
+    'over',
+    'after',
+    'beneath',
+    'under',
+    'above',
+    'this',
+    'that',
+    'these',
+    'those',
+    'it',
+    'its',
+    'and',
+    'but',
+    'or',
+    'nor',
+    'so',
+    'yet',
+    'both',
+    'either',
+    'neither',
+    'not',
+    'only',
+    'own',
+    'same',
+    'than',
+    'too',
+    'very',
+    'just',
+    'also',
+    'now',
+    'here',
+    'there',
+    'when',
+    'where',
+    'why',
+    'how',
+    'all',
+    'each',
+    'every',
+    'few',
+    'more',
+    'most',
+    'other',
+    'some',
+    'such',
+    'no',
+    'any',
+    'which',
+    'who',
   ]);
 
   return text
@@ -210,9 +278,7 @@ function isQuestionUsed(normalizedText: string, question: string): boolean {
 
   // Key question words used
   const questionKeywords = extractKeywords(normalizedQuestion).slice(0, 4);
-  const keywordMatches = questionKeywords.filter((kw) =>
-    normalizedText.includes(kw)
-  );
+  const keywordMatches = questionKeywords.filter((kw) => normalizedText.includes(kw));
 
   return keywordMatches.length >= Math.ceil(questionKeywords.length * 0.6);
 }
@@ -224,7 +290,7 @@ function calculateCoverageScore(
   frameworkCoverage: Record<string, SingleFrameworkCoverage>,
   conceptsMentioned: string[],
   questionsUsed: string[],
-  persona: PersonaDefinition
+  persona: PersonaDefinition,
 ): number {
   let score = 0;
   const frameworks = Object.values(frameworkCoverage);
@@ -239,9 +305,7 @@ function calculateCoverageScore(
   // Concept coverage score (50 points max)
   const totalConcepts = frameworks.reduce((sum, f) => sum + f.totalConcepts, 0);
   const uniqueConcepts = [...new Set(conceptsMentioned)].length;
-  const conceptScore = totalConcepts > 0
-    ? (uniqueConcepts / totalConcepts) * 50
-    : 50;
+  const conceptScore = totalConcepts > 0 ? (uniqueConcepts / totalConcepts) * 50 : 50;
   score += conceptScore;
 
   // Question usage score (20 points max)
@@ -249,9 +313,7 @@ function calculateCoverageScore(
   for (const framework of Object.values(persona.frameworks)) {
     totalQuestions += (framework.questions ?? []).length;
   }
-  const questionScore = totalQuestions > 0
-    ? (questionsUsed.length / totalQuestions) * 20
-    : 20;
+  const questionScore = totalQuestions > 0 ? (questionsUsed.length / totalQuestions) * 20 : 20;
   score += questionScore;
 
   return Math.round(score);
@@ -265,7 +327,7 @@ function generateCoverageAssessment(
   frameworkCoverage: Record<string, SingleFrameworkCoverage>,
   conceptsMentioned: string[],
   questionsUsed: string[],
-  personaName: string
+  personaName: string,
 ): string {
   const lines: string[] = [];
 
@@ -283,15 +345,13 @@ function generateCoverageAssessment(
   // Framework breakdown
   const frameworks = Object.entries(frameworkCoverage);
   const referencedFrameworks = frameworks.filter(([, f]) => f.referenced);
-  lines.push(
-    `Frameworks referenced: ${referencedFrameworks.length}/${frameworks.length}`
-  );
+  lines.push(`Frameworks referenced: ${referencedFrameworks.length}/${frameworks.length}`);
 
   // Per-framework details
   for (const [name, coverage] of frameworks) {
     const status = coverage.referenced ? '✓' : '○';
     lines.push(
-      `  ${status} ${name}: ${coverage.conceptsFound.length}/${coverage.totalConcepts} concepts (${coverage.coverage}%)`
+      `  ${status} ${name}: ${coverage.conceptsFound.length}/${coverage.totalConcepts} concepts (${coverage.coverage}%)`,
     );
   }
 
@@ -313,7 +373,7 @@ function generateCoverageAssessment(
 export function quickFrameworkCheck(
   text: string,
   persona: PersonaDefinition,
-  threshold = 50
+  threshold = 50,
 ): boolean {
   const result = analyzeFrameworkCoverage(text, persona);
   return result.coverageScore >= threshold;
@@ -322,10 +382,7 @@ export function quickFrameworkCheck(
 /**
  * Get framework usage suggestions
  */
-export function getFrameworkSuggestions(
-  text: string,
-  persona: PersonaDefinition
-): string[] {
+export function getFrameworkSuggestions(text: string, persona: PersonaDefinition): string[] {
   const result = analyzeFrameworkCoverage(text, persona);
   const suggestions: string[] = [];
 
@@ -341,11 +398,11 @@ export function getFrameworkSuggestions(
     if (coverage.referenced && coverage.coverage < 50) {
       const framework = persona.frameworks[name];
       const unusedConcepts = Object.keys(framework.concepts).filter(
-        (c) => !coverage.conceptsFound.includes(c)
+        (c) => !coverage.conceptsFound.includes(c),
       );
       if (unusedConcepts.length > 0) {
         suggestions.push(
-          `Apply more concepts from ${name}: ${unusedConcepts.slice(0, 3).join(', ')}`
+          `Apply more concepts from ${name}: ${unusedConcepts.slice(0, 3).join(', ')}`,
         );
       }
     }
@@ -354,12 +411,10 @@ export function getFrameworkSuggestions(
   // Suggest diagnostic questions
   for (const [name, framework] of Object.entries(persona.frameworks)) {
     const questions = framework.questions ?? [];
-    const unusedQuestions = questions.filter(
-      (q) => !result.questionsUsed.includes(q)
-    );
+    const unusedQuestions = questions.filter((q) => !result.questionsUsed.includes(q));
     if (unusedQuestions.length > 0 && questions.length > 0) {
       suggestions.push(
-        `Consider using diagnostic question: "${unusedQuestions[0].slice(0, 50)}..."`
+        `Consider using diagnostic question: "${unusedQuestions[0].slice(0, 50)}..."`,
       );
       break; // Only suggest one question
     }
@@ -373,18 +428,24 @@ export function getFrameworkSuggestions(
  */
 export function getFrameworkReport(
   text: string,
-  persona: PersonaDefinition
-): Record<string, {
-  referenced: boolean;
-  concepts: { name: string; used: boolean }[];
-  questions: { text: string; used: boolean }[];
-}> {
-  const result = analyzeFrameworkCoverage(text, persona);
-  const report: Record<string, {
+  persona: PersonaDefinition,
+): Record<
+  string,
+  {
     referenced: boolean;
     concepts: { name: string; used: boolean }[];
     questions: { text: string; used: boolean }[];
-  }> = {};
+  }
+> {
+  const result = analyzeFrameworkCoverage(text, persona);
+  const report: Record<
+    string,
+    {
+      referenced: boolean;
+      concepts: { name: string; used: boolean }[];
+      questions: { text: string; used: boolean }[];
+    }
+  > = {};
 
   for (const [name, framework] of Object.entries(persona.frameworks)) {
     const coverage = result.frameworkCoverage[name];

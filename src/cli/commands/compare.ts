@@ -86,11 +86,13 @@ export const compareCommand = new Command('compare')
 
         // Data rows
         for (const [id, row] of matrix) {
-          const rowData = personaIds.map((otherId) => {
-            const value = row.get(otherId) ?? 0;
-            const color = value >= 80 ? chalk.green : value >= 50 ? chalk.yellow : chalk.dim;
-            return color(`${value}%`.padEnd(12));
-          }).join('');
+          const rowData = personaIds
+            .map((otherId) => {
+              const value = row.get(otherId) ?? 0;
+              const color = value >= 80 ? chalk.green : value >= 50 ? chalk.yellow : chalk.dim;
+              return color(`${value}%`.padEnd(12));
+            })
+            .join('');
           console.log(id.slice(0, 14).padEnd(15) + rowData);
         }
 
@@ -127,17 +129,23 @@ export const compareCommand = new Command('compare')
       spinner.succeed('Comparison complete');
 
       if (options.json) {
-        console.log(JSON.stringify({
-          bestMatch: comparison.bestMatch,
-          results: comparison.results.map((r) => ({
-            personaId: r.personaId,
-            personaName: r.personaName,
-            qualityScore: r.qualityScore,
-            fidelityScore: r.fidelityScore.score,
-            voiceScore: r.voiceAnalysis.consistencyScore,
-            frameworkScore: r.frameworkCoverage.coverageScore,
-          })),
-        }, null, 2));
+        console.log(
+          JSON.stringify(
+            {
+              bestMatch: comparison.bestMatch,
+              results: comparison.results.map((r) => ({
+                personaId: r.personaId,
+                personaName: r.personaName,
+                qualityScore: r.qualityScore,
+                fidelityScore: r.fidelityScore.score,
+                voiceScore: r.voiceAnalysis.consistencyScore,
+                frameworkScore: r.frameworkCoverage.coverageScore,
+              })),
+            },
+            null,
+            2,
+          ),
+        );
         return;
       }
 
@@ -162,12 +170,17 @@ export const compareCommand = new Command('compare')
       for (let i = 0; i < topResults.length; i++) {
         const result = topResults[i];
         const medal = i === 0 ? '🥇' : i === 1 ? '🥈' : i === 2 ? '🥉' : `${i + 1}.`;
-        const scoreBar = '█'.repeat(Math.floor(result.qualityScore / 10)) +
-                        '░'.repeat(10 - Math.floor(result.qualityScore / 10));
+        const scoreBar =
+          '█'.repeat(Math.floor(result.qualityScore / 10)) +
+          '░'.repeat(10 - Math.floor(result.qualityScore / 10));
 
         console.log(`${medal} ${chalk.bold(result.personaName)}`);
         console.log(`   Overall: ${result.qualityScore}/100 ${scoreBar}`);
-        console.log(chalk.dim(`   Fidelity: ${result.fidelityScore.score}/100 | Voice: ${result.voiceAnalysis.consistencyScore}/100 | Framework: ${result.frameworkCoverage.coverageScore}/100`));
+        console.log(
+          chalk.dim(
+            `   Fidelity: ${result.fidelityScore.score}/100 | Voice: ${result.voiceAnalysis.consistencyScore}/100 | Framework: ${result.frameworkCoverage.coverageScore}/100`,
+          ),
+        );
 
         if (i === 0) {
           // Show more details for best match
@@ -204,13 +217,14 @@ export const compareCommand = new Command('compare')
         const scoreDiff = topResults[0].qualityScore - topResults[1].qualityScore;
         if (scoreDiff < 5) {
           console.log();
-          console.log(chalk.yellow('⚠ Close match - consider reviewing both personas for this text.'));
+          console.log(
+            chalk.yellow('⚠ Close match - consider reviewing both personas for this text.'),
+          );
         } else if (scoreDiff > 20) {
           console.log();
           console.log(chalk.green('✓ Strong match confidence'));
         }
       }
-
     } catch (error) {
       spinner.fail(chalk.red('Comparison error'));
       if (error instanceof Error) {

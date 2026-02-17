@@ -12,10 +12,7 @@ import { Command } from 'commander';
 import chalk from 'chalk';
 import { existsSync } from 'fs';
 import { join, resolve } from 'path';
-import {
-  loadPersonaFromFile,
-  generateSystemPrompt,
-} from '../../core/index.js';
+import { loadPersonaFromFile, generateSystemPrompt } from '../../core/index.js';
 
 export const infoCommand = new Command('info')
   .description('Show details about a persona')
@@ -69,7 +66,7 @@ export const infoCommand = new Command('info')
         persona.identity.background
           .split('\n')
           .map((line) => `    ${line}`)
-          .join('\n')
+          .join('\n'),
       );
 
       if (persona.identity.era) {
@@ -112,7 +109,7 @@ export const infoCommand = new Command('info')
         for (const name of frameworkNames) {
           const fw = persona.frameworks[name];
           console.log(
-            `  • ${chalk.green(formatName(name))} - ${Object.keys(fw.concepts).length} concepts, ${(fw.questions ?? []).length} questions`
+            `  • ${chalk.green(formatName(name))} - ${Object.keys(fw.concepts).length} concepts, ${(fw.questions ?? []).length} questions`,
           );
         }
         console.log(chalk.dim('\n  Use --frameworks for details'));
@@ -127,9 +124,7 @@ export const infoCommand = new Command('info')
           for (const [name, cs] of Object.entries(persona.case_studies ?? {})) {
             console.log(chalk.cyan(`  ${formatName(name)}`));
             console.log(`    Pattern: ${cs.pattern}`);
-            console.log(
-              chalk.dim(`    ${cs.story.split('\n')[0].trim().slice(0, 80)}...`)
-            );
+            console.log(chalk.dim(`    ${cs.story.split('\n')[0].trim().slice(0, 80)}...`));
             console.log();
           }
         } else {
@@ -148,7 +143,7 @@ export const infoCommand = new Command('info')
         console.log(chalk.green('  Must Include:'));
         for (const marker of persona.validation.must_include) {
           console.log(
-            `    • ${marker.description ?? marker.pattern} (weight: ${marker.weight ?? 5})`
+            `    • ${marker.description ?? marker.pattern} (weight: ${marker.weight ?? 5})`,
           );
         }
 
@@ -156,7 +151,7 @@ export const infoCommand = new Command('info')
           console.log(chalk.blue('\n  Should Include:'));
           for (const marker of persona.validation.should_include) {
             console.log(
-              `    • ${marker.description ?? marker.pattern} (weight: ${marker.weight ?? 3})`
+              `    • ${marker.description ?? marker.pattern} (weight: ${marker.weight ?? 3})`,
             );
           }
         }
@@ -165,21 +160,17 @@ export const infoCommand = new Command('info')
           console.log(chalk.red('\n  Must Avoid:'));
           for (const marker of persona.validation.must_avoid) {
             console.log(
-              `    • ${marker.description ?? marker.pattern} (weight: ${marker.weight ?? 10})`
+              `    • ${marker.description ?? marker.pattern} (weight: ${marker.weight ?? 10})`,
             );
           }
         }
       } else {
         console.log(chalk.bold('\n✓ Validation\n'));
+        console.log(`  must_include: ${persona.validation.must_include.length} patterns`);
         console.log(
-          `  must_include: ${persona.validation.must_include.length} patterns`
+          `  should_include: ${(persona.validation.should_include ?? []).length} patterns`,
         );
-        console.log(
-          `  should_include: ${(persona.validation.should_include ?? []).length} patterns`
-        );
-        console.log(
-          `  must_avoid: ${(persona.validation.must_avoid ?? []).length} patterns`
-        );
+        console.log(`  must_avoid: ${(persona.validation.must_avoid ?? []).length} patterns`);
         console.log(chalk.dim('\n  Use --validation for details'));
       }
 

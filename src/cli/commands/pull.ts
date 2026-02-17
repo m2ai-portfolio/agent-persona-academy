@@ -87,7 +87,8 @@ export const pullCommand = new Command('pull')
       for (const result of results) {
         if (result.success) {
           successCount++;
-          const icon = result.action === 'downloaded' ? '⬇️' : result.action === 'updated' ? '🔄' : '✓';
+          const icon =
+            result.action === 'downloaded' ? '⬇️' : result.action === 'updated' ? '🔄' : '✓';
           const actionText = {
             downloaded: chalk.green('Downloaded'),
             updated: chalk.blue('Updated'),
@@ -112,7 +113,9 @@ export const pullCommand = new Command('pull')
       if (failCount === 0) {
         console.log(chalk.green(`  All ${successCount} persona(s) processed successfully`));
       } else {
-        console.log(`  ${chalk.green(`Success: ${successCount}`)} | ${chalk.red(`Failed: ${failCount}`)}`);
+        console.log(
+          `  ${chalk.green(`Success: ${successCount}`)} | ${chalk.red(`Failed: ${failCount}`)}`,
+        );
       }
 
       // Cache stats

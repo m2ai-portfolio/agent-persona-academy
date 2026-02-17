@@ -60,7 +60,12 @@ export function initializeManager(options: {
   defaultPersona?: string;
   departmentsDir?: string;
 }): PersonaSummary[] {
-  const { localDir = './personas', includeCache = true, defaultPersona, departmentsDir = './departments' } = options;
+  const {
+    localDir = './personas',
+    includeCache = true,
+    defaultPersona,
+    departmentsDir = './departments',
+  } = options;
 
   // Clear any existing state
   state.loadedPersonas.clear();
@@ -135,7 +140,7 @@ export function initializeManager(options: {
 function createSummary(
   id: string,
   persona: PersonaDefinition,
-  source: 'local' | 'cache'
+  source: 'local' | 'cache',
 ): PersonaSummary {
   return {
     id,

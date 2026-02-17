@@ -131,12 +131,7 @@ export interface TestCase {
   expected: TestExpectation;
 }
 
-export type TestCategory =
-  | 'fidelity'
-  | 'voice'
-  | 'framework'
-  | 'negative'
-  | 'edge_case';
+export type TestCategory = 'fidelity' | 'voice' | 'framework' | 'negative' | 'edge_case';
 
 export interface TestExpectation {
   /** Should the test pass? */

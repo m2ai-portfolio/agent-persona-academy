@@ -34,11 +34,7 @@ export type {
 export { DEFAULT_VALIDATION_CONFIG } from './types.js';
 
 // Voice Analysis
-export {
-  analyzeVoiceConsistency,
-  quickVoiceCheck,
-  getVoiceSuggestions,
-} from './voice-analyzer.js';
+export { analyzeVoiceConsistency, quickVoiceCheck, getVoiceSuggestions } from './voice-analyzer.js';
 
 // Framework Coverage
 export {

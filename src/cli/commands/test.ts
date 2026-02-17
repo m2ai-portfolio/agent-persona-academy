@@ -96,13 +96,11 @@ export const testCommand = new Command('test')
         const goodPassed = goodScore.score >= threshold;
 
         if (goodPassed) {
-          console.log(
-            chalk.green(`  ✓ Good response: ${goodScore.score}/100`)
-          );
+          console.log(chalk.green(`  ✓ Good response: ${goodScore.score}/100`));
           passCount++;
         } else {
           console.log(
-            chalk.red(`  ✗ Good response: ${goodScore.score}/100 (expected ≥${threshold})`)
+            chalk.red(`  ✗ Good response: ${goodScore.score}/100 (expected ≥${threshold})`),
           );
           failCount++;
         }
@@ -114,12 +112,12 @@ export const testCommand = new Command('test')
 
           if (badShouldFail) {
             console.log(
-              chalk.green(`  ✓ Bad response correctly scored low: ${badScore.score}/100`)
+              chalk.green(`  ✓ Bad response correctly scored low: ${badScore.score}/100`),
             );
             passCount++;
           } else {
             console.log(
-              chalk.yellow(`  ⚠ Bad response scored unexpectedly high: ${badScore.score}/100`)
+              chalk.yellow(`  ⚠ Bad response scored unexpectedly high: ${badScore.score}/100`),
             );
             // Not a failure, but a warning
           }
@@ -129,19 +127,17 @@ export const testCommand = new Command('test')
           console.log(chalk.dim(`  Breakdown:`));
           console.log(
             chalk.dim(
-              `    must_include: ${goodScore.breakdown.must_include.matched}/${goodScore.breakdown.must_include.total}`
-            )
+              `    must_include: ${goodScore.breakdown.must_include.matched}/${goodScore.breakdown.must_include.total}`,
+            ),
           );
           console.log(
             chalk.dim(
-              `    should_include: ${goodScore.breakdown.should_include.matched}/${goodScore.breakdown.should_include.total}`
-            )
+              `    should_include: ${goodScore.breakdown.should_include.matched}/${goodScore.breakdown.should_include.total}`,
+            ),
           );
           if (goodScore.breakdown.must_avoid.triggered > 0) {
             console.log(
-              chalk.dim(
-                `    violations: ${goodScore.breakdown.must_avoid.patterns.join(', ')}`
-              )
+              chalk.dim(`    violations: ${goodScore.breakdown.must_avoid.patterns.join(', ')}`),
             );
           }
         }
@@ -186,7 +182,7 @@ export const testCommand = new Command('test')
 function displayScore(
   score: ReturnType<typeof calculateFidelityScore>,
   threshold: number,
-  verbose: boolean
+  verbose: boolean,
 ): void {
   const emoji = score.passed ? '✓' : '✗';
   const color = score.passed ? chalk.green : chalk.red;
@@ -198,19 +194,17 @@ function displayScore(
   // Breakdown
   console.log(chalk.cyan('Breakdown:'));
   console.log(
-    `  Required patterns: ${score.breakdown.must_include.matched}/${score.breakdown.must_include.total}`
+    `  Required patterns: ${score.breakdown.must_include.matched}/${score.breakdown.must_include.total}`,
   );
 
   if (score.breakdown.should_include.total > 0) {
     console.log(
-      `  Bonus patterns: ${score.breakdown.should_include.matched}/${score.breakdown.should_include.total}`
+      `  Bonus patterns: ${score.breakdown.should_include.matched}/${score.breakdown.should_include.total}`,
     );
   }
 
   if (score.breakdown.must_avoid.triggered > 0) {
-    console.log(
-      chalk.red(`  Violations: ${score.breakdown.must_avoid.triggered}`)
-    );
+    console.log(chalk.red(`  Violations: ${score.breakdown.must_avoid.triggered}`));
   }
 
   if (verbose) {

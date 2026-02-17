@@ -272,6 +272,7 @@ Add to your `claude_desktop_config.json`:
 | `get_framework` | Get details about a specific framework |
 | `get_case_study` | Get details about a case study |
 | `get_active_persona` | View current persona info |
+| `list_departments` | List all Academy departments with personas and policies |
 
 ### Example Usage in Claude
 
@@ -400,6 +401,100 @@ Management philosopher focusing on effectiveness, knowledge work, and organizati
 - Nonprofit effectiveness
 - Knowledge society prediction
 
+### John Carmack
+
+Systems architect and performance engineer focused on ruthless simplicity, measurement-driven optimization, and constraint-driven engineering.
+
+**Frameworks:**
+- Ruthless Simplicity
+- Measure-First Optimization
+- Vertical Slice Delivery
+- Constraint-Driven Engineering
+
+**Case Studies:**
+- Doom engine (constraint-driven innovation)
+- Quake BSP and netcode (measure-first optimization)
+- Armadillo Aerospace (iterative thin-slice delivery)
+- Oculus VR latency (latency budget allocation)
+
+### Grace Hopper
+
+Pioneer in computer science and naval officer who championed practical computing, compiler development, and standards-based interoperability.
+
+### Leslie Lamport
+
+Distributed systems theorist known for Lamport clocks, Paxos consensus, and TLA+ formal specification.
+
+### Barbara Liskov
+
+Software engineering pioneer known for the Liskov Substitution Principle, CLU language, data abstraction, and design by contract.
+
+**Frameworks:**
+- Data Abstraction
+- Behavioral Subtyping
+- Design by Contract
+- Modular Reasoning
+
+**Case Studies:**
+- Liskov Substitution Principle
+- CLU language
+- Venus operating system
+- Thor database
+
+### Michelangelo
+
+Creative Director and Visual Philosopher applying Renaissance art principles to modern digital design.
+
+**Frameworks:**
+- Subtractive Sculpture
+- Contrast and Tension
+- Emotional Architecture
+- Intentional Rule Breaking
+
+**Case Studies:**
+- Sistine Chapel (mastery through constraint)
+- David / Abandoned Marble (finding form in chaos)
+- Pieta Tension (emotional weight through contrast)
+
+### Sky-Lynx
+
+Continuous Improvement Analyst applying Kaizen principles and feedback loop analysis to optimize Claude Code workflows.
+
+**Frameworks:**
+- Kaizen Analysis
+- Feedback Loop Detection
+- Cognitive Load Management
+- Risk-Adjusted Prioritization
+- User Adoption Journey
+
+## Department System
+
+Departments provide isolation boundaries for persona validation. Quality criteria that work for engineering personas (precision, measurement) may be antithetical to creative personas (expressiveness, rule-breaking).
+
+### Current Departments
+
+| Department | ID | Personas |
+|---|---|---|
+| School of Engineering | `engineering` | carmack, hopper, lamport, liskov |
+| School of Business Strategy | `business-strategy` | christensen, porter, drucker |
+| Operations | `operations` | sky-lynx |
+| Creative | `creative` | michelangelo |
+
+### Department CLI Commands
+
+```bash
+# List all departments
+persona-academy department list
+
+# Show department details (personas, quality criteria, learning policy)
+persona-academy department info engineering
+
+# Filter personas by department
+persona-academy list --department engineering
+```
+
+Each department defines validation overrides (fidelity thresholds, scoring weights), shared must_avoid patterns, and a learning policy for Sky-Lynx continuous improvement integration.
+
 ## Creating New Personas
 
 1. **Run the create command:**
@@ -492,8 +587,13 @@ See [BLUEPRINT.md](./BLUEPRINT.md) for the complete implementation plan:
 - [x] Phase 5: Unified Multi-Persona Server
 - [x] Phase 6: Validation & Testing Suite
 - [x] Phase 7: Documentation & Community
-
-**All phases complete!**
+- [x] Phase 8: Department Infrastructure
+- [x] Phase 9: Department-Aware Validation
+- [x] Phase 10: Michelangelo Persona & Creative Department
+- [x] Phase 11: Sky-Lynx Department Scoping
+- [x] Phase 12: CLI & Server Integration
+- [ ] Phase 13: Code Review Persona
+- [ ] Phase 14: Fully Developed Agent (TBD)
 
 ## License
 

@@ -77,18 +77,27 @@ export const serveCommand = new Command('serve')
     // Actual usage is via claude_desktop_config.json
 
     console.log(chalk.yellow('Note: For Claude Desktop, add to your config:\n'));
-    console.log(chalk.dim(JSON.stringify({
-      mcpServers: {
-        'persona-academy': {
-          command: 'node',
-          args: [
-            serverPath,
-            '--personas', personasDir,
-            ...(options.default ? ['--default', options.default] : []),
-          ],
-        },
-      },
-    }, null, 2)));
+    console.log(
+      chalk.dim(
+        JSON.stringify(
+          {
+            mcpServers: {
+              'persona-academy': {
+                command: 'node',
+                args: [
+                  serverPath,
+                  '--personas',
+                  personasDir,
+                  ...(options.default ? ['--default', options.default] : []),
+                ],
+              },
+            },
+          },
+          null,
+          2,
+        ),
+      ),
+    );
 
     console.log(chalk.yellow('\nTo test directly, the server will start now...'));
     console.log(chalk.dim('Press Ctrl+C to stop\n'));

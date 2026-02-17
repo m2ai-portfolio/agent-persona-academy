@@ -8,12 +8,7 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync, rmSync } from 'fs';
 import { join, dirname } from 'path';
 import { homedir } from 'os';
-import type {
-  CacheIndex,
-  CachedPersona,
-  RegistryEntry,
-  RegistryConfig,
-} from './types.js';
+import type { CacheIndex, CachedPersona, RegistryEntry, RegistryConfig } from './types.js';
 import { DEFAULT_REGISTRY_CONFIG } from './types.js';
 
 const CACHE_VERSION = '1.0.0';
@@ -45,7 +40,7 @@ export function ensureCacheDir(config: RegistryConfig = DEFAULT_REGISTRY_CONFIG)
  */
 export function getCachedPersonaPath(
   personaId: string,
-  config: RegistryConfig = DEFAULT_REGISTRY_CONFIG
+  config: RegistryConfig = DEFAULT_REGISTRY_CONFIG,
 ): string {
   const cacheDir = resolveCacheDir(config);
   return join(cacheDir, personaId);
@@ -54,9 +49,7 @@ export function getCachedPersonaPath(
 /**
  * Load the cache index
  */
-export function loadCacheIndex(
-  config: RegistryConfig = DEFAULT_REGISTRY_CONFIG
-): CacheIndex {
+export function loadCacheIndex(config: RegistryConfig = DEFAULT_REGISTRY_CONFIG): CacheIndex {
   const cacheDir = resolveCacheDir(config);
   const indexPath = join(cacheDir, CACHE_INDEX_FILE);
 
@@ -77,7 +70,7 @@ export function loadCacheIndex(
  */
 export function saveCacheIndex(
   index: CacheIndex,
-  config: RegistryConfig = DEFAULT_REGISTRY_CONFIG
+  config: RegistryConfig = DEFAULT_REGISTRY_CONFIG,
 ): void {
   const cacheDir = ensureCacheDir(config);
   const indexPath = join(cacheDir, CACHE_INDEX_FILE);
@@ -103,7 +96,7 @@ function createEmptyCacheIndex(config: RegistryConfig): CacheIndex {
  */
 export function isPersonaCached(
   personaId: string,
-  config: RegistryConfig = DEFAULT_REGISTRY_CONFIG
+  config: RegistryConfig = DEFAULT_REGISTRY_CONFIG,
 ): boolean {
   const index = loadCacheIndex(config);
   const cached = index.personas[personaId];
@@ -122,7 +115,7 @@ export function isPersonaCached(
  */
 export function getCachedPersona(
   personaId: string,
-  config: RegistryConfig = DEFAULT_REGISTRY_CONFIG
+  config: RegistryConfig = DEFAULT_REGISTRY_CONFIG,
 ): CachedPersona | null {
   const index = loadCacheIndex(config);
   return index.personas[personaId] ?? null;
@@ -135,7 +128,7 @@ export function cachePersona(
   entry: RegistryEntry,
   content: string,
   sha?: string,
-  config: RegistryConfig = DEFAULT_REGISTRY_CONFIG
+  config: RegistryConfig = DEFAULT_REGISTRY_CONFIG,
 ): CachedPersona {
   const cacheDir = ensureCacheDir(config);
   const personaPath = join(cacheDir, entry.id);
@@ -170,7 +163,7 @@ export function cachePersona(
  */
 export function removeCachedPersona(
   personaId: string,
-  config: RegistryConfig = DEFAULT_REGISTRY_CONFIG
+  config: RegistryConfig = DEFAULT_REGISTRY_CONFIG,
 ): boolean {
   const personaPath = getCachedPersonaPath(personaId, config);
 
@@ -193,7 +186,7 @@ export function removeCachedPersona(
  * List all cached personas
  */
 export function listCachedPersonas(
-  config: RegistryConfig = DEFAULT_REGISTRY_CONFIG
+  config: RegistryConfig = DEFAULT_REGISTRY_CONFIG,
 ): CachedPersona[] {
   const index = loadCacheIndex(config);
   return Object.values(index.personas).filter((cached) => {
@@ -209,7 +202,7 @@ export function listCachedPersonas(
 export function needsUpdate(
   personaId: string,
   remoteSha: string,
-  config: RegistryConfig = DEFAULT_REGISTRY_CONFIG
+  config: RegistryConfig = DEFAULT_REGISTRY_CONFIG,
 ): boolean {
   const cached = getCachedPersona(personaId, config);
 
@@ -225,7 +218,7 @@ export function needsUpdate(
 export function markLocalChanges(
   personaId: string,
   hasChanges: boolean,
-  config: RegistryConfig = DEFAULT_REGISTRY_CONFIG
+  config: RegistryConfig = DEFAULT_REGISTRY_CONFIG,
 ): void {
   const index = loadCacheIndex(config);
 
@@ -238,9 +231,7 @@ export function markLocalChanges(
 /**
  * Clear the entire cache
  */
-export function clearCache(
-  config: RegistryConfig = DEFAULT_REGISTRY_CONFIG
-): number {
+export function clearCache(config: RegistryConfig = DEFAULT_REGISTRY_CONFIG): number {
   const index = loadCacheIndex(config);
   const count = Object.keys(index.personas).length;
 
@@ -262,9 +253,7 @@ export function clearCache(
 /**
  * Get cache statistics
  */
-export function getCacheStats(
-  config: RegistryConfig = DEFAULT_REGISTRY_CONFIG
-): {
+export function getCacheStats(config: RegistryConfig = DEFAULT_REGISTRY_CONFIG): {
   totalCached: number;
   withLocalChanges: number;
   cacheDir: string;

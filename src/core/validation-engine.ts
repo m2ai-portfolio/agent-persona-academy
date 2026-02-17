@@ -5,25 +5,21 @@
  * Calculates scores based on must_include, should_include, and must_avoid patterns.
  */
 
-import type {
-  PersonaDefinition,
-  FidelityScore,
-  ValidationMarker,
-} from './types.js';
+import type { PersonaDefinition, FidelityScore, ValidationMarker } from './types.js';
 
 /**
  * Default weights for scoring
  */
 const DEFAULT_WEIGHTS = {
   must_include: {
-    base: 60,        // Must-include patterns are worth 60 points total
-    threshold: 0.8,  // Need 80% of must_include patterns to pass
+    base: 60, // Must-include patterns are worth 60 points total
+    threshold: 0.8, // Need 80% of must_include patterns to pass
   },
   should_include: {
-    base: 30,        // Should-include patterns are worth 30 points total
+    base: 30, // Should-include patterns are worth 30 points total
   },
   must_avoid: {
-    penalty: 15,     // Each must_avoid violation costs up to 15 points
+    penalty: 15, // Each must_avoid violation costs up to 15 points
   },
   passing_score: 70, // Score needed to pass fidelity check
 };
@@ -44,65 +40,42 @@ export interface FidelityScoreOptions {
 export function calculateFidelityScore(
   text: string,
   persona: PersonaDefinition,
-  options?: FidelityScoreOptions
+  options?: FidelityScoreOptions,
 ): FidelityScore {
   const { validation } = persona;
   const normalizedText = text.toLowerCase();
   const passingScore = options?.passingScore ?? DEFAULT_WEIGHTS.passing_score;
 
   // Check must_include patterns
-  const mustIncludeResults = checkPatterns(
-    normalizedText,
-    validation.must_include,
-    text
-  );
+  const mustIncludeResults = checkPatterns(normalizedText, validation.must_include, text);
 
   // Check should_include patterns
-  const shouldIncludeResults = checkPatterns(
-    normalizedText,
-    validation.should_include ?? [],
-    text
-  );
+  const shouldIncludeResults = checkPatterns(normalizedText, validation.should_include ?? [], text);
 
   // Merge persona must_avoid with department shared_must_avoid
-  const allMustAvoid = [
-    ...(validation.must_avoid ?? []),
-    ...(options?.additionalMustAvoid ?? []),
-  ];
+  const allMustAvoid = [...(validation.must_avoid ?? []), ...(options?.additionalMustAvoid ?? [])];
 
   // Check must_avoid patterns
-  const mustAvoidResults = checkPatterns(
-    normalizedText,
-    allMustAvoid,
-    text
-  );
+  const mustAvoidResults = checkPatterns(normalizedText, allMustAvoid, text);
 
   // Calculate scores
-  const mustIncludeScore = calculateMustIncludeScore(
-    mustIncludeResults,
-    validation.must_include
-  );
+  const mustIncludeScore = calculateMustIncludeScore(mustIncludeResults, validation.must_include);
 
   const shouldIncludeScore = calculateShouldIncludeScore(
     shouldIncludeResults,
-    validation.should_include ?? []
+    validation.should_include ?? [],
   );
 
-  const mustAvoidPenalty = calculateMustAvoidPenalty(
-    mustAvoidResults,
-    allMustAvoid
-  );
+  const mustAvoidPenalty = calculateMustAvoidPenalty(mustAvoidResults, allMustAvoid);
 
   // Total score (capped at 0-100)
   const rawScore = mustIncludeScore + shouldIncludeScore - mustAvoidPenalty;
   const score = Math.max(0, Math.min(100, Math.round(rawScore)));
 
   // Determine pass/fail
-  const mustIncludeRatio =
-    mustIncludeResults.matched.length / validation.must_include.length;
+  const mustIncludeRatio = mustIncludeResults.matched.length / validation.must_include.length;
   const passed =
-    score >= passingScore &&
-    mustIncludeRatio >= DEFAULT_WEIGHTS.must_include.threshold;
+    score >= passingScore && mustIncludeRatio >= DEFAULT_WEIGHTS.must_include.threshold;
 
   // Generate assessment
   const assessment = generateAssessment(
@@ -111,7 +84,7 @@ export function calculateFidelityScore(
     mustIncludeResults,
     shouldIncludeResults,
     mustAvoidResults,
-    persona.identity.name
+    persona.identity.name,
   );
 
   return {
@@ -143,7 +116,7 @@ export function calculateFidelityScore(
 function checkPatterns(
   normalizedText: string,
   markers: ValidationMarker[],
-  originalText: string
+  originalText: string,
 ): { matched: string[]; unmatched: string[] } {
   const matched: string[] = [];
   const unmatched: string[] = [];
@@ -177,7 +150,7 @@ function checkPatterns(
  */
 function calculateMustIncludeScore(
   results: { matched: string[]; unmatched: string[] },
-  markers: ValidationMarker[]
+  markers: ValidationMarker[],
 ): number {
   if (markers.length === 0) return DEFAULT_WEIGHTS.must_include.base;
 
@@ -208,7 +181,7 @@ function calculateMustIncludeScore(
  */
 function calculateShouldIncludeScore(
   results: { matched: string[]; unmatched: string[] },
-  markers: ValidationMarker[]
+  markers: ValidationMarker[],
 ): number {
   if (markers.length === 0) return DEFAULT_WEIGHTS.should_include.base;
 
@@ -236,7 +209,7 @@ function calculateShouldIncludeScore(
  */
 function calculateMustAvoidPenalty(
   results: { matched: string[]; unmatched: string[] },
-  markers: ValidationMarker[]
+  markers: ValidationMarker[],
 ): number {
   if (results.matched.length === 0) return 0;
 
@@ -261,7 +234,7 @@ function generateAssessment(
   mustInclude: { matched: string[]; unmatched: string[] },
   shouldInclude: { matched: string[]; unmatched: string[] },
   mustAvoid: { matched: string[]; unmatched: string[] },
-  personaName: string
+  personaName: string,
 ): string {
   const lines: string[] = [];
 
@@ -279,9 +252,10 @@ function generateAssessment(
   }
 
   // Must-include feedback
-  const mustRatio = mustInclude.matched.length / (mustInclude.matched.length + mustInclude.unmatched.length);
+  const mustRatio =
+    mustInclude.matched.length / (mustInclude.matched.length + mustInclude.unmatched.length);
   lines.push(
-    `Required patterns: ${mustInclude.matched.length}/${mustInclude.matched.length + mustInclude.unmatched.length} (${Math.round(mustRatio * 100)}%)`
+    `Required patterns: ${mustInclude.matched.length}/${mustInclude.matched.length + mustInclude.unmatched.length} (${Math.round(mustRatio * 100)}%)`,
   );
 
   if (mustInclude.unmatched.length > 0 && mustInclude.unmatched.length <= 3) {
@@ -291,7 +265,7 @@ function generateAssessment(
   // Should-include feedback
   if (shouldInclude.matched.length + shouldInclude.unmatched.length > 0) {
     lines.push(
-      `Bonus patterns: ${shouldInclude.matched.length}/${shouldInclude.matched.length + shouldInclude.unmatched.length}`
+      `Bonus patterns: ${shouldInclude.matched.length}/${shouldInclude.matched.length + shouldInclude.unmatched.length}`,
     );
   }
 
@@ -308,7 +282,7 @@ function generateAssessment(
  */
 export function validateAgainstSamples(
   text: string,
-  persona: PersonaDefinition
+  persona: PersonaDefinition,
 ): { passRate: number; results: SampleValidationResult[] } {
   const samples = persona.sample_responses ?? {};
   const results: SampleValidationResult[] = [];
@@ -326,8 +300,7 @@ export function validateAgainstSamples(
       : null;
 
     // Determine if the text is closer to good or bad
-    const closerToGood =
-      !badScore || score.score >= (goodScore.score + badScore.score) / 2;
+    const closerToGood = !badScore || score.score >= (goodScore.score + badScore.score) / 2;
 
     results.push({
       sampleId: id,
@@ -340,9 +313,7 @@ export function validateAgainstSamples(
   }
 
   const passRate =
-    results.length > 0
-      ? results.filter((r) => r.closerToGood).length / results.length
-      : 1;
+    results.length > 0 ? results.filter((r) => r.closerToGood).length / results.length : 1;
 
   return { passRate, results };
 }
@@ -359,10 +330,7 @@ export interface SampleValidationResult {
 /**
  * Quick check if a text passes basic fidelity
  */
-export function quickFidelityCheck(
-  text: string,
-  persona: PersonaDefinition
-): boolean {
+export function quickFidelityCheck(text: string, persona: PersonaDefinition): boolean {
   const score = calculateFidelityScore(text, persona);
   return score.passed;
 }
@@ -370,10 +338,7 @@ export function quickFidelityCheck(
 /**
  * Get a summary of what patterns to include for better fidelity
  */
-export function getSuggestions(
-  text: string,
-  persona: PersonaDefinition
-): string[] {
+export function getSuggestions(text: string, persona: PersonaDefinition): string[] {
   const score = calculateFidelityScore(text, persona);
   const suggestions: string[] = [];
 

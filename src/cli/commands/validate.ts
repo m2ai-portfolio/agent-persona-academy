@@ -68,13 +68,14 @@ export const validateCommand = new Command('validate')
 
       // Resolve convention-based external files before schema validation
       if (persona && typeof persona === 'object') {
-        resolveExternalFiles(persona as unknown as import('../../core/types.js').PersonaDefinition, dirname(yamlPath));
+        resolveExternalFiles(
+          persona as unknown as import('../../core/types.js').PersonaDefinition,
+          dirname(yamlPath),
+        );
       }
 
       // Load schema
-      const schemaPath =
-        options.schema ||
-        join(__dirname, '../../../schema/persona-schema.json');
+      const schemaPath = options.schema || join(__dirname, '../../../schema/persona-schema.json');
 
       if (!existsSync(schemaPath)) {
         // Try alternative paths
@@ -99,9 +100,7 @@ export const validateCommand = new Command('validate')
         }
       }
 
-      const schema = JSON.parse(
-        readFileSync(options.schema || schemaPath, 'utf-8')
-      );
+      const schema = JSON.parse(readFileSync(options.schema || schemaPath, 'utf-8'));
 
       // Validate with AJV
       const ajv = new Ajv({ allErrors: true, verbose: true });
@@ -187,9 +186,7 @@ type AjvError = ErrorObject;
 /**
  * Group errors by their instance path
  */
-function groupErrorsByPath(
-  errors: AjvError[]
-): Record<string, AjvError[]> {
+function groupErrorsByPath(errors: AjvError[]): Record<string, AjvError[]> {
   const grouped: Record<string, AjvError[]> = {};
 
   for (const error of errors) {

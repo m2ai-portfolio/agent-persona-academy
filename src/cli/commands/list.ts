@@ -34,7 +34,7 @@ export const listCommand = new Command('list')
       // Find all persona directories
       const entries = readdirSync(personasDir, { withFileTypes: true });
       const personaDirs = entries.filter(
-        (e) => e.isDirectory() && existsSync(join(personasDir, e.name, 'persona.yaml'))
+        (e) => e.isDirectory() && existsSync(join(personasDir, e.name, 'persona.yaml')),
       );
 
       if (personaDirs.length === 0) {
@@ -102,13 +102,11 @@ export const listCommand = new Command('list')
         console.log(chalk.bold(`${formatCategory(category)}`));
 
         for (const persona of categoryPersonas) {
-          console.log(
-            `  ${chalk.green(persona.id)} - ${persona.name}`
-          );
+          console.log(`  ${chalk.green(persona.id)} - ${persona.name}`);
           console.log(
             chalk.dim(
-              `    ${persona.role} | ${persona.frameworks} frameworks | ${persona.caseStudies} cases`
-            )
+              `    ${persona.role} | ${persona.frameworks} frameworks | ${persona.caseStudies} cases`,
+            ),
           );
         }
 
@@ -136,9 +134,7 @@ interface PersonaSummary {
   tags: string[];
 }
 
-function groupByCategory(
-  personas: PersonaSummary[]
-): Record<string, PersonaSummary[]> {
+function groupByCategory(personas: PersonaSummary[]): Record<string, PersonaSummary[]> {
   const grouped: Record<string, PersonaSummary[]> = {};
 
   for (const persona of personas) {
