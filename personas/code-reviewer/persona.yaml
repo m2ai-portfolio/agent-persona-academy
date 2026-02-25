@@ -488,8 +488,19 @@ sample_responses:
       setup pattern. The bad response is vague ("add more tests"),
       non-specific ("naming convention"), and offers no actionable guidance.
 
+agent_config:
+  description: >-
+    Reviews code for security vulnerabilities, architecture patterns, and quality issues.
+    Use AFTER implementation and BEFORE committing to catch problems early.
+    Reads .codebase_learnings.json to apply past learnings and avoid repeated mistakes.
+    Reports findings with severity levels. Does NOT modify code.
+  prompt_file: "code_review_agent_prompt.md"
+  model: "sonnet"
+  tools:
+    groups: ["code_review"]
+
 metadata:
-  version: "1.0.0"
+  version: "1.1.0"
   author: "Matthew @ Me, Myself Plus AI LLC"
   created: "2026-02-17"
   updated: "2026-02-17"

@@ -149,6 +149,46 @@
         "$ref": "#/$defs/sampleResponse"
       }
     },
+    "agent_config": {
+      "type": "object",
+      "description": "Operational agent definition for Claude Agent SDK instantiation. Optional -- personas without this section are identity-only (used for prompt shaping, not agent creation).",
+      "properties": {
+        "description": {
+          "type": "string",
+          "description": "Routing description for orchestrator delegation (used to decide when to invoke this agent)"
+        },
+        "prompt_file": {
+          "type": "string",
+          "description": "Path to system prompt markdown file, relative to the prompts directory"
+        },
+        "model": {
+          "type": "string",
+          "description": "Default model tier for this agent",
+          "enum": ["haiku", "sonnet", "opus", "inherit"]
+        },
+        "tools": {
+          "type": "object",
+          "description": "Tool configuration for this agent",
+          "properties": {
+            "groups": {
+              "type": "array",
+              "description": "Named tool groups to include (e.g., linear, github, slack, coding, qa, code_review, file)",
+              "items": { "type": "string" }
+            },
+            "additional": {
+              "type": "array",
+              "description": "Individual tool names to add beyond group membership",
+              "items": { "type": "string" }
+            },
+            "exclude": {
+              "type": "array",
+              "description": "Individual tool names to remove from the resolved set",
+              "items": { "type": "string" }
+            }
+          }
+        }
+      }
+    },
     "metadata": {
       "type": "object",
       "description": "Administrative metadata",

@@ -257,6 +257,32 @@ export interface StyleReference {
 }
 
 // ============================================================================
+// Agent Config Types (for Claude Agent SDK instantiation)
+// ============================================================================
+
+export type AgentModelOption = 'haiku' | 'sonnet' | 'opus' | 'inherit';
+
+export interface AgentToolConfig {
+  /** Named tool groups to include (e.g., linear, github, coding, file) */
+  groups?: string[];
+  /** Individual tool names to add beyond group membership */
+  additional?: string[];
+  /** Individual tool names to remove from the resolved set */
+  exclude?: string[];
+}
+
+export interface AgentConfig {
+  /** Routing description for orchestrator delegation */
+  description?: string;
+  /** Path to system prompt markdown file, relative to the prompts directory */
+  prompt_file?: string;
+  /** Default model tier for this agent */
+  model?: AgentModelOption;
+  /** Tool configuration for this agent */
+  tools?: AgentToolConfig;
+}
+
+// ============================================================================
 // Complete Persona Definition
 // ============================================================================
 
@@ -277,6 +303,8 @@ export interface PersonaDefinition {
   style_references?: Record<string, StyleReference>;
   /** Example prompt/response pairs */
   sample_responses?: Record<string, SampleResponse>;
+  /** Operational agent definition for Claude Agent SDK instantiation */
+  agent_config?: AgentConfig;
   /** Administrative metadata */
   metadata?: PersonaMetadata;
 }
